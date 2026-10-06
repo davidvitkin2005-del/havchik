@@ -1,0 +1,114 @@
+"""Тянет карточки организаций с Яндекс Карт по id и сохраняет компактный JSON.
+
+Использование: python3 -I tools/yafetch.py ids.json out.json [--refresh]
+ids.json: {"ключ": [id, seoname], ...}
+Уже скачанные карточки пропускаются; --refresh скачивает все заново.
+"""
+import json
+import re
+import sys
+import time
+import urllib.request
+
+UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+      "(KHTML, like Gecko) Chrome/126.0 Safari/537.36")
+STATE_RE = re.compile(r'<script type="application/json" class="state-view">(.*?)</script>', re.S)
+
+
+def get(url):
+    req = urllib.request.Request(url, headers={"User-Agent": UA, "Accept-Language": "ru-RU,ru;q=0.9"})
+    with urllib.request.urlopen(req, timeout=30) as r:
+        return r.read().decode("utf-8", "replace")
+
+
+def find_org(st, oid):
+    """Ищем объект организации с нужным id в любом месте состояния страницы."""
+    seen = set()
+    stack = [st]
+    while stack:
+        o = stack.pop()
+        if id(o) in seen:
+            continue
+        seen.add(id(o))
+        if isinstance(o, dict):
+            if str(o.get("id")) == str(oid) and "workingTime" in o or (str(o.get("id")) == str(oid) and "title" in o and "address" in o):
+                return o
+            stack.extend(o.values())
+        elif isinstance(o, list):
+            stack.extend(o)
+    return None
+
+
+def hhmm(t):
+    return "%02d:%02d" % (t.get("hours", 0), t.get("minutes", 0))
+
+
+def compact(o):
+    wt = o.get("workingTime")
+    days = None
+    if isinstance(wt, list) and len(wt) == 7:
+        days = [",".join(hhmm(iv["from"]) + "-" + hhmm(iv["to"]) for iv in (d or [])) or None for d in wt]
+    photos = o.get("photos") or {}
+    feats = []
+    for f in o.get("features") or []:
+        v = f.get("value")
+        if f.get("type") == "bool":
+            if v:
+                feats.append(f.get("name"))
+        elif f.get("type") == "text":
+            feats.append("%s: %s" % (f.get("name"), v))
+        elif isinstance(v, list):
+            feats.append("%s: %s" % (f.get("name"), ", ".join(x.get("name", "") for x in v)))
+    rating = o.get("ratingData") or {}
+    return {
+        "id": str(o.get("id")),
+        "seoname": o.get("seoname"),
+        "title": o.get("title"),
+        "address": o.get("address"),
+        "coords": o.get("coordinates"),
+        "status": o.get("status"),
+        "categories": [c.get("name") for c in o.get("categories") or []],
+        "hours": days,
+        "hoursText": o.get("workingTimeText"),
+        "metro": [{"name": m.get("name"), "color": m.get("color"), "distance": m.get("distance"),
+                   "meters": m.get("distanceValue")} for m in (o.get("metro") or [])[:3]],
+        "photoCount": photos.get("count"),
+        "photos": [p.get("urlTemplate") for p in photos.get("items") or []][:12],
+        "rating": round(rating.get("ratingValue"), 1) if rating.get("ratingValue") else None,
+        "ratingCount": rating.get("ratingCount"),
+        "features": feats,
+        "social": [s.get("href") or s.get("url") for s in o.get("socialLinks") or []],
+        "links": [b.get("href") or b.get("url") for b in o.get("businessLinks") or []] if isinstance(o.get("businessLinks"), list) else o.get("businessLinks"),
+        "chain": (o.get("chain") or {}).get("name"),
+        "logo": ((o.get("businessImages") or {}).get("logo") or {}).get("urlTemplate"),
+    }
+
+
+def main():
+    ids = json.load(open(sys.argv[1], encoding="utf-8"))
+    out_path = sys.argv[2]
+    try:
+        out = json.load(open(out_path, encoding="utf-8"))
+    except FileNotFoundError:
+        out = {}
+    for key, (oid, seo) in ids.items():
+        if "--refresh" not in sys.argv and key in out and out[key].get("id") == str(oid) and not out[key].get("error"):
+            continue
+        url = "https://yandex.ru/maps/org/%s/%s/" % (seo, oid)
+        try:
+            html = get(url)
+            m = STATE_RE.search(html)
+            if not m:
+                out[key] = {"id": str(oid), "error": "captcha" if "captcha" in html.lower()[:5000] else "no state"}
+            else:
+                org = find_org(json.loads(m.group(1)), oid)
+                out[key] = compact(org) if org else {"id": str(oid), "error": "org not found"}
+        except Exception as e:  # noqa: BLE001
+            out[key] = {"id": str(oid), "error": str(e)}
+        print(key, "->", out[key].get("title") or out[key].get("error"), flush=True)
+        json.dump(out, open(out_path, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
+        time.sleep(1.5)
+
+
+if __name__ == "__main__":
+    main()
