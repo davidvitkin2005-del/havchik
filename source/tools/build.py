@@ -20,6 +20,10 @@ def main():
     DIST.mkdir(exist_ok=True)
     places = json.loads((ROOT / 'data' / 'places.json').read_text(encoding='utf-8'))
     data_js = 'window.__PLACES__=' + json.dumps(places, ensure_ascii=False, separators=(',', ':')).replace('</', '<\\/') + ';'
+    users = json.loads((ROOT / 'data' / 'users.json').read_text(encoding='utf-8')) if (ROOT / 'data' / 'users.json').exists() else {}
+    tg = json.loads((ROOT / 'data' / 'telegram.json').read_text(encoding='utf-8')) if (ROOT / 'data' / 'telegram.json').exists() else {}
+    meta = {'users': users.get('count', 0), 'channel': (tg.get('channel') or '').lstrip('@')}
+    data_js += 'window.__META__=' + json.dumps(meta, ensure_ascii=False) + ';'
     html = f"""<!doctype html>
 <html lang="ru">
 <head>

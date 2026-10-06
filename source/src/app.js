@@ -3,6 +3,7 @@
 
   var T = window.HavTime;
   var RAW = window.__PLACES__ || [];
+  var META = window.__META__ || { users: 0, channel: '' };
   var tg = window.Telegram && window.Telegram.WebApp;
   var inTG = !!(tg && tg.platform && tg.platform !== 'unknown');
   var reduceMotion = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
@@ -40,6 +41,8 @@
     close: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>',
     map: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.1-7-11.5A7 7 0 0 1 19 9.5C19 14.9 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>',
     play: '<svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path fill="currentColor" d="M10 8.4v7.2l6-3.6z"/></svg>',
+    people: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.6-3.6 3.3-5.5 6.5-5.5s5.9 1.9 6.5 5.5"/><path d="M16 4.6a3.5 3.5 0 0 1 0 6.8M18.5 14.8c1.7.7 2.8 2.5 3.1 5.2"/></svg>',
+    chat: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12a8 8 0 0 1-11.6 7.1L4 20l1-4.2A8 8 0 1 1 20 12z"/></svg>',
     dice: '<svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="2"/><g fill="currentColor"><circle cx="8.5" cy="8.5" r="1.6"/><circle cx="15.5" cy="15.5" r="1.6"/><circle cx="12" cy="12" r="1.6"/></g></svg>'
   };
 
@@ -109,7 +112,10 @@
   }
 
   function renderTagline() {
-    $('#tagline').innerHTML = esc(places.length + ' ' + plural(places.length, 'место', 'места', 'мест') + ', где вкусно поесть') + '<span>из чата «Места Москва»</span>';
+    var n = META.users || 0;
+    $('#tagline').innerHTML = esc(places.length + ' ' + plural(places.length, 'место', 'места', 'мест') + ', где вкусно поесть') +
+      '<span>из чата «Места Москва»</span>' +
+      (n ? '<span class="users-line">' + ICON.people + esc(plural(n, 'Пользуется ', 'Пользуются ', 'Пользуются ') + n + ' ' + plural(n, 'человек', 'человека', 'человек')) + '</span>' : '');
   }
 
   function spinPool(tNow, ignoreCuisine) {
@@ -326,12 +332,42 @@
       '<div class="facts">' + facts.join('') + '</div>' +
       (p.description ? '<p class="lead">' + esc(p.description) + '</p>' : '') +
       (perks ? '<section><h3 class="section-h">Фишки</h3><ul class="perks">' + perks + '</ul><p class="note">Из рилсов в чате: акции и цены могли измениться.</p></section>' : '') +
+      commentsHTML(p) +
       '<section><h3 class="section-h">Часы работы</h3>' + hoursHTML(p, now) + '</section>' +
       (p.reels && p.reels.length ? '<section><h3 class="section-h">Откуда это место</h3><div class="reels">' +
         p.reels.map(function (code, i) {
           return '<a class="reel-link" href="https://www.instagram.com/p/' + esc(code) + '/" target="_blank" rel="noopener" data-external>' +
             ICON.play + (p.reels.length > 1 ? 'Рилс ' + (i + 1) : 'Смотреть рилс') + '</a>';
         }).join('') + '</div><p class="note">Рилсы из чата «Места Москва», откроются в Instagram.</p></section>' : '');
+  }
+
+  /* ---------- Комментарии: пост о месте в Telegram-канале, комментарии под ним ---------- */
+  function postUrl(p) { return 'https://t.me/' + META.channel + '/' + p.post; }
+  function commentsHTML(p) {
+    if (!META.channel || !p.post) return '';
+    return '<section class="comments"><h3 class="section-h">Комментарии</h3>' +
+      '<div class="tg-discussion" data-discussion="' + esc(META.channel + '/' + p.post) + '"></div>' +
+      '<a class="btn btn-secondary btn-comment" href="' + esc(postUrl(p)) + '" target="_blank" rel="noopener" data-tglink>' + ICON.chat + 'Написать комментарий</a>' +
+      '<p class="note">Комментарии живут в Telegram-канале @' + esc(META.channel) + ' и видны всем.</p></section>';
+  }
+  function isDark() {
+    var t = document.documentElement.getAttribute('data-theme');
+    if (t) return t === 'dark';
+    return !!(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+  }
+  function mountDiscussion() {
+    var box = document.querySelector('#sheet .tg-discussion');
+    if (!box || box.childNodes.length) return;
+    var s = document.createElement('script');
+    s.async = true;
+    s.src = 'https://telegram.org/js/telegram-widget.js?22';
+    s.setAttribute('data-telegram-discussion', box.getAttribute('data-discussion'));
+    s.setAttribute('data-comments-limit', '5');
+    s.setAttribute('data-colorful', '1');
+    s.setAttribute('data-color', isDark() ? 'FFC21A' : 'E5341D');
+    if (isDark()) s.setAttribute('data-dark', '1');
+    s.onerror = function () { box.remove(); };
+    box.appendChild(s);
   }
 
   function actionsHTML(p, mode) {
@@ -354,6 +390,7 @@
     }
     try { sheet.focus({ preventScroll: true }); } catch (e) { sheet.focus(); }
     bindGallery();
+    mountDiscussion();
   }
 
   function closeSheet() {
@@ -484,6 +521,12 @@
   /* ---------- События ---------- */
   document.addEventListener('click', function (e) {
     var t = e.target;
+    var tgl = t.closest && t.closest('a[data-tglink]');
+    if (tgl && inTG && tg.openTelegramLink) {
+      e.preventDefault();
+      try { tg.openTelegramLink(tgl.href); } catch (err) { window.open(tgl.href, '_blank'); }
+      return;
+    }
     var ext = t.closest && t.closest('a[data-external]');
     if (ext && inTG && tg.openLink) {
       e.preventDefault();

@@ -9,6 +9,7 @@ DATA = Path(__file__).resolve().parent.parent / 'data'
 RAW = json.load(open(DATA / 'yandex_raw.json', encoding='utf-8'))
 CUR = json.load(open(DATA / 'curated.json', encoding='utf-8'))
 PICKS = json.load(open(DATA / 'photo_picks.json', encoding='utf-8'))
+TG = json.load(open(DATA / 'telegram.json', encoding='utf-8')) if (DATA / 'telegram.json').exists() else {'posts': {}}
 
 NAMES = {
     'dreamfish': 'Рыба Мечты · Dream Fish',
@@ -103,6 +104,7 @@ def main():
             'coords': y['coords'],
             'logo': photo_key(y['logo']) if y.get('logo') else None,
             'reels': c.get('reels', []),
+            'post': TG.get('posts', {}).get(key),
         }
         out.append(place)
     json.dump(out, open(DATA / 'places.json', 'w', encoding='utf-8'), ensure_ascii=False, indent=1)

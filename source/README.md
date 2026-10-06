@@ -11,3 +11,8 @@
 - `source/UPDATE.md` — как добавлять новые места из чата.
 
 Пересобрать сайт: `python3 -I source/tools/make_places.py && python3 -I source/tools/build.py`.
+
+Пользователи и комментарии без сервера: `.github/workflows/bot.yml` каждые 15 минут запускает
+`source/tools/bot_sync.py` — он считает людей, которые писали боту (в `data/users.json` только
+солёные хэши), и публикует посты о новых местах в канал из `data/telegram.json`. Комментарии к месту —
+это комментарии под его постом. Нужны секреты репозитория `TG_BOT_TOKEN` и `HASH_SALT`.

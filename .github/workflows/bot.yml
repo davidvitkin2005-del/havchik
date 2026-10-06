@@ -1,0 +1,49 @@
+# Каждые 15 минут на серверах GitHub, без Claude и без компьютера:
+# считает новых пользователей бота и публикует в канал посты о новых местах,
+# затем пересобирает сайт, если что-то изменилось. Нужны секреты TG_BOT_TOKEN и HASH_SALT.
+name: Хавчик — пользователи и канал
+
+on:
+  schedule:
+    - cron: '*/15 * * * *'
+  push:
+    branches: [main]
+    paths:
+      - 'source/data/curated.json'
+      - 'source/data/telegram.json'
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: bot-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Пользователи и посты в канале
+        env:
+          TG_BOT_TOKEN: ${{ secrets.TG_BOT_TOKEN }}
+          HASH_SALT: ${{ secrets.HASH_SALT }}
+        run: python3 source/tools/bot_sync.py
+
+      - name: Пересобрать сайт и опубликовать
+        run: |
+          python3 source/tools/make_places.py
+          python3 source/tools/build.py
+          git config user.name "havchik-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then echo "изменений нет"; exit 0; fi
+          git commit -m "Бот: пользователи и посты в канале [skip ci]"
+          for i in 1 2 3; do
+            git pull --rebase origin main && git push origin HEAD:main && exit 0
+            sleep 5
+          done
+          exit 1
