@@ -1,0 +1,1398 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#161618">
+<title>Хавчик</title>
+<meta name="description" content="49 мест в Москве, где вкусно поесть: фильтры по кухне и времени, рандомайзер из открытых сейчас.">
+<meta property="og:title" content="Хавчик">
+<meta property="og:description" content="Куда пойти поесть в Москве прямо сейчас">
+<meta property="og:image" content="cover-1080.jpg">
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://avatars.mds.yandex.net">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Unbounded:wght@600;700;800&display=swap">
+<style>
+/* Тёмная обложка с фото целиком: при прокрутке оно уходит с параллаксом, при наклоне телефона
+   слегка поворачивается и бликует. Ниже «выезжает» лист с жёлтой табличкой-рандомайзером,
+   фильтрами-чипсами и карточками мест. Карточка места открывается шторкой на весь экран. */
+:root {
+  --bg: #F2F1EE;
+  --surface: #FFFFFF;
+  --surface-2: #ECEAE5;
+  --ink: #141414;
+  --ink-2: #4B4A46;
+  --muted: #7B7973;
+  --line: #E0DED8;
+  --night: #161618;          /* фон обложки, совпадает с чёрным фоном фото */
+  --night-ink: #FFFFFF;
+  --cheese: #FFC21A;         /* табличка рандомайзера */
+  --cheese-ink: #151515;
+  --ketchup: #E5341D;        /* главная кнопка */
+  --ketchup-ink: #FFFFFF;
+  --chip-on: #151515;
+  --chip-on-ink: #FFFFFF;
+  --open: #1B9447;
+  --soon: #C9730B;
+  --closed: #8D8B85;
+  --pill-bg: rgba(255, 255, 255, 0.94);
+  --pill-ink: #141414;
+  --on-photo: #FFFFFF;
+  --shadow: 0 1px 2px rgba(20, 20, 20, 0.06), 0 12px 26px -16px rgba(20, 20, 20, 0.35);
+  --f-display: "Unbounded", "Arial Black", "Helvetica Neue", system-ui, sans-serif;
+  --f-body: "Golos Text", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0F0F10; --surface: #1A1A1C; --surface-2: #232326; --ink: #F3F2EF; --ink-2: #C3C1BB;
+    --muted: #8F8D87; --line: #2D2D30; --night: #161618; --night-ink: #FFFFFF; --cheese: #FFC21A;
+    --cheese-ink: #151515; --ketchup: #F0412A; --ketchup-ink: #FFFFFF; --chip-on: #FFC21A; --chip-on-ink: #151515;
+    --open: #4CD07D; --soon: #F2B144; --closed: #85837D;
+    --pill-bg: rgba(15, 15, 16, 0.82); --pill-ink: #F3F2EF; --on-photo: #FFFFFF;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 14px 30px -18px rgba(0, 0, 0, 0.8);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0F0F10; --surface: #1A1A1C; --surface-2: #232326; --ink: #F3F2EF; --ink-2: #C3C1BB;
+  --muted: #8F8D87; --line: #2D2D30; --night: #161618; --night-ink: #FFFFFF; --cheese: #FFC21A;
+  --cheese-ink: #151515; --ketchup: #F0412A; --ketchup-ink: #FFFFFF; --chip-on: #FFC21A; --chip-on-ink: #151515;
+  --open: #4CD07D; --soon: #F2B144; --closed: #85837D;
+  --pill-bg: rgba(15, 15, 16, 0.82); --pill-ink: #F3F2EF; --on-photo: #FFFFFF;
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 14px 30px -18px rgba(0, 0, 0, 0.8);
+  color-scheme: dark;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { -webkit-text-size-adjust: 100%; background: var(--night); }
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--night);
+  color: var(--ink);
+  font: 400 15px/1.45 var(--f-body);
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  overflow-x: hidden;
+}
+html.is-locked, html.is-locked body { overflow: hidden; }
+button { font: inherit; color: inherit; }
+img { max-width: 100%; }
+
+/* ---------- Обложка на весь экран ----------
+   Фото привязано к верху: головы не срезаются никогда. По ширине оно приближается
+   максимум в 1,18 раза, чтобы лица по бокам тоже оставались в кадре (лица занимают
+   примерно 14–90% ширины снимка). Что не влезло по высоте, уходит вниз, под табличку. */
+.hero {
+  --hh: 100vh;
+  --img-top: calc(24px + env(safe-area-inset-top, 0px));
+  position: relative;
+  overflow: hidden;
+  height: max(540px, var(--hh));
+  background: var(--night);
+  color: var(--night-ink);
+  perspective: 1100px;
+}
+@supports (height: 100svh) { .hero { --hh: 100svh; } }
+html[data-tg] .hero { --hh: var(--tg-viewport-stable-height, 100svh); }
+.hero-media {
+  position: absolute;
+  top: var(--img-top);
+  left: 50%;
+  width: clamp(min(100%, 720px), calc((max(540px, var(--hh)) - var(--img-top)) * 0.8), min(118%, 760px));
+  aspect-ratio: 1080 / 1350;
+  transform: translateX(-51.5%) scale(1.04);
+  transform-origin: 51.5% 0;
+  will-change: transform;
+}
+.hero-media picture, .hero-media img { display: block; width: 100%; height: 100%; }
+.hero-media img {
+  object-fit: cover;
+  object-position: 50% 0;
+  transform-origin: 50% 0;
+  animation: hero-in 1.3s cubic-bezier(.2, .7, .2, 1) both;
+}
+@media (min-width: 721px) {
+  .hero-media img {
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 7%, #000 93%, transparent);
+    mask-image: linear-gradient(to right, transparent, #000 7%, #000 93%, transparent);
+  }
+}
+@keyframes hero-in { from { transform: scale(1.05); opacity: 0; } to { transform: none; opacity: 1; } }
+.hero-glare {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(circle at var(--gx, 50%) var(--gy, 30%), rgba(255, 214, 120, 0.26), rgba(255, 214, 120, 0) 46%);
+  mix-blend-mode: screen;
+  opacity: var(--go, 0.35);
+}
+.hero-fade {
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 30%;
+  pointer-events: none;
+  background: linear-gradient(to top, var(--night) 22%, rgba(22, 22, 24, 0.82) 52%, rgba(22, 22, 24, 0));
+}
+.hero-top {
+  position: absolute;
+  inset: 0 0 auto 0;
+  z-index: 2;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  padding: calc(14px + env(safe-area-inset-top, 0px)) 18px 0;
+  will-change: transform, opacity;
+}
+.logo {
+  font: 800 28px/1 var(--f-display);
+  letter-spacing: -0.02em;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 4px;
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.45);
+  animation: rise 0.9s 0.2s cubic-bezier(.2, .7, .2, 1) both;
+}
+.logo-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--cheese); flex: none; }
+.clock {
+  font: 600 10px/1.2 var(--f-body);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  opacity: 0.85;
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.5);
+  animation: rise 0.9s 0.3s cubic-bezier(.2, .7, .2, 1) both;
+}
+.clock b { display: block; font-size: 15px; letter-spacing: 0.02em; opacity: 1; }
+.hero-bottom {
+  position: absolute;
+  inset: auto 0 0 0;
+  z-index: 2;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 0 16px 46px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.tagline {
+  margin: 0 2px;
+  font: 600 15px/1.35 var(--f-body);
+  text-wrap: balance;
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.6);
+  animation: rise 0.9s 0.35s cubic-bezier(.2, .7, .2, 1) both;
+}
+.tagline span { display: block; font-weight: 400; font-size: 13px; opacity: 0.75; }
+
+/* ---------- Лист с контентом ---------- */
+.app {
+  position: relative;
+  z-index: 2;
+  margin-top: -26px;
+  background: var(--bg);
+  border-radius: 26px 26px 0 0;
+  min-height: 60vh;
+}
+.app-inner {
+  max-width: 760px;
+  margin: 0 auto;
+  padding-inline: 16px;
+  padding-block: 18px 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Табличка-рандомайзер */
+.sign {
+  all: unset;
+  box-sizing: border-box;
+  cursor: pointer;
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  column-gap: 14px;
+  row-gap: 4px;
+  padding: 18px 16px 17px 18px;
+  border-radius: 18px;
+  background: var(--cheese);
+  color: var(--cheese-ink);
+  box-shadow: 0 18px 34px -18px rgba(0, 0, 0, 0.55);
+  transition: transform 0.15s ease;
+}
+.sign:active { transform: scale(0.985); }
+.sign:focus-visible { outline: 3px solid var(--ketchup); outline-offset: 3px; }
+.sign-eyebrow { font: 700 11px/1 var(--f-body); letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.6; }
+.sign-title { font: 700 21px/1.15 var(--f-display); letter-spacing: -0.01em; }
+.sign-sub { font-size: 13px; opacity: 0.78; }
+.die { grid-column: 2; grid-row: 1 / span 3; width: 54px; height: 54px; display: block; }
+.die rect { fill: var(--cheese-ink); }
+.die circle { fill: var(--cheese); }
+.sign.is-rolling .die { animation: roll 0.7s cubic-bezier(.3, .7, .3, 1); }
+@keyframes roll { 0% { transform: rotate(0) scale(1); } 45% { transform: rotate(200deg) scale(0.84); } 100% { transform: rotate(360deg) scale(1); } }
+
+/* Поиск и фильтры */
+.search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 46px;
+  padding: 0 14px;
+  border-radius: 14px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  color: var(--muted);
+}
+.search:focus-within { border-color: var(--ink); }
+.search input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--ink);
+  font: 400 16px/1 var(--f-body);
+  -webkit-appearance: none;
+  appearance: none;
+}
+.search input::placeholder { color: var(--muted); }
+.search input::-webkit-search-cancel-button { -webkit-appearance: none; }
+.search svg { flex: none; }
+
+.filter { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.filter-label { font: 600 11px/1 var(--f-body); letter-spacing: 0.09em; text-transform: uppercase; color: var(--muted); }
+.chips {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow-x: auto;
+  margin-inline: -16px;
+  padding-inline: 16px;
+  padding-block: 2px;
+  scroll-padding-inline: 16px;
+  scrollbar-width: none;
+}
+.chips::-webkit-scrollbar { display: none; }
+.chip {
+  flex: none;
+  cursor: pointer;
+  height: 36px;
+  padding: 0 14px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--ink);
+  font: 500 14px/1 var(--f-body);
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-variant-numeric: tabular-nums;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+.chip .n { color: var(--muted); font-size: 12px; }
+.chip[aria-pressed="true"] { background: var(--chip-on); border-color: var(--chip-on); color: var(--chip-on-ink); }
+.chip[aria-pressed="true"] .n { color: inherit; opacity: 0.7; }
+.chip:focus-visible { outline: 2px solid var(--ketchup); outline-offset: 2px; }
+.chip-sep { flex: none; font: 600 11px/1 var(--f-body); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); padding-inline: 2px; }
+
+/* Список */
+.list-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; color: var(--ink-2); font-size: 13px; }
+.link-btn { border: 0; background: none; padding: 0; color: var(--ketchup); font-weight: 600; font-size: 13px; cursor: pointer; }
+.list { display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; }
+@media (min-width: 640px) { .list { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.group-title {
+  grid-column: 1 / -1;
+  margin: 10px 0 -2px;
+  font: 600 11px/1 var(--f-body);
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.group-title:first-child { margin-top: 0; }
+
+.card {
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  cursor: pointer;
+  text-align: left;
+  border: 0;
+  padding: 0;
+  transition: transform 0.15s ease;
+}
+.card:active { transform: scale(0.99); }
+.card:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
+.card.is-closed .media img { filter: saturate(0.5) brightness(0.92); }
+
+.media { position: relative; display: block; aspect-ratio: 16 / 10; background: var(--surface-2); overflow: hidden; }
+.media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+.ph {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font: 800 54px/1 var(--f-display);
+  color: var(--line);
+}
+.pill {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  max-width: calc(100% - 84px);
+  padding: 6px 10px 6px 9px;
+  border-radius: 999px;
+  background: var(--pill-bg);
+  color: var(--pill-ink);
+  font: 600 12px/1 var(--f-body);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+.dot { width: 8px; height: 8px; border-radius: 50%; flex: none; background: var(--closed); }
+.tone-open .dot { background: var(--open); }
+.tone-soon .dot { background: var(--soon); }
+.tone-closed .dot { background: var(--closed); }
+.rating {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  padding: 6px 9px;
+  border-radius: 999px;
+  background: var(--pill-bg);
+  color: var(--pill-ink);
+  font: 600 12px/1 var(--f-body);
+  font-variant-numeric: tabular-nums;
+}
+
+.card-body { padding: 12px 14px 15px; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.card-name { margin: 0; font: 600 18px/1.2 var(--f-body); text-wrap: balance; }
+.meta { display: flex; flex-wrap: wrap; align-items: center; gap: 3px 10px; color: var(--ink-2); font-size: 13px; }
+.metro { display: inline-flex; align-items: center; gap: 5px; }
+.metro i { width: 9px; height: 9px; border-radius: 50%; flex: none; background: var(--c, var(--muted)); }
+.metro i + i { margin-left: -8px; box-shadow: 0 0 0 1.5px var(--surface); }
+.muted { color: var(--muted); }
+.desc {
+  margin: 0;
+  color: var(--ink-2);
+  font-size: 14px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.today { color: var(--muted); font-size: 13px; font-variant-numeric: tabular-nums; }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 2px; }
+.tag { padding: 5px 8px; border-radius: 7px; background: var(--surface-2); color: var(--ink-2); font: 500 12px/1.1 var(--f-body); }
+
+.empty {
+  grid-column: 1 / -1;
+  padding: 28px 18px;
+  border-radius: 18px;
+  border: 1px dashed var(--line);
+  text-align: center;
+  color: var(--ink-2);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
+.empty b { color: var(--ink); font-size: 16px; }
+.foot { margin: 6px 0 0; color: var(--muted); font-size: 12px; text-align: center; text-wrap: balance; }
+
+/* ---------- Шторка с местом ---------- */
+.sheet {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  background: var(--bg);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  transform: translateY(100%);
+  visibility: hidden;
+  transition: transform 0.34s cubic-bezier(.2, .8, .2, 1), visibility 0s linear 0.34s;
+}
+.sheet.is-open { transform: none; visibility: visible; transition: transform 0.34s cubic-bezier(.2, .8, .2, 1), visibility 0s; }
+.sheet:focus { outline: none; }
+.sheet-inner { max-width: 760px; margin: 0 auto; min-height: 100%; display: flex; flex-direction: column; }
+
+.close {
+  position: absolute;
+  top: calc(12px + env(safe-area-inset-top, 0px));
+  right: 12px;
+  z-index: 3;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 0;
+  display: grid;
+  place-items: center;
+  background: var(--pill-bg);
+  color: var(--pill-ink);
+  cursor: pointer;
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+.close:focus-visible { outline: 2px solid var(--ketchup); outline-offset: 2px; }
+
+.gallery { position: relative; background: var(--surface-2); }
+.track { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
+.track::-webkit-scrollbar { display: none; }
+.shot { flex: 0 0 100%; aspect-ratio: 4 / 3; max-height: 56vh; width: 100%; scroll-snap-align: center; position: relative; overflow: hidden; }
+.shot img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+.gallery > .ph { position: relative; aspect-ratio: 16 / 9; }
+.dots { position: absolute; left: 0; right: 0; bottom: 10px; display: flex; justify-content: center; gap: 5px; pointer-events: none; }
+.dots i { width: 6px; height: 6px; border-radius: 50%; background: var(--on-photo); opacity: 0.5; transition: opacity 0.2s, transform 0.2s; }
+.dots i.on { opacity: 1; transform: scale(1.25); }
+
+.reveal {
+  position: relative;
+  background: var(--cheese);
+  color: var(--cheese-ink);
+  padding: calc(28px + env(safe-area-inset-top, 0px)) 18px 22px;
+}
+.reveal-eyebrow { font: 700 11px/1 var(--f-body); letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.6; }
+.reveal-name { margin: 10px 0 0; font: 700 26px/1.15 var(--f-display); letter-spacing: -0.01em; min-height: 2.3em; display: flex; align-items: flex-end; text-wrap: balance; }
+.reveal-sub { margin-top: 6px; font-size: 13px; opacity: 0.75; min-height: 1.2em; }
+
+.sheet-body { padding: 18px 16px 24px; display: flex; flex-direction: column; gap: 18px; flex: 1; }
+.is-hidden-until-reveal { opacity: 0; transform: translateY(8px); transition: opacity 0.35s ease, transform 0.35s ease; }
+.is-revealed .is-hidden-until-reveal { opacity: 1; transform: none; }
+.title { margin: 0; font: 700 25px/1.15 var(--f-display); letter-spacing: -0.01em; text-wrap: balance; }
+.status-line { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.status-line .muted { font-weight: 400; }
+.facts { display: flex; flex-direction: column; gap: 10px; }
+.fact { display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: 10px; align-items: start; color: var(--ink-2); }
+.fact svg { color: var(--muted); margin-top: 2px; }
+.fact .meta { margin-top: 4px; }
+.lead { margin: 0; font-size: 16px; line-height: 1.55; color: var(--ink); max-width: 62ch; }
+.section-h { margin: 0 0 10px; font: 600 11px/1 var(--f-body); letter-spacing: 0.09em; text-transform: uppercase; color: var(--muted); }
+.note { margin: 10px 0 0; font-size: 12px; color: var(--muted); }
+.reels { display: flex; flex-wrap: wrap; gap: 8px; }
+.reel-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 36px;
+  padding: 0 13px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--ink);
+  font: 500 14px/1 var(--f-body);
+  text-decoration: none;
+}
+.reel-link svg { color: var(--ketchup); }
+.reel-link:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.perks { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 9px; }
+.perks li { display: grid; grid-template-columns: 18px minmax(0, 1fr); gap: 9px; align-items: start; }
+.perks svg { color: var(--ketchup); margin-top: 3px; }
+.hours { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 7px 18px; margin: 0; font-variant-numeric: tabular-nums; color: var(--ink-2); }
+.hours dt, .hours dd { margin: 0; }
+.hours .is-today { color: var(--ink); font-weight: 700; }
+
+.actions {
+  position: sticky;
+  bottom: 0;
+  z-index: 2;
+  display: flex;
+  gap: 10px;
+  padding: 14px 16px calc(14px + env(safe-area-inset-bottom, 0px));
+  background: linear-gradient(to top, var(--bg) 68%, transparent);
+}
+.btn {
+  flex: 1;
+  min-width: 0;
+  height: 52px;
+  padding: 0 16px;
+  border-radius: 16px;
+  border: 1px solid transparent;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font: 600 16px/1 var(--f-body);
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: transform 0.12s ease;
+}
+.btn:active { transform: scale(0.98); }
+.btn:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.btn-primary { background: var(--ketchup); color: var(--ketchup-ink); }
+.btn-secondary { background: var(--surface); color: var(--ink); border-color: var(--line); flex: 0 1 auto; }
+.btn-cheese { background: var(--cheese); color: var(--cheese-ink); }
+
+.soonest { display: flex; flex-direction: column; gap: 10px; }
+.mini {
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr);
+  gap: 12px;
+  align-items: center;
+  padding: 10px;
+  border-radius: 14px;
+  background: var(--surface);
+  border: 0;
+  text-align: left;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+}
+.mini .thumb { width: 56px; height: 56px; border-radius: 10px; overflow: hidden; background: var(--surface-2); position: relative; }
+.mini .thumb img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+.mini .thumb .ph { font-size: 22px; }
+.mini b { display: block; font-weight: 600; }
+.mini span { font-size: 13px; color: var(--ink-2); }
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-media img, .logo, .clock, .tagline { animation: none; }
+  .hero-media { will-change: auto; }
+  .sheet, .sheet.is-open { transition: none; }
+  .sign.is-rolling .die { animation: none; }
+  .is-hidden-until-reveal { transition: none; }
+  .card, .btn, .sign { transition: none; }
+}
+
+</style>
+</head>
+<body>
+<header class="hero" id="hero">
+  <div class="hero-media" id="heroMedia">
+    <picture>
+      <source type="image/webp" srcset="cover-720.webp 720w, cover-1080.webp 1080w" sizes="(min-width: 700px) 760px, 118vw">
+      <img src="cover-1080.jpg" srcset="cover-720.jpg 720w, cover-1080.jpg 1080w" sizes="(min-width: 700px) 760px, 118vw" alt="Двое тянутся к огромному бургеру" width="1080" height="1350" fetchpriority="high" decoding="async">
+    </picture>
+    <div class="hero-glare" id="heroGlare"></div>
+  </div>
+  <div class="hero-fade" aria-hidden="true"></div>
+  <div class="hero-top" id="heroTop">
+    <div class="logo">хавчик<span class="logo-dot" aria-hidden="true"></span></div>
+    <div class="clock" id="clock"></div>
+  </div>
+  <div class="hero-bottom">
+    <p class="tagline" id="tagline"></p>
+    <button class="sign" id="spin" type="button">
+      <span class="sign-eyebrow">Рандомайзер</span>
+      <span class="sign-title">Куда пойти сейчас?</span>
+      <span class="sign-sub" id="spinSub"></span>
+      <svg class="die" viewBox="0 0 48 48" aria-hidden="true">
+        <rect x="3" y="3" width="42" height="42" rx="11"></rect>
+        <circle cx="14.5" cy="14.5" r="3.6"></circle><circle cx="33.5" cy="14.5" r="3.6"></circle>
+        <circle cx="24" cy="24" r="3.6"></circle>
+        <circle cx="14.5" cy="33.5" r="3.6"></circle><circle cx="33.5" cy="33.5" r="3.6"></circle>
+      </svg>
+    </button>
+  </div>
+</header>
+
+<div class="app">
+  <div class="app-inner">
+    <label class="search" for="q">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>
+      <input id="q" type="search" placeholder="Название, метро или кухня" autocomplete="off" enterkeyhint="search" aria-label="Поиск по местам">
+    </label>
+
+    <section class="filter" aria-label="Кухня">
+      <div class="filter-label">Кухня</div>
+      <div class="chips" id="cuisineChips"></div>
+    </section>
+
+    <section class="filter" aria-label="Время работы">
+      <div class="filter-label">Открыто</div>
+      <div class="chips" id="timeChips"></div>
+    </section>
+
+    <div class="list-head">
+      <span id="count"></span>
+      <button class="link-btn" id="reset" type="button" hidden>Сбросить фильтры</button>
+    </div>
+
+    <main class="list" id="list"></main>
+
+    <p class="foot">Часы работы, адреса и фото взяты из Яндекс Карт, фишки из рилсов в чате «Места Москва». Перед выходом лучше открыть место на карте и проверить.</p>
+  </div>
+</div>
+
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle" aria-hidden="true" tabindex="-1">
+  <div id="sheetContent"></div>
+</div>
+
+<script>window.__PLACES__=[{"id":"karti","name":"Карти","type":"Фастфуд","cuisine":["Стритфуд"],"short":"Большая картошка фри с кучей начинок, есть сладкая версия на десерт","description":"Фастфуд, где главное блюдо — крупная картошка фри. Её подают с разными начинками и соусами, а на десерт делают сладкую версию. Удобно заскочить по пути: Лубянка в пяти минутах.","perks":[{"text":"14 видов начинки к картошке"},{"text":"Сладкая картошка на десерт"},{"text":"Можно с собакой"}],"tags":["картошка с начинками"],"address":"ул. Большая Лубянка, 13/16с1","metro":[{"name":"Лубянка","colors":["#f23d30"],"distance":"570 м"},{"name":"Тургеневская","colors":["#f28b24"],"distance":"610 м"}],"hours":["12:00-22:00","12:00-22:00","12:00-22:00","12:00-22:00","12:00-22:00","12:00-22:00","12:00-22:00"],"price":"Средний чек от 800 ₽","rating":4.9,"ratingCount":88,"photos":["18806283/2a0000019d2a33f4774bc576451ae10a8387","19636095/2a0000019e89f1d31c22e58b9113ca4ddb45","16340554/2a0000019df7f800929ddbb49a5f2b943ac4","20308240/2a0000019ef9cca56129ac9c54cdcb96e385","20191917/2a0000019ef8f07f52bfb8e0a2bfb64f7069","19582126/2a0000019deda1dd30f1c8648adf76cc660c"],"yandex":"https://yandex.ru/maps/org/karti/88735030313/","coords":[37.629371,55.764343],"reels":["DYXSDfWtMvf","DY1xjL5i8vM","DWwCksGDXfp"]},{"id":"ruski","name":"Ruski","type":"Ресторан","cuisine":["Русская кухня"],"short":"Русская кухня на высоте 354 метров в башне «ОКО»","description":"Ресторан русской кухни с панорамой на весь город: он находится на высоте 354 метров в башне «ОКО» в Москва-Сити. Есть своя пекарня, бранчи и живая музыка.","perks":[{"text":"По будням борщ бесплатно (так было в рилсе, лучше уточнить)"},{"text":"Вид на Москву с 354 метров"},{"text":"Пт и сб до 2 ночи"}],"tags":["борщ бесплатно в будни","вид на Сити"],"address":"1-й Красногвардейский пр., 21, стр. 2","metro":[{"name":"Москва-Сити","colors":["#21abd9","#ff4c4c"],"distance":"108 м"},{"name":"Деловой центр","colors":["#ffd000"],"distance":"277 м"}],"hours":["12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00","12:00-02:00","12:00-02:00","12:00-00:00"],"price":"Средний чек от 3000 ₽","rating":4.9,"ratingCount":12924,"photos":["4441482/2a00000179611eacc3d59dfad488e39694cc","1003740/2a00000161475822bf1b7218abc7306bb02f","4304228/2a000001796122b11059edba5453aebb2884","4465779/2a00000179612af91105ad2757e371bd7883","1871013/2a0000016b8c71b3cb6c482a96d931b8e217","2029876/2a0000016ec6875d7f07b7187de1cc9f45c8"],"yandex":"https://yandex.ru/maps/org/ruski/200818672869/","coords":[37.534287,55.749432],"reels":["DcyPCaLo94H"]},{"id":"blinnaya","name":"Блины на Воронцовской","type":"Блинная","cuisine":["Русская кухня"],"short":"Советская блинная у «Таганской», которая работает с 60-х","description":"Легендарная блинная прямо у метро «Таганская», почти не изменившаяся с советских времён: столики-стойки, каменные стены, простые блюда и цены, будто инфляции не было. Театр на Таганке за углом, и говорят, сюда заходил Высоцкий.","perks":[{"text":"Советский интерьер, слегка подсвеченный неоном"},{"text":"Можно заказать обычную яичницу, а не скрэмбл"}],"tags":["с 60-х годов","чек 150–300 ₽"],"address":"Воронцовская ул., 8, стр. 1","metro":[{"name":"Таганская","colors":["#8647b2","#805139"],"distance":"300 м"},{"name":"Марксистская","colors":["#ffd000"],"distance":"360 м"}],"hours":["11:00-23:00","11:00-23:00","11:00-23:00","11:00-23:00","11:00-00:00","11:00-00:00","11:00-23:00"],"price":"Средний чек 150–300 ₽","rating":4.4,"ratingCount":2501,"photos":["16866637/2a00000197f5e0d91a5564e3ca2b19d8e5b7","16318204/2a0000019895961456f1f0b3207c07fd500c","5498343/2a0000017d7bee64e33f03937753317bf2f3","10879408/2a00000192f3176080b0ac2c89a3009e2cb6","19546938/2a0000019da91a5d8507b46251f45443f852","14774583/2a0000019a740c7380fe452351777174760b"],"yandex":"https://yandex.ru/maps/org/pancakes_on_vorontsovskaya/111394947027/","coords":[37.655967,55.739206],"reels":["DYFX7LFIxqJ"]},{"id":"apartment","name":"Апартмент","type":"Лаунж-бар","cuisine":["Кавказ и Восток","Бары"],"short":"Лаунж-бар с восточной кухней и дневными кальянами на Мясницкой","description":"Уютный лаунж-бар в самом центре, с авторской восточной кухней. Днём здесь выгодно, а в пятницу и субботу работают до 3 ночи.","perks":[{"text":"Каждый день с 12:00 до 17:00 кальян за 1499 ₽"},{"text":"Кальян «как раньше» на фольге и чай с финиками"},{"text":"Настольные игры и приставки"}],"tags":["кальян 1499 ₽ днём"],"address":"Мясницкая ул., 18","metro":[{"name":"Лубянка","colors":["#f23d30"],"distance":"310 м"},{"name":"Китай-город","colors":["#f28b24","#8647b2"],"distance":"510 м"}],"hours":["12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00","12:00-03:00","12:00-03:00","12:00-00:00"],"price":"Средний чек 2400 ₽","rating":4.9,"ratingCount":768,"photos":["12820607/2a000001938c0e1fa853b77e615d73ba4c83","1860543/2a0000016eae65a2e6b4ac6c44b5246e6b3c","13904936/2a000001938c0e20088364730e2cd07ba568","14185024/2a000001938c0e27a231806712f5c4fa3a36","13083354/2a0000018fd8cc03bc4e59f924d5b55cf792","14021655/2a000001938c0e26b28ae988898f7ab6ce6a"],"yandex":"https://yandex.ru/maps/org/apartment/155636975560/","coords":[37.632355,55.761073],"reels":["DcEjhvmMqYS","DczMYEIsP6l"]},{"id":"klich","name":"Клич","type":"Ресторан","cuisine":["Европейская","Завтраки"],"short":"Большой красивый ресторан у воды с итальянской и французской кухней","description":"Просторный ресторан на набережной Марка Шагала с итальянской, французской и средиземноморской кухней. Есть устричный бар, открытая кухня, по утрам завтраки, для детей анимация.","perks":[{"text":"Завтраки с 10:00"},{"text":"Устричный бар"},{"text":"Можно с небольшой собакой"}],"tags":["устричный бар","завтраки"],"address":"наб. Марка Шагала, 1, корп. 2","metro":[{"name":"ЗИЛ","colors":["#177245"],"distance":"1,07 км"}],"hours":["10:00-23:00","10:00-23:00","10:00-23:00","10:00-23:00","10:00-00:00","10:00-00:00","10:00-23:00"],"price":"Средний чек 4200 ₽","rating":5,"ratingCount":438,"photos":["18141736/2a0000019cb971b4acc8580b53b72f51c9fd","16403814/2a000001994d384487a611df34e2274b737a","14920258/2a000001994d3251bb7dcd75db3234ab7eef","16378552/2a000001994d37d34ff1fb5c23291d016628","15395175/2a0000019a20999f9485a4010a904faa6cac","16485345/2a000001994d325205e8062f2a8be98a70fb"],"yandex":"https://yandex.ru/maps/org/klich/146827478262/","coords":[37.630434,55.700157],"reels":["Dd3am6WsmmS"]},{"id":"donkufta","name":"Дон Кюфта","type":"Стритфуд","cuisine":["Шаурма и кебаб"],"short":"Кюфта, шаурма и мясной стритфуд у «Парка культуры» почти круглые сутки","description":"Мясной стритфуд у «Парка культуры»: кюфта, шаурма и другое мясное. Ребята постоянно что-то улучшают в меню, а работают с 8 утра до 6 утра.","perks":[{"text":"Работает до 6 утра"},{"text":"Халяль"}],"tags":["до 6 утра","халяль"],"address":"Комсомольский просп., 7","metro":[{"name":"Парк культуры","colors":["#805139","#f23d30"],"distance":"480 м"},{"name":"Фрунзенская","colors":["#f23d30"],"distance":"940 м"}],"hours":["08:00-06:00","08:00-06:00","08:00-06:00","08:00-06:00","08:00-06:00","08:00-06:00","08:00-06:00"],"price":"Средний чек до 500 ₽","rating":4.9,"ratingCount":319,"photos":["16457969/2a0000019c2493a32446aa95e299e4b8b54b","16415892/2a0000019e658e665fb1d7bf1ac9a75d76b0","15291179/2a00000199d012794535f24380d90a9d680a","22407718/2a000001a0ea63df75e3718c94a0ff952029","19756885/2a0000019e658e163fc134f7b28f10a30be9"],"yandex":"https://yandex.ru/maps/org/don_kufta/233809464975/","coords":[37.592027,55.731476],"reels":["DZxbDi5oGZl","DapmRSxNgC6"]},{"id":"ivanka","name":"Ivanka Сити","type":"Ресторан","cuisine":["Европейская"],"short":"Ресторан в Москва-Сити с панорамой и тематическими ужинами","description":"Ресторан в Москва-Сити с панорамными окнами, авторской и средиземноморской кухней. По выходным здесь устраивают тематические ужины, посвящённые кухне одной страны, например Испании или Греции.","perks":[{"text":"Тематические гастроужины по пятницам и субботам"},{"text":"Панорамный вид"},{"text":"Пт и сб до 2 ночи"}],"tags":["тематические ужины"],"address":"1-й Красногвардейский пр., 22, стр. 1","metro":[{"name":"Москва-Сити","colors":["#21abd9","#ff4c4c"],"distance":"320 м"},{"name":"Деловой центр","colors":["#ffd000"],"distance":"520 м"}],"hours":["12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00","12:00-02:00","12:00-02:00","12:00-00:00"],"price":"Средний чек 3500–4500 ₽","rating":4.7,"ratingCount":869,"photos":["14917207/2a0000019a2b7922628d42a7feaa947d3cc3","927916/2a00000186eb13e4a3f9f97c0a6875e12b0f","13453452/2a0000018ee7ea2d219a3db34505f9d85884","11409713/2a0000018ee7ea1fa9335c255feb58653672","11940760/2a0000018ee7ea2a1e422caa295f50d06742","12550566/2a0000018ee7ea2197eeeff1f82ed81114fd"],"yandex":"https://yandex.ru/maps/org/ivanka_city/87581675217/","coords":[37.534636,55.751483],"reels":["DdJb1D8o6lc"]},{"id":"kyomei","name":"Киомей","type":"Бистро","cuisine":["Азия"],"short":"Азиатское бистро с раменом и очень дешёвыми будними ланчами","description":"Паназиатское бистро на Большой Новодмитровской: рамены, роллы, сашими, роти, лапша. Его любят за будние ланчи и стабильно высокий рейтинг.","perks":[{"text":"Ланчи по будням с 12 до 18, блюда от 190 ₽"},{"text":"С 16 до 18 к ланчу дарят шампанское, чай, кофе или воду"},{"text":"Рейтинг 5,0 почти при 6 тысячах оценок"}],"tags":["ланчи от 190 ₽","шампанское к ланчу"],"address":"Большая Новодмитровская ул., 36, стр. 2","metro":[{"name":"Дмитровская","colors":["#999999"],"distance":"540 м"}],"hours":["12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00"],"price":"Средний чек 500–1500 ₽","rating":5,"ratingCount":5937,"photos":["15416336/2a00000199957b2b1785325bf3cf1bca9fd8","16792294/2a00000199910b1ec481496c082cfa4fdf9e","11937221/2a0000019119343f5933115d575c9f438bc7","16011054/2a000001999110963184d1e7760fd1e2d6e7","13818104/2a00000191b78994682cc25c051c733dd07a","16309283/2a0000019998b6ac7d8ea00fe2e7773f9105"],"yandex":"https://yandex.ru/maps/org/kyomei/234988610168/","coords":[37.585569,55.805356],"reels":["DaN98IatZjl"]},{"id":"arrurru","name":"Arrurru","type":"Ресторан","cuisine":["Латинская Америка","Завтраки"],"short":"Мексиканская и авторская кухня на Остоженке, ла ротина в начале недели","description":"Ресторан на Остоженке с мексиканскими и авторскими блюдами, завтраками и диджеями по вечерам. Блогеры советуют ла ротину, которую готовят только в начале недели.","perks":[{"text":"Ла ротина по понедельникам, вторникам и средам"},{"text":"Завтраки с 11 до 14"},{"text":"Можно с небольшой собакой"}],"tags":["ла ротина пн–ср","завтраки"],"address":"ул. Остоженка, 3/14","metro":[{"name":"Кропоткинская","colors":["#f23d30"],"distance":"170 м"},{"name":"Боровицкая","colors":["#999999"],"distance":"960 м"}],"hours":["11:00-00:00","11:00-00:00","11:00-00:00","11:00-00:00","11:00-01:00","11:00-01:00","11:00-00:00"],"price":"Средний чек до 2500 ₽","rating":5,"ratingCount":745,"photos":["15434007/2a0000019b73e29f42b9365ab7acc5cdafbe","16443419/2a0000019b73f0e13ac9e4c70914dee92b5b","15344725/2a00000199aa18679428ca86a0d320f8bbee","17750410/2a0000019b73f12b3f32ce44cd2f246bfa80","19547275/2a0000019b73f0e0e571b8f79e8f843d35dc","15408870/2a0000019b73f0e0e14e899817cdf238441e"],"yandex":"https://yandex.ru/maps/org/arrurru/200635606237/","coords":[37.60196,55.743857],"reels":["DZ5EZcpI8J4"]},{"id":"brasserie","name":"Brasserie 2.0","type":"Ресторан","cuisine":["Европейская"],"short":"Французская брассери на Красной Пресне с щедрыми порциями","description":"Французская брассери на Красной Пресне: сытная европейская кухня, пиво, джаз и диско. Блогер хвалит её как раз за щедрость порций.","perks":[{"text":"Бизнес-ланч"},{"text":"Летняя веранда"},{"text":"Можно с собакой"}],"tags":["щедрые порции"],"address":"ул. Красная Пресня, 22","metro":[{"name":"Краснопресненская","colors":["#805139"],"distance":"530 м"},{"name":"Улица 1905 года","colors":["#8647b2"],"distance":"620 м"}],"hours":["12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00"],"price":"Средний чек 1500–3000 ₽","rating":5,"ratingCount":772,"photos":["14920258/2a00000197e5b338bd7608909c50f1346395","15267123/2a000001970ce16c7848696d45af944d87a4","15438512/2a000001977450eae64fc51e4bcd10d653c5","18098886/2a0000019ee53003452a41ee93326df2183e","12721348/2a00000197bfbbe3a3279f35000172ba636a"],"yandex":"https://yandex.ru/maps/org/brasserie_2_0/132693640072/","coords":[37.570561,55.762032],"reels":["DX1r_4Wo3aw"]},{"id":"farsh","name":"Farш","type":"Бургерная","cuisine":["Бургеры"],"short":"Известная сеть бургерных, точка на Никольской у Лубянки","description":"Московская сеть бургерных, эта точка на Никольской, в двух шагах от Красной площади. Классические бургеры, картошка и бизнес-ланчи. Других точек по городу много.","perks":[{"text":"Студентам скидка 20%: фото студенческого и телефон нужно заранее отправить им на почту"},{"text":"Бизнес-ланч"},{"text":"Каждый день с 10:00 до полуночи"}],"tags":["−20% студентам"],"address":"Никольская ул., 12","metro":[{"name":"Лубянка","colors":["#f23d30"],"distance":"100 м"},{"name":"Площадь Революции","colors":["#0070bf"],"distance":"380 м"}],"hours":["10:00-00:00","10:00-00:00","10:00-00:00","10:00-00:00","10:00-00:00","10:00-00:00","10:00-00:00"],"price":"Средний чек от 1200 ₽","rating":4.8,"ratingCount":5425,"photos":["965007/2a0000016288838b36c85cff1e08c3a8cec5","18098886/2a0000019f277d4b7f790deece1f14b94f7b","1680678/2a0000016b8c63bc56ec706c4d0d30d2359e","19303228/2a0000019f277d4c9352e219050f8b7dd7cf","19996834/2a0000019f92f2c224f2f35341287fbe5378","20824784/2a0000019f92f2e645f93dcc2f9d6401e081"],"yandex":"https://yandex.ru/maps/org/farsh/4392096998/","coords":[37.625031,55.758838],"reels":["DYA_7B5IXlG"]},{"id":"shaurlandia","name":"Шаурляндия","type":"Шаурмичная","cuisine":["Шаурма и кебаб"],"short":"Арабская шаурма за 279 ₽ у «Шаболовской»","description":"Шаурмичная прямо у метро «Шаболовская», куда блогер ходит за арабской шаурмой. Открывается в 7 утра, так что подходит и для завтрака по пути.","perks":[{"text":"Арабская шаурма за 279 ₽"},{"text":"Открыто с 7:00 до полуночи"},{"text":"Перерыв с 20:30 до 21:00"}],"tags":["шаурма за 279 ₽","с 7 утра"],"address":"ул. Шаболовка, 30/12","metro":[{"name":"Шаболовская","colors":["#f28b24"],"distance":"146 м"}],"hours":["07:00-20:30,21:00-00:00","07:00-20:30,21:00-00:00","07:00-20:30,21:00-00:00","07:00-20:30,21:00-00:00","07:00-20:30,21:00-00:00","07:00-20:30,21:00-00:00","07:00-20:30,21:00-00:00"],"price":"Средний чек 190–350 ₽","rating":4.9,"ratingCount":2939,"photos":["3717246/2a0000017b5cbbc595f5d88dcdba3b19a80f","5236391/2a0000017b5cbaf8b78cd5bcf21789271d96","4587805/2a0000017b5cbb8a3d610be50693e367744b","5236391/2a0000017b5cbb30415a1d3c640640022e60","18150755/2a0000019cb4a326d259d1656b4bc12a293b","4335885/2a00000190cbf8b3176c311a8bba3975470d"],"yandex":"https://yandex.ru/maps/org/shaurlandiy/80485307718/","coords":[37.608548,55.719477],"reels":["DYXQOIHqu3b"]},{"id":"chudoyudo","name":"Чудо-Юдо","type":"Ресторан","cuisine":["Русская кухня","Европейская"],"short":"Ресторан-избушка на Новом Арбате с печью и наличниками с глазами","description":"Ресторан, оформленный как сказочная изба: открытая кухня с печью в кувшинах, старинные резные наличники с глазами, грубая деревянная мебель. В меню русские и европейские блюда, от борща до ризотто с рваной говядиной.","perks":[{"text":"Лавандовый хлеб"},{"text":"Необычный туалет с бегущими иероглифами"},{"text":"Можно с небольшой собакой"}],"tags":["сказочная изба"],"address":"ул. Новый Арбат, 21","metro":[{"name":"Смоленская","colors":["#21abd9","#0070bf"],"distance":"720 м"},{"name":"Арбатская","colors":["#21abd9"],"distance":"1,02 км"}],"hours":["12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00"],"price":"Средний чек 2000–2500 ₽","rating":4.9,"ratingCount":6239,"photos":["12838938/2a0000019289eb53e2356940259fab768432","14271118/2a0000019289ebcd8771947178d366dd5d51","11748256/2a0000019289ec293f28426fc2ae6252d838","13897576/2a0000019289ebd11c8556198594a7850e6e","13197739/2a0000019289eb52672246a75b687aa00b1f","10228783/2a0000019289ebde979c5aafce343f23ab8d"],"yandex":"https://yandex.ru/maps/org/chudo_yudo/102810707359/","coords":[37.587361,55.751979],"reels":["DXmROh2CBd_"]},{"id":"smokeis","name":"Smoke is","type":"Гриль-бар","cuisine":["Мясо и гриль","Бары"],"short":"Гриль-бар с американской кухней, на выходных до утра","description":"Гриль-бар с американской кухней на 3-й улице Ямского Поля. Блогер настойчиво советует его всем, и москвичам, и гостям города. В пятницу и субботу работает до 6 утра.","perks":[{"text":"Пт и сб до 6:00"},{"text":"Можно с собакой"}],"tags":["пт и сб до 6 утра"],"address":"3-я ул. Ямского Поля, 2, корп. 5","metro":[{"name":"Белорусская","colors":["#3aa63a"],"distance":"1,09 км"}],"hours":["14:00-00:00","14:00-00:00","14:00-00:00","14:00-00:00","14:00-06:00","14:00-06:00","14:00-00:00"],"price":"Средний чек 500–1500 ₽","rating":4.9,"ratingCount":1092,"photos":["16270073/2a00000198092c0a7bacfe04ce31dfdb661a","7695774/2a000001884fe98ff6af8fb9b652e6341a98","15344916/2a000001967963e5a870eceb4116beffc210","14584627/2a000001966c084a4293f573c6655ee4eb23","16403814/2a0000019a1d58258e99749866ece874f289","7691421/2a00000185e92790362bcb62fafaba87d48d"],"yandex":"https://yandex.ru/maps/org/smoke_is/224290958595/","coords":[37.581809,55.783677],"reels":["Dafqigcsfvd"]},{"id":"loona","name":"Loona","type":"Ресторан","cuisine":["Европейская","Завтраки"],"short":"Ресторан на Тверском бульваре, где «очень вкусно»","description":"Ресторан на Тверском бульваре с европейской и итальянской кухней, открытой кухней и завтраками с утра. Блогер ходит сюда за тем, что «очень вкусно», а не просто вкусно.","perks":[{"text":"Завтраки с 9:00"},{"text":"Почти 9 тысяч оценок на Яндексе"},{"text":"Можно с собакой"}],"tags":["завтраки с 9"],"address":"Тверской бул., 24, стр. 1","metro":[{"name":"Пушкинская","colors":["#8647b2"],"distance":"254 м"},{"name":"Тверская","colors":["#3aa63a"],"distance":"275 м"}],"hours":["09:00-00:00","09:00-00:00","09:00-00:00","09:00-00:00","09:00-00:00","09:00-00:00","09:00-00:00"],"price":"Средний чек 3500 ₽","rating":4.9,"ratingCount":8886,"photos":["11940760/2a0000018ec907e720187999676a4669919c","14271118/2a00000193c772b1d9e22d85927b7332d3a6","11374564/2a00000193c77b476b545296c4112d3602ca","13805978/2a00000193c7589ea4eaa69d5ae3afcfa609","14244043/2a00000193c77b73989f8cc00a9d41201b8f","13719877/2a00000193c77b66b3e5d5fd30e3b5ae1cd9"],"yandex":"https://yandex.ru/maps/org/loona/227167313971/","coords":[37.603564,55.762347],"reels":["DVyYLGfDV9h"]},{"id":"shaurmabasm","name":"Шаурма на Басманной","type":"Шаурмичная","cuisine":["Шаурма и кебаб"],"short":"Душевная шаурмичная без лоска, где почти всегда очередь","description":"Шаурмичная без лоска, куда хочется возвращаться: в меню много необычных сочетаний, цены приятные, поэтому очередь почти всегда. Есть вторая точка на Новой Басманной.","perks":[{"text":"Фирменный бульон на косточке"},{"text":"Халяль"},{"text":"Рейтинг 5,0 на Яндексе"}],"tags":["бульон на косточке","халяль"],"address":"Старая Басманная ул., 20, стр. 1","metro":[{"name":"Курская","colors":["#805139","#0070bf"],"distance":"870 м"},{"name":"Комсомольская","colors":["#f23d30"],"distance":"1,07 км"}],"hours":["11:00-23:00","11:00-23:00","11:00-23:00","11:00-23:00","11:00-23:00","11:00-23:00","11:00-23:00"],"price":"Средний чек 280–600 ₽","rating":5,"ratingCount":1195,"photos":["14235465/2a00000194a1d27dc3578f8719d016c989f5","18114977/2a0000019e75321f9a8937243c90bc8bce51","10232404/2a00000190176d890be69c26c84560b03a88","16299341/2a0000019c4f209d5decaeb83dd5d8d1dce2","11398069/2a0000019050c3a059c68a0654456253499f"],"yandex":"https://yandex.ru/maps/org/shaurma_na_basmannoy/143705429167/","coords":[37.664348,55.766589],"reels":["DYMLsHEiFyo"]},{"id":"plancha","name":"Планча","type":"Стритфуд","cuisine":["Шаурма и кебаб","Кавказ и Восток"],"short":"Арабско-ливанский стритфуд прямо в парке Горького","description":"Ливанский и арабский стритфуд на Пушкинской набережной в парке Горького. Удобно взять с собой на прогулку вдоль реки. Есть вторая точка на Большой Никитской.","perks":[{"text":"Халяль"},{"text":"Летняя веранда в парке"},{"text":"Открытая кухня"}],"tags":["в парке Горького","халяль"],"address":"Пушкинская наб., 37","metro":[{"name":"Парк культуры","colors":["#805139","#f23d30"],"distance":"1,15 км"}],"hours":["12:00-22:00","12:00-22:00","12:00-22:00","12:00-22:00","12:00-22:00","12:00-22:00","12:00-22:00"],"price":"Средний чек 650–2000 ₽","rating":5,"ratingCount":143,"photos":["17700564/2a0000019faca8ab873893f37d71605e4cd6","20105000/2a0000019e93cfd048d1316f1153294f36f5","16416664/2a0000019df4d1fcb91cec98b3fa35a0fd93","19785895/2a0000019e0437dea37841612a3d52221b0a","20420873/2a0000019ea0ed9ae170f59bb581a001998d","18780150/2a0000019e596dcbaaa8d415ec9be5825552"],"yandex":"https://yandex.ru/maps/org/plancha/34279725196/","coords":[37.597315,55.728976],"reels":["DYmh1jFIdE4"]},{"id":"tatooine","name":"Tatooine","type":"Ресторан","cuisine":["Кавказ и Восток","Мясо и гриль"],"short":"Ресторан с космической подачей, вход со двора на Петровке","description":"Один из самых необычных ресторанов Москвы: подача и интерьер такие, будто телепортировался на другую планету. Кухня кавказская и армянская с авторскими блюдами и мясом.","perks":[{"text":"Вход со двора: Петровка, 23/10с5"},{"text":"Пт и сб до 2 ночи"},{"text":"Халяль"}],"tags":["самый необычный"],"address":"ул. Петровка, 23/10с5","metro":[{"name":"Пушкинская","colors":["#8647b2"],"distance":"570 м"},{"name":"Чеховская","colors":["#999999"],"distance":"600 м"}],"hours":["12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00","12:00-02:00","12:00-02:00","12:00-00:00"],"price":null,"rating":5,"ratingCount":914,"photos":["17783115/2a0000019e6eef6833177caca5cddb0b6915","19902702/2a0000019e6eeb08bcccb3c5875b050c6edb","20840239/2a000001a010cb43f18c8e6dd847ec5a8a23","19871159/2a0000019e6eeaf3f0bdf38909c4071a221c","16465668/2a0000019b9866ed60972ae9a8c392493931","17754824/2a0000019d975e716d33339a93708bf9ad3a"],"yandex":"https://yandex.ru/maps/org/tatooine/193209633114/","coords":[37.615016,55.766081],"reels":["DUV8K1BiDU7"]},{"id":"nauka","name":"Наука и жизнь","type":"Бар-ресторан","cuisine":["Бары","Европейская"],"short":"Круглосуточный бар у «Кузнецкого Моста» с живой музыкой","description":"Бар-ресторан, который не закрывается никогда, с живой музыкой, DJ, стендапами и настольными играми. Блогеры хвалят креветки в тайском стиле, а в кофейне рядом — хот-доги.","perks":[{"text":"Круглосуточно, кухня тоже"},{"text":"Креветки в тайском стиле"},{"text":"Бизнес-ланч за 470 ₽"}],"tags":["круглосуточно","креветки по-тайски"],"address":"Пушечная ул., 7/5с2","metro":[{"name":"Кузнецкий Мост","colors":["#8647b2"],"distance":"160 м"},{"name":"Лубянка","colors":["#f23d30"],"distance":"271 м"}],"hours":["00:00-00:00","00:00-00:00","00:00-00:00","00:00-00:00","00:00-00:00","00:00-00:00","00:00-00:00"],"price":"Средний чек 1500–2400 ₽","rating":5,"ratingCount":4191,"photos":["10488540/2a0000018c073a7f5282334c3e36d220219e","10488540/2a0000018c0739f4ca8d2e674df1c34e75a3","15401795/2a00000197ae1530b161375b0d4f94f3c4f6","13206104/2a00000194ffa6e3552ac0f7fb11c5e4ef7a","14920258/2a00000197aeaa4550514cefa70bf53b4f51","14093322/2a00000192e441396cc3c14812b4e2f913b3"],"yandex":"https://yandex.ru/maps/org/nauka_i_zhizn/50196935823/","coords":[37.62308,55.76087],"reels":["Db0IBuIMLHp"]},{"id":"lea","name":"Lea","type":"Бистро-бар","cuisine":["Рыба и морепродукты","Европейская","Завтраки"],"short":"Круглосуточное бистро с морепродуктами из аквариума","description":"Бистро-бар на Зубовской площади с южноевропейской кухней. Морепродукты берут прямо из аквариума, а кухня работает круглые сутки.","perks":[{"text":"Круглосуточно"},{"text":"Морепродукты из аквариума"},{"text":"Своя пекарня и завтраки"}],"tags":["круглосуточно","морепродукты"],"address":"Зубовская площадь, 3, стр. 1","metro":[{"name":"Парк культуры","colors":["#f23d30","#805139"],"distance":"620 м"}],"hours":["00:00-00:00","00:00-00:00","00:00-00:00","00:00-00:00","00:00-00:00","00:00-00:00","00:00-00:00"],"price":"Средний чек до 2500 ₽","rating":4.7,"ratingCount":576,"photos":["16478002/2a0000019b2d2c7cf70b2340ec816c307b08","14460764/2a00000193ace3aaee0a7f06e88aa8a64fec","17783115/2a0000019c5a8a3a62e8e8aae37180703032","19647201/2a0000019c5a9414764219e976a86d692bdc","18780150/2a0000019c5a8b02a3a8ed599fe062b85fc7","16329243/2a0000019c5a9f48b3f5870993090ce76c7c"],"yandex":"https://yandex.ru/maps/org/lea/23689815864/","coords":[37.585473,55.737937],"reels":["DbMIAAFvmLv"]},{"id":"zhiest","name":"Жи Есть","type":"Ресторан","cuisine":["Кавказ и Восток"],"short":"Халяльный кавказский ресторан с верандой, открыт до 5 утра","description":"Халяльный ресторан кавказской кухни с аутентичным интерьером и верандой, недалеко от «Площади Гагарина». Открыт с 10 утра до 5 утра.","perks":[{"text":"Каждый день до 5:00"},{"text":"Халяль"},{"text":"Бесплатная парковка"}],"tags":["до 5 утра","халяль"],"address":"ул. Орджоникидзе, 11, стр. 17","metro":[{"name":"Площадь Гагарина","colors":["#ff4c4c"],"distance":"390 м"},{"name":"Ленинский проспект","colors":["#f28b24"],"distance":"390 м"}],"hours":["10:00-05:00","10:00-05:00","10:00-05:00","10:00-05:00","10:00-05:00","10:00-05:00","10:00-05:00"],"price":"Средний чек 1500–2000 ₽","rating":4.7,"ratingCount":3220,"photos":["19519244/2a0000019bb7ed21a5bb45942794ed255e5f","18152412/2a0000019b666f1ba51999c231d85d0a4bb3","1592431/2a0000016eea0252652d812a126255e2e873","1583511/2a0000016eea020e0520cc6396b1ad16578c","19749282/2a0000019e9cf2f6a896ff9a276a1ce5679e","1975185/2a0000016eea025e44648389caedd56daaa2"],"yandex":"https://yandex.ru/maps/org/zhi_yest/1044919573/","coords":[37.591377,55.708285],"reels":["DbMIAAFvmLv"]},{"id":"erwin","name":"Erwin. Павильон","type":"Ресторан","cuisine":["Рыба и морепродукты"],"short":"Рыбный ресторан в павильоне прямо на Патриарших прудах","description":"Морской ресторан в павильоне на Патриарших прудах, с верандой у самой воды. Рыба, морепродукты, средиземноморская кухня и джаз.","perks":[{"text":"Веранда прямо у пруда"},{"text":"Можно с собакой"}],"tags":["на Патриарших"],"address":"Большой Патриарший пер., 5","metro":[{"name":"Пушкинская","colors":["#8647b2"],"distance":"860 м"},{"name":"Маяковская","colors":["#3aa63a"],"distance":"880 м"}],"hours":["12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00"],"price":"Средний чек 3000–5000 ₽","rating":4.8,"ratingCount":3776,"photos":["7179902/2a000001843589c119649f171701a74ab22f","4336412/2a00000178a0ef00b7e382cac3afd0023d55","3691419/2a000001787346623b96ca61fb36bbc7654b","4012790/2a00000178a0ee9128bcdd4ba265101cdc6a","4236413/2a00000178a0ee0b3fec523b26c4d54f504d","11244149/2a0000018b7881687ab72c37a461a7d5491d"],"yandex":"https://yandex.ru/maps/org/erwin_pavilion_patriki/185820248177/","coords":[37.592901,55.763429],"reels":["DbMIAAFvmLv"]},{"id":"chaihona","name":"Чайхона № 1","type":"Ресторан","cuisine":["Кавказ и Восток","Завтраки"],"short":"Восточный ресторан на Новом Арбате, открыт почти круглые сутки","description":"Ресторан сети «Чайхона № 1» на Новом Арбате: узбекская и кавказская кухня, яркий восточный интерьер, веранда. Открыт с 10 утра до 6 утра.","perks":[{"text":"Работает с 10:00 до 6:00"},{"text":"DJ и настольные игры"},{"text":"Завтраки"}],"tags":["до 6 утра"],"address":"ул. Новый Арбат, 21","metro":[{"name":"Смоленская","colors":["#21abd9","#0070bf"],"distance":"630 м"},{"name":"Арбатская","colors":["#21abd9"],"distance":"1,08 км"}],"hours":["10:00-06:00","10:00-06:00","10:00-06:00","10:00-06:00","10:00-06:00","10:00-06:00","10:00-06:00"],"price":"Средний чек 2199–2200 ₽","rating":4.8,"ratingCount":9257,"photos":["15231053/2a000001976e4a3f1e78dea970c87a7d3fa0","16330083/2a000001976e4a4b43e243cc35d364083573","16161139/2a000001976e4a3f184173877ef23ebf9ef5","16069310/2a000001976e4a48ef4efe7bfe09d9dc376b","15031174/2a000001976e4a4c3e400ec3ad1efadd92ad","15045776/2a000001976e4a3f2b2892e44361171c1c90"],"yandex":"https://yandex.ru/maps/org/chajkhona_1/1254006182/","coords":[37.585799,55.751898],"reels":["DbMIAAFvmLv"]},{"id":"myasoryba","name":"Мясо & Рыба","type":"Ресторан","cuisine":["Мясо и гриль","Рыба и морепродукты"],"short":"Круглосуточный ресторан мяса и рыбы на Тверской","description":"Круглосуточный ресторан с большим меню мяса, рыбы и гриля и живой музыкой. У сети около десяти ресторанов в Москве, этот на Тверской у «Пушкинской».","perks":[{"text":"Круглосуточно"},{"text":"Живая музыка"},{"text":"Бизнес-ланч"}],"tags":["круглосуточно","живая музыка"],"address":"Тверская ул., 23, стр. 1","metro":[{"name":"Пушкинская","colors":["#8647b2"],"distance":"320 м"},{"name":"Тверская","colors":["#3aa63a"],"distance":"360 м"}],"hours":["00:00-00:00","00:00-00:00","00:00-00:00","00:00-00:00","00:00-00:00","00:00-00:00","00:00-00:00"],"price":"Средний чек 2700 ₽","rating":4.9,"ratingCount":8099,"photos":["7668046/2a000001836a4c693cd8311c73d9a984de24","16136409/2a000001997c4cfb5da504d0b24d33bbec27","6145759/2a000001836a4d16e9ed20c0e722b12993f5","6955494/2a000001836a4f49d115177384246b14c39c","6145759/2a000001836a4eef832bc4fe16c064c57fd8","6145759/2a000001836a4c88d3a0213be50e22578742"],"yandex":"https://yandex.ru/maps/org/meat_fish/19395904090/","coords":[37.59991,55.766662],"reels":["DbMIAAFvmLv"]},{"id":"penta","name":"Penta","type":"Гастробар","cuisine":["Бары","Европейская"],"short":"Круглосуточный гастробар в отеле на Новом Арбате с бильярдом","description":"Гастробар при отеле Pentahotel на Новом Арбате, открытый круглые сутки. Можно поесть, сыграть в бильярд или настолки и посмотреть футбол.","perks":[{"text":"Круглосуточно"},{"text":"Бильярд, настольные игры и приставки"},{"text":"Трансляции матчей"}],"tags":["круглосуточно","бильярд"],"address":"ул. Новый Арбат, 15","metro":[{"name":"Арбатская","colors":["#21abd9","#0070bf"],"distance":"680 м"},{"name":"Смоленская","colors":["#0070bf"],"distance":"950 м"}],"hours":["00:00-00:00","00:00-00:00","00:00-00:00","00:00-00:00","00:00-00:00","00:00-00:00","00:00-00:00"],"price":"Средний чек 1500–3500 ₽","rating":4.8,"ratingCount":461,"photos":["7383884/2a000001839f9a1a47a55d1bb389f95ae9bf","6236655/2a00000183b8ea5a24908e01437f967b2458","5538812/2a0000018385651c4498919eb1f1212d7951","10830675/2a0000018b610917d553443e898eebaff9a0","6197788/2a000001838081a28bea5170c1152a3c6a6a","6514890/2a00000183845e804f9c7a51da3ee7b2bd2f"],"yandex":"https://yandex.ru/maps/org/gastrobar_penta/132823476316/","coords":[37.592667,55.752175],"reels":["DbMIAAFvmLv"]},{"id":"lavirgen","name":"La Virgen","type":"Такерия","cuisine":["Латинская Америка"],"short":"Тайная мексиканская такерия у Лубянки","description":"Небольшая «тайная» мексиканская такерия прямо у Лубянки. За тако, кесадильей и чуррос, или просто если хочется на вечер в Мексику.","perks":[{"text":"Тако, кесадилья и чуррос"},{"text":"Пт и сб до часу ночи"}],"tags":["тако и чуррос"],"address":"Лубянский пр., 5, стр. 1","metro":[{"name":"Лубянка","colors":["#f23d30"],"distance":"160 м"},{"name":"Китай-город","colors":["#f28b24","#8647b2"],"distance":"239 м"}],"hours":["13:00-23:00","13:00-23:00","13:00-23:00","13:00-23:00","13:00-01:00","13:00-01:00","13:00-23:00"],"price":"Средний чек 700–1500 ₽","rating":5,"ratingCount":3082,"photos":["13477341/2a0000018f5e304c73b75e0c1431555b2ee1","18148618/2a0000019b6c8472dcca29a6fabae02b1ab5","11401274/2a0000018d931eb15318445000b945f3c46e","14910910/2a00000197d5e42e74f2f2731caf9aeb6823","11886651/2a0000018dc175e9d2846c8e93b1f67bbf94","10092863/2a0000018da8bb9917bebd553b7346db1a70"],"yandex":"https://yandex.ru/maps/org/la_virgen/240105645545/","coords":[37.629511,55.758605],"reels":["Da3gN73MAjY"]},{"id":"bobbyq","name":"Бобби-Кю · Bobby Q","type":"Кебабная","cuisine":["Шаурма и кебаб"],"short":"Кебабы из свежего мяса с мангала у «Марьиной Рощи»","description":"Кебабная, где мясо жарят на мангале прямо при тебе, без заготовок. Обходятся без тяжёлых майонезных соусов: минимум лишнего, только хорошие продукты.","perks":[{"text":"Мясо жарят при тебе"},{"text":"Без майонезных соусов"}],"tags":["мангал при тебе"],"address":"ул. Сущёвский Вал, 53","metro":[{"name":"Марьина Роща","colors":["#9fbf00","#60bfbf"],"distance":"162 м"}],"hours":["12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00"],"price":"Средний чек 300–500 ₽","rating":5,"ratingCount":525,"photos":["16299341/2a0000019aa7920fa480c1155accc6d5d3aa","15388054/2a0000019995eddf11df79f147f686ebc5ab","16136444/2a0000019aa7922613669ecf35a467842365","16888214/2a0000019aa7911f31a8ec2602d971ad7e3f","16338459/2a0000019995ddd2f3c6702cc6f89acf53f9","15682944/2a0000019995ecc0990492a3c0df56bec6f6"],"yandex":"https://yandex.ru/maps/org/bobby_q/111397150761/","coords":[37.613431,55.793511],"reels":["Daui3VMO4bd"]},{"id":"lafferia","name":"Лаффериа · Lafferia","type":"Бистро","cuisine":["Шаурма и кебаб"],"short":"44 вида шаурмы, хит — «Биткоин» со вкусом Биг Тейсти","description":"Бистро у «Бауманской» с 44 видами шаурмы: владелец собирал рецепты, объездив полмира. Попробуйте «Биткоин» с говядиной, а для смелых есть шаурма с тунцом.","perks":[{"text":"44 вида шаурмы"},{"text":"Хит — «Биткоин» с говядиной"},{"text":"Можно с небольшой собакой"}],"tags":["44 вида шаурмы"],"address":"Малая Почтовая ул., 8, стр. 2","metro":[{"name":"Бауманская","colors":["#0070bf"],"distance":"520 м"}],"hours":["11:00-23:00","11:00-23:00","11:00-23:00","11:00-23:00","11:00-23:00","11:00-23:00","11:00-23:00"],"price":"Средний чек 300–700 ₽","rating":5,"ratingCount":397,"photos":["19547455/2a0000019e1d84e023edf36ea10bc93bb1e1","19580059/2a0000019e1d852e702f1b7d00cabac2a9e1","13951679/2a00000192b3e60037a6fec419bc3d3603d9","18150755/2a0000019dbef412e804fcffd9d9f3f909aa","18152412/2a0000019bcb96261ccd489acff1d674660e","13229346/2a0000019461b631fac60fc76445a7afec5d"],"yandex":"https://yandex.ru/maps/org/lafferia/227863439698/","coords":[37.686351,55.771569],"reels":["DaNxAUvobhW","Db8ix2VREFz"]},{"id":"shaurmacity","name":"Шаурма Сити","type":"Шаурмичная","cuisine":["Шаурма и кебаб"],"short":"Круглосуточная шаурма из шашлыка на Покровке","description":"Шаурмичная на Покровке, где в лаваш кладут куски шашлыка, а не мясо с вертела. Мясо жарят на электромангале каждые 30 минут. Ещё есть закрытая пицца, гирос, люля-кебаб и вок.","perks":[{"text":"Круглосуточно"},{"text":"Закрытая пицца — совсем не кальцоне"},{"text":"Бизнес-ланч за 399 ₽"}],"tags":["круглосуточно","закрытая пицца"],"address":"ул. Покровка, 4, стр. 1","metro":[{"name":"Китай-город","colors":["#8647b2","#f28b24"],"distance":"640 м"},{"name":"Чистые пруды","colors":["#f23d30"],"distance":"880 м"}],"hours":["00:00-00:00","00:00-00:00","00:00-00:00","00:00-00:00","00:00-00:00","00:00-00:00","00:00-00:00"],"price":null,"rating":5,"ratingCount":206,"photos":["19619196/2a0000019d53d3c7413333dabe6c9ed948a2","15043309/2a0000019b16f99b31ddf7830608647b1155","18148618/2a0000019bf9a65b39baf3a34701cd18e0cf","17737331/2a0000019c7665476b18cca0f020ff168dec","18128678/2a0000019c766563637f414cb8dc2e710347","16480550/2a0000019b31be6c604bfb844d738f2f49da"],"yandex":"https://yandex.ru/maps/org/shaurma_city/57995358768/","coords":[37.641703,55.758684],"reels":["DadYPU7x6gJ"]},{"id":"meatcrew","name":"Meat Crew","type":"Мясной бар","cuisine":["Мясо и гриль","Бургеры"],"short":"Мясо из техасского смокера и бургеры у Белорусской","description":"Мясной ресторан-бар с южноамериканским колоритом. Мясо томят в техасском смокере от нескольких часов до суток, поэтому рёбра и брискет получаются очень нежными. Летом открывают террасу с красивым видом.","perks":[{"text":"Мясо из техасского смокера"},{"text":"Сеты на большую компанию"},{"text":"Бизнес-ланчи"}],"tags":["техасский смокер"],"address":"ул. Грузинский Вал, 11, стр. 4","metro":[{"name":"Белорусская","colors":["#805139","#3aa63a"],"distance":"390 м"}],"hours":["12:00-23:00","12:00-23:00","12:00-23:00","12:00-23:00","12:00-23:00","12:00-23:00","12:00-23:00"],"price":"Средний чек 650–1200 ₽","rating":4.8,"ratingCount":1651,"photos":["771751/2a0000018847fa83469a8713bfe665fbfc1c","5234013/2a00000187e8376a63b2c139529839a15d08","9954022/2a00000188d5493f51a752b73116870dd6a6","6674804/2a00000187f6204c89671d95901ab4df56e8","9331640/2a00000187e8401dab7661b0e9339f7dce29"],"yandex":"https://yandex.ru/maps/org/meat_crew/146942630283/","coords":[37.577711,55.773828],"reels":["DYzepUaoGpf"]},{"id":"burgeravenue","name":"Бургер Авеню","type":"Бургерная","cuisine":["Бургеры"],"short":"Бургеры и пицца на Мосфильмовской до 3 ночи","description":"Бургерная на Мосфильмовской, недалеко от «Раменок». Американский фастфуд и пицца, открыто каждый день до 3 ночи.","perks":[{"text":"Каждый день до 3:00"},{"text":"Летняя веранда"}],"tags":["до 3 ночи"],"address":"Мосфильмовская ул., 55","metro":[{"name":"Раменки","colors":["#ffd000"],"distance":"590 м"}],"hours":["12:00-03:00","12:00-03:00","12:00-03:00","12:00-03:00","12:00-03:00","12:00-03:00","12:00-03:00"],"price":null,"rating":4.8,"ratingCount":62,"photos":["15696528/2a0000019ed0b3e01ac2af9dbc8ff974c527","20427853/2a0000019ed0b3f6b3ffefba6f96f108b59f","15696528/2a0000019ed0b3f6b94f0286002d6b9db406","18105299/2a0000019ed0b390d083170bfbf59eabf928","19303228/2a0000019ed0b4ff686117af066238ef4b34","16329243/2a0000019ed0b4ff9e453651b380289acec9"],"yandex":"https://yandex.ru/maps/org/burger_avenue/145132524930/","coords":[37.495115,55.702831],"reels":["DbOnGCwtetg"]},{"id":"rustyrat","name":"Rusty Rat & Pizza","type":"Пиццерия","cuisine":["Пицца"],"short":"Пиццерия у «Китай-города», куда ходят за пиццей и пастой","description":"Пиццерия в Большом Черкасском переулке, у «Китай-города». Блогеры теперь ходят за пиццей и пастой только сюда.","perks":[{"text":"Пицца и паста"},{"text":"В сб и вс открываются в 10:00"},{"text":"Летняя веранда"}],"tags":["пицца и паста"],"address":"Большой Черкасский пер., 13, стр. 4","metro":[{"name":"Китай-город","colors":["#f28b24","#8647b2"],"distance":"215 м"},{"name":"Лубянка","colors":["#f23d30"],"distance":"340 м"}],"hours":["13:00-00:00","13:00-00:00","13:00-00:00","13:00-00:00","13:00-00:00","10:00-00:00","10:00-00:00"],"price":"Средний чек от 2000 ₽","rating":4.8,"ratingCount":776,"photos":["16386092/2a0000019c3db094ba9828218325df2c881c","18384802/2a0000019b2e9d887b12de85dd1ac774fe5b","16472720/2a0000019b526d0ab745b8bda82de8a65c43","18147375/2a0000019e333380d45028fec2fca3a07685","18703564/2a0000019dce5947b8c82cbbc6b5a96bdb8b","18136130/2a0000019e333383e0ae5bc81994f90a2851"],"yandex":"https://yandex.ru/maps/org/rusty_rat_pizza/94015478437/","coords":[37.627666,55.757119],"reels":["DZUh6eVtqru"]},{"id":"lars","name":"Ларс · Lars","type":"Закусочная","cuisine":["Латинская Америка"],"short":"Бразильская закусочная с акциями каждый день и латино-вечеринками","description":"Бразильская закусочная у «Дмитровской». Акции здесь каждый день по своему календарю, а по пятницам и субботам устраивают латиноамериканские вечеринки с живой музыкой.","perks":[{"text":"Акции каждый день по календарю"},{"text":"Латино-вечеринки с живой музыкой по пт и сб"},{"text":"Со среды по воскресенье до 6 утра"}],"tags":["латино-вечеринки"],"address":"Новодмитровская ул., 1, стр. 23","metro":[{"name":"Дмитровская","colors":["#999999"],"distance":"410 м"}],"hours":["11:00-23:00","11:00-03:00","11:00-06:00","11:00-06:00","11:00-06:00","11:00-06:00","11:00-06:00"],"price":"Средний чек 700–1400 ₽","rating":5,"ratingCount":5917,"photos":["14246212/2a00000199cd953a21b45ae787f4997a75d2","15416336/2a00000199cd954ffbc69d41be260d74a055","15682944/2a00000199cd95456b9f03e4ac00cc62a696","15712112/2a00000199cd95427134af5b42a3a1bba73e","10768168/2a000001905e1ef67f057862fa09c046a9ad","15608211/2a000001987a373a1c4137ca2008935635d8"],"yandex":"https://yandex.ru/maps/org/lars/86560638264/","coords":[37.584887,55.806361],"reels":["DbFtSDaofNS"]},{"id":"uhvat","name":"Ухват","type":"Ресторан","cuisine":["Русская кухня"],"short":"Русская кухня из печи на Трёхгорной мануфактуре","description":"Ресторан русской кухни, где многое готовят в настоящей печи и подают в чугунках: кедровую кашу с полбой, борщ, который томится 12 часов, пожарскую котлету. Блогер называет её одной из лучших в Москве.","perks":[{"text":"Комплимент: корзина из 4 видов хлеба и топлёное масло-свеча"},{"text":"Кедровая каша и борщ из печи"},{"text":"Своя пекарня"}],"tags":["русская печь","хлеб в комплимент"],"address":"Рочдельская ул., 15, стр. 41","metro":[{"name":"Улица 1905 года","colors":["#8647b2"],"distance":"1,08 км"}],"hours":["12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00"],"price":"Средний чек 3000–5000 ₽","rating":4.9,"ratingCount":6437,"photos":["15294573/2a0000019764895d3574d083256e96a604b5","1886165/2a0000016cb4f7bde3922d5bd32b0f6c8821","14907426/2a000001987f986e24128f96d545e080e5f9","1651981/2a0000016ec6876d081613bd2ceab4a907a8","1583613/2a0000016ec6877742f3da81040762db9439","2006845/2a0000016ec6877418e54e60fa88369d5d4b"],"yandex":"https://yandex.ru/maps/org/uhvat/129106521343/","coords":[37.561909,55.755983],"reels":["DaCy7cotz2q"]},{"id":"tyomajo","name":"Тёмаджо","type":"Ламаджо","cuisine":["Кавказ и Восток","Стритфуд"],"short":"Ламаджо и выпечка из печи у «Менделеевской»","description":"Стритфуд у «Менделеевской», где главное блюдо — ламаджо: тонкая лепёшка с мясной начинкой. Напротив Искенди, можно устроить сравнение, как в рилсе.","perks":[{"text":"Ламаджо"},{"text":"Напротив Искенди"}],"tags":["ламаджо"],"address":"Новослободская ул., 20","metro":[{"name":"Менделеевская","colors":["#999999"],"distance":"130 м"},{"name":"Новослободская","colors":["#805139"],"distance":"430 м"}],"hours":["11:00-22:00","11:00-22:00","11:00-22:00","11:00-22:00","11:00-22:00","11:00-22:00","11:00-22:00"],"price":"Средний чек 350–500 ₽","rating":5,"ratingCount":235,"photos":["17637863/2a0000019bf67d3004b8808bbbc6941086cc","18005133/2a0000019bc95f67fa091901f9a781df6794","16157592/2a0000019bff8355170fb8fb5ba740a96a84","17753003/2a0000019c0bf32b7813ac1bdbe7ed1fa309","19720204/2a0000019bc95f6c30201b2ca4d85a2e224f","19619196/2a0000019c12a1495635e1624cd5e956f72c"],"yandex":"https://yandex.ru/maps/org/tyomadzho/29858634500/","coords":[37.598621,55.782253],"reels":["DcN3pE8qENw","DYuOuafs-7b","Ddl8pSqgBzn"]},{"id":"iskendi","name":"Искенди","type":"Турецкий стритфуд","cuisine":["Шаурма и кебаб"],"short":"Турецкие дюрюмы напротив Тёмаджо","description":"Турецкий стритфуд с открытой кухней на Новослободской, прямо напротив Тёмаджо. Блогеры отдельно сравнивали их балык-дюрюм с рыбой.","perks":[{"text":"Балык-дюрюм с рыбой"},{"text":"Открытая кухня"},{"text":"Можно с собакой"}],"tags":["балык-дюрюм"],"address":"Новослободская ул., 19, стр. 1","metro":[{"name":"Менделеевская","colors":["#999999"],"distance":"94 м"},{"name":"Новослободская","colors":["#805139"],"distance":"209 м"}],"hours":["11:30-22:00","11:30-22:00","11:30-22:00","11:30-22:00","11:30-23:00","12:00-23:00","12:00-23:00"],"price":null,"rating":4.7,"ratingCount":296,"photos":["17843434/2a0000019d49f5f8acc2fb49263263488145","17679358/2a0000019b65e3a3a1c4f18e004ec9f3d3fe","17785064/2a0000019eeba67f0b94c92ceeaa9a714461","19553098/2a0000019cde2ee242c14b332ee2b0d7231e","19883212/2a0000019bd2328667cc71a75a953419ed79","4200646/2a0000019cdcfd19ad763ad0b0f6eaf102ca"],"yandex":"https://yandex.ru/maps/org/iskendy/52119597703/","coords":[37.599319,55.780828],"reels":["Ddl8pSqgBzn"]},{"id":"beeffish","name":"Биф & Фиш","type":"Бистро","cuisine":["Шаурма и кебаб","Рыба и морепродукты"],"short":"Турецкое бистро с рыбой и мясом у выхода из «Крылатского»","description":"Турецкое бистро с рыбой и мясом в формате быстрой еды, буквально в 15 метрах от метро «Крылатское».","perks":[{"text":"15 метров от метро"}],"tags":["у метро Крылатское"],"address":"Осенний бул., 10","metro":[{"name":"Крылатское","colors":["#0070bf"],"distance":"15 м"}],"hours":["11:00-00:00","11:00-00:00","11:00-00:00","11:00-00:00","11:00-00:00","11:00-00:00","11:00-00:00"],"price":"Средний чек 400–600 ₽","rating":4.2,"ratingCount":50,"photos":["20879831/2a000001a0dda08f738e9c30e5877560c7db","21535825/2a000001a0e739db51b27b8805ceb01c647a","17787346/2a000001a05e65bb9d4603881a22726d6a88","20192526/2a000001a0afeb84134b84a33cbcc03a87a7","19809277/2a000001a0c16e372e7a7bd61a1207f360fa"],"yandex":"https://yandex.ru/maps/org/bif_fish/194390663541/","coords":[37.40884,55.757653],"reels":["DdjW_IStAAs"]},{"id":"bijou","name":"Bijou","type":"Бистро","cuisine":["Европейская"],"short":"Французское бистро для свидания с сетом на двоих","description":"Камерное французское бистро у Белорусской, хорошее место для романтического ужина. Есть готовый сет на двоих, где в каждом из трёх курсов можно выбрать блюдо, и за одним столом получаются два разных ужина.","perks":[{"text":"Французский сет на двоих: 6 блюд за 3800 ₽"},{"text":"Устрицы и коктейли"},{"text":"Бизнес-ланч"}],"tags":["сет 6 блюд за 3800 ₽"],"address":"2-я Брестская ул., 39, стр. 3","metro":[{"name":"Белорусская","colors":["#805139","#3aa63a"],"distance":"217 м"},{"name":"Маяковская","colors":["#3aa63a"],"distance":"940 м"}],"hours":["12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00","12:00-02:00","14:00-02:00","14:00-00:00"],"price":"Средний чек 1500–2500 ₽","rating":4.8,"ratingCount":1227,"photos":["19593321/2a0000019cd6c4b7cd51ad1672a2cae5fd7e","17651669/2a0000019cd6c4df21fa713f47d585107953","18108291/2a0000019cd6c50f488e68068df8f4b20477","17843434/2a0000019cd6c4a16d8b96bc4e1fb7d0376d","1920875/2a0000017f27cc64f6cb216d2a24d6473b3b","6145759/2a0000018348418956e5b3a863470c0887aa"],"yandex":"https://yandex.ru/maps/org/bijou/130868248749/","coords":[37.584602,55.773978],"reels":["DdtFn2uuCFF"]},{"id":"savoy","name":"Савой","type":"Ресторан","cuisine":["Русская кухня","Завтраки"],"short":"Исторический ресторан с «царским» завтраком на полтора килограмма","description":"Исторический ресторан отеля «Савой» с русской и французской кухней и джазом. Здесь подают «царский» завтрак: полтора килограмма блюд по мотивам завтраков Николая II.","perks":[{"text":"Царский завтрак на 1,5 кг"},{"text":"Завтраки с 8 утра"},{"text":"Джаз"}],"tags":["царский завтрак"],"address":"Пушечная ул., 6","metro":[{"name":"Кузнецкий Мост","colors":["#8647b2"],"distance":"167 м"},{"name":"Лубянка","colors":["#f23d30"],"distance":"248 м"}],"hours":["08:00-23:00","08:00-23:00","08:00-23:00","08:00-23:00","08:00-23:00","08:00-23:00","08:00-23:00"],"price":"Средний чек от 5000 ₽","rating":4.8,"ratingCount":2070,"photos":["17773264/2a0000019d0a57eb2f02a1c06d21497170c5","11356085/2a000001912130c2bfc373a3140418632b93","18173477/2a0000019df35d0383c2f055c204bb86aba2","20431688/2a0000019df3675cded3a310ff636c45cb45","16874425/2a0000019df35abfc8a5418070720385a795","17754824/2a0000019df372651dc566fef5e374a81490"],"yandex":"https://yandex.ru/maps/org/savoy/1121853221/","coords":[37.62318,55.760634],"reels":["DbBssBINwvT"]},{"id":"bereg","name":"Берег","type":"Ресторан","cuisine":["Европейская"],"short":"Ресторан у воды в Строгино с верандой и кино под открытым небом","description":"Ресторан на берегу в Строгино: веранда у воды, DJ и танцпол, летом кино под открытым небом. Меню большое, от пасты до шашлыка.","perks":[{"text":"Кино под открытым небом летом"},{"text":"Завтраки с 11 до 16"},{"text":"Бесплатная парковка"}],"tags":["у воды","кино летом"],"address":"ул. Исаковского, 37, корп. 2, стр. 1","metro":[{"name":"Строгино","colors":["#0070bf"],"distance":"1,62 км"}],"hours":["12:00-23:00","12:00-23:00","12:00-23:00","12:00-23:00","12:00-00:00","12:00-00:00","12:00-23:00"],"price":"Средний чек 2500–3500 ₽","rating":4.7,"ratingCount":5184,"photos":["16823151/2a000001987ef5597a7f307be23e56760d44","14763372/2a0000019407fd9acc4fec9487f99e4c5d5d","13083354/2a0000019054c101b191ae249e453a594c5c","14005436/2a00000193bea2dd5b7b0259669ae9b100ed","14238289/2a0000019407fd9a76ae106fe783ee554bd8","11408080/2a00000193bea066d7ad3aa22ee65307f6ee"],"yandex":"https://yandex.ru/maps/org/bereg/110523496108/","coords":[37.426565,55.804567],"reels":["DbNbP5qOACy"]},{"id":"munch","name":"Манч · Munch","type":"Бургерная","cuisine":["Бургеры"],"short":"Бургерная у «Раменок», открыта до 2 ночи","description":"Бургерная у «Раменок», которая в рилсах разбирает, каким должен быть хороший бургер. Халяльно, открыто каждый день до 2 ночи.","perks":[{"text":"Каждый день до 2:00"},{"text":"Халяль"}],"tags":["до 2 ночи","халяль"],"address":"Мичуринский просп., 26","metro":[{"name":"Раменки","colors":["#ffd000"],"distance":"178 м"},{"name":"Ломоносовский проспект","colors":["#ffd000"],"distance":"960 м"}],"hours":["12:00-02:00","12:00-02:00","12:00-02:00","12:00-02:00","12:00-02:00","12:00-02:00","12:00-02:00"],"price":"Средний чек 700–1210 ₽","rating":5,"ratingCount":111,"photos":["16309447/2a0000019cbcb4f08331210b359dcc926d16","15394162/2a0000019d0798462c3486f8252f1ec92722","20179596/2a0000019e83e5ffd9c9075641922d00cbc4","18777611/2a0000019e83ea89e727c1407ab2f62bcaf5","19807214/2a0000019e83e463cfc545f8b7c326a91e30"],"yandex":"https://yandex.ru/maps/org/manch/6172733110/","coords":[37.501797,55.699973],"reels":["Dd8ps_txQfA"]},{"id":"vanlav","name":"Ванлав","type":"Кондитерская","cuisine":["Кофе и десерты"],"short":"Круглосуточная кондитерская и кофейня у «Маяковской»","description":"Кондитерская-кофейня, которая работает круглые сутки: можно зайти за десертом и кофе хоть ночью. В рилсе шеф показывает свои любимые позиции.","perks":[{"text":"Круглосуточно"},{"text":"Халяль"},{"text":"У сети есть и другие точки"}],"tags":["круглосуточно","десерты"],"address":"1-я Тверская-Ямская ул., 11","metro":[{"name":"Маяковская","colors":["#3aa63a"],"distance":"400 м"},{"name":"Белорусская","colors":["#805139","#3aa63a"],"distance":"680 м"}],"hours":["00:00-00:00","00:00-00:00","00:00-00:00","00:00-00:00","00:00-00:00","00:00-00:00","00:00-00:00"],"price":null,"rating":5,"ratingCount":1463,"photos":["15157522/2a00000195d7281e25f9b45634f68b36d509","14460769/2a00000195d7281e08dbb3191a18c6a9fc84","14885978/2a00000195d7282e632a12eb0015cb4108b4","15074774/2a00000195d728279a8a3bd6e1c02bc82f79","14234746/2a00000195d728296787078de4811a898ab9","15502563/2a00000195d7281d778e037f6a5b46860400"],"yandex":"https://yandex.ru/maps/org/vanlav/241760750343/","coords":[37.590426,55.772843],"reels":["DYrVNmGyUCX"]},{"id":"kiez","name":"Киц · Kiez","type":"Коктейльный бар","cuisine":["Бары"],"short":"Коктейльный бар с кухней и танцами, на выходных до утра","description":"Коктейльный бар с европейской кухней у «Улицы 1905 года»: DJ, живая музыка и танцы. В пятницу и субботу работает до 6 утра, в понедельник выходной.","perks":[{"text":"Пт и сб до 6:00"},{"text":"DJ и живая музыка"},{"text":"Понедельник выходной"}],"tags":["пт и сб до 6 утра","DJ"],"address":"Столярный пер., 3, корп. 12","metro":[{"name":"Улица 1905 года","colors":["#8647b2"],"distance":"600 м"},{"name":"Краснопресненская","colors":["#805139"],"distance":"940 м"}],"hours":[null,"18:00-00:00","18:00-00:00","18:00-00:00","18:00-06:00","18:00-06:00","14:00-00:00"],"price":"Средний чек от 1800 ₽","rating":5,"ratingCount":68,"photos":["19541413/2a0000019d6da8945ac5599609d628745659","18150755/2a0000019d6da8908f0e0d5a625596f21ae3","18148618/2a0000019d6da5f701435a4d4b6b5c4b179c","19648454/2a0000019d6dabdf6e13a319f2d84c02ccd3","19871159/2a0000019d6da5f27daea305941a950b2dc6","19392709/2a0000019d6dabdc5e5574b85895a8d40d01"],"yandex":"https://yandex.ru/maps/org/kiez/69022450761/","coords":[37.56903,55.764342],"reels":["DZF7FrIjAeT"]},{"id":"chapa","name":"Чапа","type":"Кофейня","cuisine":["Кофе и десерты"],"short":"Кофейное окно у «Чистых прудов» для прогулки","description":"Кофейня у «Чистых прудов», удобная точка, чтобы взять кофе и перекус на прогулку по центру.","perks":[{"text":"Кофе с собой"},{"text":"Можно с собакой"}],"tags":["кофе с собой"],"address":"ул. Жуковского, 1/2/10с2","metro":[{"name":"Чистые пруды","colors":["#f23d30"],"distance":"560 м"},{"name":"Тургеневская","colors":["#f28b24"],"distance":"620 м"}],"hours":["10:00-20:00","10:00-20:00","10:00-20:00","10:00-20:00","10:00-20:00","10:00-20:00","10:00-20:00"],"price":null,"rating":4.2,"ratingCount":373,"photos":["18098886/2a0000019f100e72fe44c43dfcc3c331abc0","15413593/2a00000199a998483846df310e946a805cac","16325379/2a00000198c230597551e399e9cec19db5f2","18785127/2a0000019df99509a7508e0542fbcf17d8c2","19862889/2a0000019e992d095b387e3929208b1c40cd","14910910/2a00000198a98ac8872277cf29d579142ec3"],"yandex":"https://yandex.ru/maps/org/chapa/207980869972/","coords":[37.645096,55.764249],"reels":["DZF7FrIjAeT"]},{"id":"ozkebab","name":"Öz kebab","type":"Бистро","cuisine":["Шаурма и кебаб"],"short":"Турецкое бистро с авторскими кебабами на Покровке","description":"Турецкое бистро на Покровке с авторским взглядом на кебабы и стритфуд. Днём бизнес-ланч, на выходных бранчи.","perks":[{"text":"Бизнес-ланч за 1000 ₽"},{"text":"Бранчи"},{"text":"Пт и сб до полуночи"}],"tags":["авторские кебабы"],"address":"ул. Покровка, 33","metro":[{"name":"Курская","colors":["#0070bf","#805139"],"distance":"860 м"},{"name":"Чистые пруды","colors":["#f23d30"],"distance":"1,04 км"}],"hours":["12:00-23:00","12:00-23:00","12:00-23:00","12:00-23:00","12:00-00:00","12:00-00:00","12:00-23:00"],"price":"Средний чек 750–2500 ₽","rating":4.9,"ratingCount":1644,"photos":["18132699/2a0000019c35bb0c83d6e112adb847f61019","14907397/2a0000019ad5c7590dca64880f8ac746e6ce","18780150/2a0000019d49882c9abca0f639d1b946ca36","15629777/2a0000019adfb0486eafc370fb61594d8952","16398472/2a0000019adfae08d3098326877242c7541d","18114977/2a0000019bc9659f583365aba4e37d0b75f2"],"yandex":"https://yandex.ru/maps/org/z_kebab/119919342995/","coords":[37.650316,55.761084],"reels":["DZF7FrIjAeT"]},{"id":"lovin","name":"Lovin","type":"Бургерная","cuisine":["Бургеры"],"short":"Бургерная в Кривоколенном переулке с рейтингом 5,0","description":"Бургерная в Кривоколенном переулке, между «Лубянкой» и «Чистыми прудами». Халяльные бургеры, есть вегетарианские.","perks":[{"text":"Халяль"},{"text":"Есть вегетарианские бургеры"},{"text":"Летняя веранда"}],"tags":["халяль","есть вегетарианские"],"address":"Кривоколенный пер., 3","metro":[{"name":"Лубянка","colors":["#f23d30"],"distance":"330 м"},{"name":"Китай-город","colors":["#f28b24","#8647b2"],"distance":"530 м"}],"hours":["12:00-23:00","12:00-23:00","12:00-23:00","12:00-23:00","12:00-23:00","12:00-23:00","12:00-23:00"],"price":"Средний чек 1500–1700 ₽","rating":5,"ratingCount":1494,"photos":["17712904/2a0000019db98f87e65b1077ceae65865542","19708557/2a0000019ef5484ac591a8419086809cd8b5","19785895/2a0000019ea784fe61c8638f095b4831de7c","18806283/2a0000019dfcd029e8641be92e8672202739","17750410/2a0000019eadce168b2bbf0bbfcd1b410548"],"yandex":"https://yandex.ru/maps/org/lovin/128203840323/","coords":[37.632943,55.760732],"reels":["DZF7FrIjAeT"]},{"id":"crabcaviar","name":"Crab and caviar","type":"Рыбное бистро","cuisine":["Рыба и морепродукты"],"short":"Краб, икра и морепродукты недорого у «Трубной»","description":"Морепродукты недорого на Рождественском бульваре у «Трубной»: краб, икра и рыба. Удобно перекусить во время прогулки по бульварам.","perks":[{"text":"Сб и вс до полуночи"}],"tags":["краб и икра"],"address":"Рождественский бул., 1","metro":[{"name":"Трубная","colors":["#9fbf00"],"distance":"248 м"},{"name":"Кузнецкий Мост","colors":["#8647b2"],"distance":"660 м"}],"hours":["10:00-23:00","10:00-23:00","10:00-23:00","10:00-23:00","10:00-23:00","10:00-00:00","10:00-00:00"],"price":"Средний чек 700–1300 ₽","rating":4.1,"ratingCount":115,"photos":["19646909/2a0000019d1ee3851b96f690d8884dd98c7a","13229524/2a0000018fe7e88666c91a8c21482f389e9f","13267750/2a0000018ff22b9032af2d6bc7e0b1fecd1b","10804279/2a0000018ff22bb19303db779453d79f134e","10095165/2a0000018fe7e8364c6b39d20744770cdae0","5534836/2a000001846c51b146fbfca3c728f41bfd5a"],"yandex":"https://yandex.ru/maps/org/crab_and_caviar/124983353621/","coords":[37.623898,55.766766],"reels":["DZF7FrIjAeT"]},{"id":"underdog","name":"Underdog","type":"Хот-доги и бар","cuisine":["Стритфуд","Бары"],"short":"Хот-доги, американский стритфуд и бар на Маросейке","description":"Бар с хот-догами и другим американским стритфудом на Маросейке, у «Китай-города». Летом работает веранда.","perks":[{"text":"Летняя веранда"},{"text":"Пт и сб до часу ночи"},{"text":"Можно с собакой"}],"tags":["хот-доги","летняя веранда"],"address":"ул. Маросейка, 6-8с1","metro":[{"name":"Китай-город","colors":["#8647b2","#f28b24"],"distance":"281 м"},{"name":"Лубянка","colors":["#f23d30"],"distance":"630 м"}],"hours":["13:00-00:00","13:00-00:00","13:00-00:00","13:00-00:00","13:00-01:00","13:00-01:00","13:00-00:00"],"price":"Средний чек 500–1500 ₽","rating":4.7,"ratingCount":3591,"photos":["10878699/2a00000193493c11e6350ce1c175718283f8","19519244/2a0000019dd38c6e0c4541777a2666d3bb65","20245311/2a0000019dd396fbfb04db91eb8dedf98c4e","15696528/2a0000019dd389b9077023a5e80157f8d466","4465274/2a00000178dba88df65cd91bb5aae0b072fc","18105464/2a0000019dd38ba113605f25ff04cda6ee6d"],"yandex":"https://yandex.ru/maps/org/underdog/181544007639/","coords":[37.635571,55.757402],"reels":["DZF7FrIjAeT"]},{"id":"dreamfish","name":"Рыба Мечты · Dream Fish","type":"Ресторан","cuisine":["Рыба и морепродукты"],"short":"Премиальный рыбный ресторан с большим сетом икры и блинов","description":"Премиальный рыбный ресторан на Садовнической улице: морепродукты, устрицы, живая музыка. Блогер советует его сет с 600 граммами икры, блинами, оладьями и топпингами вместо модных дорогих завтраков.","perks":[{"text":"Сет: 600 г икры с блинами и оладьями, к нему бокал креман или шот водки"},{"text":"Живая музыка"}],"tags":["икра с блинами"],"address":"Садовническая ул., 57, стр. 1","metro":[{"name":"Павелецкая","colors":["#3aa63a"],"distance":"1,25 км"}],"hours":["12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00"],"price":"Средний чек 5000–10000 ₽","rating":4.9,"ratingCount":2955,"photos":["15131175/2a0000019532cc9acc31ae83ca596650f334","13754922/2a00000191a3fce57eede6118ff97c32a83a","14402904/2a000001938d4e86c3e46409bf4485984b05","897342/2a0000018b1e1ab4ed817f432f2dfa291800","4001569/2a000001763cae35c077734167f5f408e790","3966989/2a000001763caf01358a4c7e9edbc4b0893b"],"yandex":"https://yandex.ru/maps/org/dream_fish/190919154252/","coords":[37.640876,55.740294],"reels":["DbtbeOQNd9n"]}];</script>
+<script>
+/* Расписание и «открыто ли сейчас» по московскому времени (UTC+3, без перехода на летнее время).
+   Часы в данных: массив из 7 строк, Пн..Вс. Строка: "12:00-23:00", несколько интервалов через запятую,
+   "12:00-02:00" — работа после полуночи, "00:00-24:00" — круглосуточно, null или "" — выходной. */
+(function (root) {
+  'use strict';
+
+  var DAY = 1440;
+  var WEEK = 7 * DAY;
+  var DAYS_SHORT = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
+  var DAYS_ACC = ['в понедельник', 'во вторник', 'в среду', 'в четверг', 'в пятницу', 'в субботу', 'в воскресенье'];
+
+  function mskNow(date) {
+    var d = date || new Date();
+    var t = new Date(d.getTime() + 3 * 3600 * 1000);
+    return { dow: (t.getUTCDay() + 6) % 7, min: t.getUTCHours() * 60 + t.getUTCMinutes() };
+  }
+
+  function pad(n) { return (n < 10 ? '0' : '') + n; }
+
+  function hm(min) {
+    var m = ((min % DAY) + DAY) % DAY;
+    return pad(Math.floor(m / 60)) + ':' + pad(m % 60);
+  }
+
+  function parseHM(s) {
+    var m = /^\s*(\d{1,2}):(\d{2})\s*$/.exec(s);
+    if (!m) throw new Error('Неверное время: ' + s);
+    var v = Number(m[1]) * 60 + Number(m[2]);
+    if (v > DAY) throw new Error('Неверное время: ' + s);
+    return v;
+  }
+
+  function parseDay(str) {
+    if (!str) return [];
+    return String(str).split(',').map(function (part) {
+      var bits = part.split(/[-–—]/);
+      if (bits.length !== 2) throw new Error('Неверный интервал: ' + part);
+      var s = parseHM(bits[0]);
+      var e = parseHM(bits[1]);
+      if (e <= s) e += DAY; // после полуночи; "00:00-00:00" тоже круглосуточно
+      return [s, e];
+    });
+  }
+
+  /* Строим непрерывную шкалу из трёх недель подряд, чтобы честно обработать
+     ночные смены и переход с воскресенья на понедельник. Текущий момент
+     всегда ищем в средней неделе. */
+  function buildSchedule(hours) {
+    if (!hours || hours.length !== 7) throw new Error('Нужно 7 дней расписания');
+    var days = hours.map(parseDay);
+    var base = [];
+    days.forEach(function (ivs, d) {
+      ivs.forEach(function (iv) { base.push([d * DAY + iv[0], d * DAY + iv[1]]); });
+    });
+    var all = [];
+    for (var w = 0; w < 3; w++) {
+      base.forEach(function (iv) { all.push([iv[0] + w * WEEK, iv[1] + w * WEEK]); });
+    }
+    all.sort(function (a, b) { return a[0] - b[0]; });
+    var merged = [];
+    all.forEach(function (iv) {
+      var last = merged[merged.length - 1];
+      if (last && iv[0] <= last[1]) last[1] = Math.max(last[1], iv[1]);
+      else merged.push([iv[0], iv[1]]);
+    });
+    var always = merged.some(function (iv) { return iv[0] <= WEEK && iv[1] >= 2 * WEEK; });
+    return { days: days, merged: merged, always: always };
+  }
+
+  function absNow(now) { return WEEK + now.dow * DAY + now.min; }
+
+  function statusAtAbs(sched, t) {
+    if (sched.always) return { open: true, always: true, t: t };
+    for (var i = 0; i < sched.merged.length; i++) {
+      var iv = sched.merged[i];
+      if (iv[0] <= t && t < iv[1]) return { open: true, closeAt: iv[1], left: iv[1] - t, t: t };
+      if (iv[0] > t) return { open: false, openAt: iv[0], until: iv[0] - t, t: t };
+    }
+    return { open: false, never: true, t: t };
+  }
+
+  function statusAt(sched, now) { return statusAtAbs(sched, absNow(now)); }
+
+  function isOpenAtAbs(sched, t) { return statusAtAbs(sched, t).open; }
+
+  function dayText(ivs) {
+    if (!ivs.length) return 'выходной';
+    if (ivs.length === 1 && ivs[0][0] === 0 && ivs[0][1] === DAY) return 'круглосуточно';
+    return ivs.map(function (iv) { return hm(iv[0]) + '–' + hm(iv[1]); }).join(', ');
+  }
+
+  /* «Пн–Чт 12:00–23:00», «Пт, Сб 12:00–02:00»… Соседние дни с одинаковыми часами склеиваем. */
+  function groupDays(sched) {
+    var texts = sched.days.map(dayText);
+    if (texts.every(function (t) { return t === texts[0]; })) {
+      return [{ label: 'Ежедневно', text: texts[0], from: 0, to: 6 }];
+    }
+    var groups = [];
+    var start = 0;
+    for (var i = 1; i <= 7; i++) {
+      if (i === 7 || texts[i] !== texts[start]) {
+        var label = start === i - 1 ? DAYS_SHORT[start]
+          : (i - 1 - start === 1 ? DAYS_SHORT[start] + ', ' + DAYS_SHORT[i - 1] : DAYS_SHORT[start] + '–' + DAYS_SHORT[i - 1]);
+        groups.push({ label: label, text: texts[start], from: start, to: i - 1 });
+        start = i;
+      }
+    }
+    return groups;
+  }
+
+  function statusLabel(st) {
+    if (st.always) return { tone: 'open', text: 'Круглосуточно' };
+    if (st.never) return { tone: 'closed', text: 'Часы не указаны' };
+    if (st.open) {
+      if (st.left <= 60) return { tone: 'soon', text: 'Закроется через ' + st.left + ' мин' };
+      return { tone: 'open', text: 'Открыто до ' + hm(st.closeAt) };
+    }
+    if (st.until <= 60) return { tone: 'soon', text: 'Откроется через ' + st.until + ' мин' };
+    var diff = Math.floor(st.openAt / DAY) - Math.floor(st.t / DAY);
+    var when;
+    if (diff === 0) when = 'в ' + hm(st.openAt);
+    else if (diff === 1) when = 'завтра в ' + hm(st.openAt);
+    else when = DAYS_ACC[Math.floor(st.openAt / DAY) % 7] + ' в ' + hm(st.openAt);
+    return { tone: 'closed', text: 'Закрыто, откроется ' + when };
+  }
+
+  var api = {
+    DAY: DAY, WEEK: WEEK, DAYS_SHORT: DAYS_SHORT,
+    mskNow: mskNow, hm: hm, parseDay: parseDay, buildSchedule: buildSchedule,
+    absNow: absNow, statusAt: statusAt, statusAtAbs: statusAtAbs, isOpenAtAbs: isOpenAtAbs,
+    dayText: dayText, groupDays: groupDays, statusLabel: statusLabel
+  };
+  root.HavTime = api;
+  if (typeof module !== 'undefined' && module.exports) module.exports = api;
+})(typeof window !== 'undefined' ? window : globalThis);
+
+</script>
+<script>
+(function () {
+  'use strict';
+
+  var T = window.HavTime;
+  var RAW = window.__PLACES__ || [];
+  var tg = window.Telegram && window.Telegram.WebApp;
+  var inTG = !!(tg && tg.platform && tg.platform !== 'unknown');
+  var reduceMotion = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+  var PHOTO_BASE = 'https://avatars.mds.yandex.net/get-altay/';
+
+  function $(sel, root) { return (root || document).querySelector(sel); }
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+  function norm(s) { return String(s || '').toLowerCase().replace(/ё/g, 'е'); }
+  function plural(n, one, few, many) {
+    var m10 = n % 10, m100 = n % 100;
+    if (m10 === 1 && m100 !== 11) return one;
+    if (m10 >= 2 && m10 <= 4 && (m100 < 12 || m100 > 14)) return few;
+    return many;
+  }
+  function fmtRating(r) { return (Math.round(r * 10) / 10).toFixed(1).replace('.', ','); }
+
+  function photoUrl(p, size) {
+    if (!p) return '';
+    if (/^(https?:|\.?\/|p\/)/.test(p)) return p.replace('%s', size);
+    return PHOTO_BASE + p + '/' + size;
+  }
+
+  /* ---------- Иконки ---------- */
+  var ICON = {
+    search: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>',
+    pin: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.1-7-11.5A7 7 0 0 1 19 9.5C19 14.9 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>',
+    clock: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>',
+    wallet: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6" width="18" height="13" rx="3"/><path d="M16 12.5h2"/><path d="M3 9h18"/></svg>',
+    star: '<svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2.8l2.8 5.9 6.4.8-4.7 4.5 1.2 6.4L12 17.3l-5.7 3.1 1.2-6.4-4.7-4.5 6.4-.8z"/></svg>',
+    spark: '<svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2l2.2 6.8L21 11l-6.8 2.2L12 20l-2.2-6.8L3 11l6.8-2.2z"/></svg>',
+    close: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>',
+    map: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.1-7-11.5A7 7 0 0 1 19 9.5C19 14.9 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>',
+    play: '<svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path fill="currentColor" d="M10 8.4v7.2l6-3.6z"/></svg>',
+    dice: '<svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="2"/><g fill="currentColor"><circle cx="8.5" cy="8.5" r="1.6"/><circle cx="15.5" cy="15.5" r="1.6"/><circle cx="12" cy="12" r="1.6"/></g></svg>'
+  };
+
+  /* ---------- Данные ---------- */
+  var places = [];
+  RAW.forEach(function (p) {
+    try {
+      var s = T.buildSchedule(p.hours);
+      var metro = (p.metro || [])[0];
+      places.push(Object.assign({}, p, {
+        _s: s,
+        _q: norm([p.name, p.address, metro && metro.name, (p.cuisine || []).join(' '), p.type].join(' '))
+      }));
+    } catch (e) {
+      if (window.console) console.warn('Пропускаю место', p && p.name, e.message);
+    }
+  });
+  places.sort(function (a, b) { return a.name.localeCompare(b.name, 'ru'); });
+  var byId = {};
+  places.forEach(function (p) { byId[p.id] = p; });
+
+  var cuisineCount = {};
+  places.forEach(function (p) { (p.cuisine || []).forEach(function (c) { cuisineCount[c] = (cuisineCount[c] || 0) + 1; }); });
+  var cuisines = Object.keys(cuisineCount).sort(function (a, b) {
+    return cuisineCount[b] - cuisineCount[a] || a.localeCompare(b, 'ru');
+  });
+
+  var state = { cuisines: {}, when: 'any', q: '' };
+  var lastPick = null;
+  var sheetPlace = null;
+  var spinTimers = [];
+
+  function selectedCuisines() { return Object.keys(state.cuisines); }
+  function cuisineOk(p) {
+    var sel = selectedCuisines();
+    if (!sel.length) return true;
+    return (p.cuisine || []).some(function (c) { return state.cuisines[c]; });
+  }
+
+  /* ---------- Telegram ---------- */
+  function haptic(kind, arg) {
+    try { if (inTG && tg.HapticFeedback) tg.HapticFeedback[kind](arg); } catch (e) { /* старый клиент */ }
+  }
+  function applyTelegramTheme() {
+    if (!inTG) return;
+    document.documentElement.setAttribute('data-theme', tg.colorScheme === 'dark' ? 'dark' : 'light');
+    var css = getComputedStyle(document.documentElement);
+    var night = css.getPropertyValue('--night').trim();
+    var bg = css.getPropertyValue('--bg').trim();
+    try { tg.setHeaderColor(night); } catch (e) { /* нет в старых версиях */ }
+    try { tg.setBackgroundColor(night); } catch (e) { /* нет в старых версиях */ }
+    try { if (tg.setBottomBarColor) tg.setBottomBarColor(bg); } catch (e) { /* нет в старых версиях */ }
+  }
+  if (inTG) {
+    document.documentElement.setAttribute('data-tg', '');
+    try { tg.ready(); } catch (e) { /* ок */ }
+    try { tg.expand(); } catch (e) { /* ок */ }
+    try { if (tg.isVersionAtLeast && tg.isVersionAtLeast('7.7')) tg.disableVerticalSwipes(); } catch (e) { /* ок */ }
+    applyTelegramTheme();
+    try { tg.onEvent('themeChanged', applyTelegramTheme); } catch (e) { /* ок */ }
+    try { tg.BackButton.onClick(closeSheet); } catch (e) { /* ок */ }
+  }
+
+  /* ---------- Шапка и время ---------- */
+  function renderClock(now) {
+    $('#clock').innerHTML = 'Москва<b>' + T.hm(now.min) + '</b>';
+  }
+
+  function renderTagline() {
+    $('#tagline').innerHTML = esc(places.length + ' ' + plural(places.length, 'место', 'места', 'мест') + ', где вкусно поесть') + '<span>из чата «Места Москва»</span>';
+  }
+
+  function spinPool(tNow, ignoreCuisine) {
+    var pool = places.filter(function (p) {
+      return (ignoreCuisine || cuisineOk(p)) && T.statusAtAbs(p._s, tNow).open;
+    });
+    var comfy = pool.filter(function (p) {
+      var st = T.statusAtAbs(p._s, tNow);
+      return st.always || st.left >= 60;
+    });
+    return comfy.length ? comfy : pool;
+  }
+
+  function renderSpinSub(tNow) {
+    var n = spinPool(tNow).length;
+    var sel = selectedCuisines();
+    var txt;
+    if (!n) txt = sel.length ? 'Из выбранной кухни сейчас ничего не открыто' : 'Сейчас всё закрыто, покажу, что откроется раньше';
+    else txt = 'Выберу из ' + n + ' ' + plural(n, 'открытого', 'открытых', 'открытых') + (sel.length ? ' · ' + sel.join(', ').toLowerCase() : '');
+    $('#spinSub').textContent = txt;
+  }
+
+  /* ---------- Фильтры ---------- */
+  function renderCuisineChips() {
+    var html = '<button class="chip" type="button" data-cuisine="" aria-pressed="' + (selectedCuisines().length ? 'false' : 'true') + '">Все</button>';
+    html += cuisines.map(function (c) {
+      return '<button class="chip" type="button" data-cuisine="' + esc(c) + '" aria-pressed="' + (state.cuisines[c] ? 'true' : 'false') + '">' +
+        esc(c) + '<span class="n">' + cuisineCount[c] + '</span></button>';
+    }).join('');
+    $('#cuisineChips').innerHTML = html;
+  }
+
+  function timeOptions(now) {
+    var tNow = T.absNow(now);
+    var first = tNow - (now.min % 60) + 60;
+    var opts = [];
+    for (var k = 0; k < 24; k++) {
+      var t = first + k * 60;
+      opts.push({ t: t, label: T.hm(t), nextDay: Math.floor(t / T.DAY) > Math.floor(tNow / T.DAY) });
+    }
+    return opts;
+  }
+
+  function renderTimeChips(now) {
+    var html = '<button class="chip" type="button" data-when="any" aria-pressed="' + (state.when === 'any') + '">Когда угодно</button>' +
+      '<button class="chip" type="button" data-when="now" aria-pressed="' + (state.when === 'now') + '">Сейчас</button>';
+    var sepDone = false;
+    timeOptions(now).forEach(function (o) {
+      if (o.nextDay && !sepDone) { html += '<span class="chip-sep">завтра</span>'; sepDone = true; }
+      html += '<button class="chip" type="button" data-when="' + o.t + '" aria-pressed="' + (state.when === o.t) + '">' + o.label + '</button>';
+    });
+    $('#timeChips').innerHTML = html;
+  }
+
+  /* ---------- Список ---------- */
+  function matches(p, tNow) {
+    if (!cuisineOk(p)) return false;
+    if (state.q && p._q.indexOf(norm(state.q).trim()) === -1) return false;
+    if (state.when === 'now') return T.statusAtAbs(p._s, tNow).open;
+    if (typeof state.when === 'number') return T.isOpenAtAbs(p._s, state.when);
+    return true;
+  }
+
+  function metroHTML(m) {
+    if (!m) return '';
+    var colors = m.colors || (m.color ? [m.color] : []);
+    var dots = colors.map(function (c) { return '<i style="--c:' + esc(c) + '"></i>'; }).join('') || '<i></i>';
+    return '<span class="metro">' + dots + esc(m.name) + '</span>';
+  }
+
+  function placeholderHTML(p) {
+    return '<span class="ph" aria-hidden="true">' + esc((p.name || '?').charAt(0)) + '</span>';
+  }
+
+  function todayText(p, now) {
+    return 'Сегодня ' + T.dayText(p._s.days[now.dow]);
+  }
+
+  function cardHTML(p, now, tNow) {
+    var st = T.statusAtAbs(p._s, tNow);
+    var lab = T.statusLabel(st);
+    var photo = (p.photos || [])[0];
+    var img = photo ? '<img src="' + esc(photoUrl(photo, 'XL')) + '" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer">' : '';
+    var tags = (p.tags || []).slice(0, 2).map(function (t) { return '<span class="tag">' + esc(t) + '</span>'; }).join('');
+    var meta = [];
+    if (p.cuisine && p.cuisine.length) meta.push('<span>' + esc(p.cuisine.join(', ')) + '</span>');
+    if (p.metro && p.metro[0]) meta.push(metroHTML(p.metro[0]));
+    return '<button class="card' + (st.open ? '' : ' is-closed') + '" type="button" data-id="' + esc(p.id) + '">' +
+      '<span class="media">' + placeholderHTML(p) + img +
+        '<span class="pill tone-' + lab.tone + '" data-pill="' + esc(p.id) + '"><span class="dot"></span><span>' + esc(lab.text) + '</span></span>' +
+        (p.rating ? '<span class="rating">★ ' + fmtRating(p.rating) + '</span>' : '') +
+      '</span>' +
+      '<span class="card-body">' +
+        '<span class="card-name">' + esc(p.name) + '</span>' +
+        '<span class="meta">' + meta.join('') + '</span>' +
+        (p.short ? '<span class="desc">' + esc(p.short) + '</span>' : '') +
+        '<span class="today" data-today="' + esc(p.id) + '">' + esc(todayText(p, now)) + '</span>' +
+        (tags ? '<span class="tags">' + tags + '</span>' : '') +
+      '</span>' +
+    '</button>';
+  }
+
+  var lastListKey = '';
+  function renderList(now) {
+    var tNow = T.absNow(now);
+    var list = places.filter(function (p) { return matches(p, tNow); });
+    var groups;
+    if (state.when === 'any') {
+      var open = [], closed = [];
+      list.forEach(function (p) { (T.statusAtAbs(p._s, tNow).open ? open : closed).push(p); });
+      open.sort(function (a, b) {
+        var la = T.statusAtAbs(a._s, tNow), lb = T.statusAtAbs(b._s, tNow);
+        var sa = !la.always && la.left < 60 ? 1 : 0, sb = !lb.always && lb.left < 60 ? 1 : 0;
+        return sa - sb || a.name.localeCompare(b.name, 'ru');
+      });
+      closed.sort(function (a, b) {
+        var sa = T.statusAtAbs(a._s, tNow), sb = T.statusAtAbs(b._s, tNow);
+        return (sa.until || 1e9) - (sb.until || 1e9);
+      });
+      groups = [];
+      if (open.length) groups.push({ title: 'Открыто сейчас · ' + open.length, items: open });
+      if (closed.length) groups.push({ title: 'Закрыто · ' + closed.length, items: closed });
+    } else {
+      var title = state.when === 'now' ? 'Открыто сейчас · ' + list.length
+        : 'Открыто в ' + T.hm(state.when) + (Math.floor(state.when / T.DAY) > Math.floor(tNow / T.DAY) ? ' завтра' : '') + ' · ' + list.length;
+      groups = list.length ? [{ title: title, items: list }] : [];
+    }
+
+    var key = JSON.stringify(groups.map(function (g) { return [g.title, g.items.map(function (p) { return p.id; })]; }));
+    var filtered = selectedCuisines().length || state.q || state.when !== 'any';
+    $('#reset').hidden = !filtered;
+    $('#count').textContent = filtered
+      ? 'Нашлось ' + list.length + ' из ' + places.length
+      : places.length + ' ' + plural(places.length, 'место', 'места', 'мест');
+
+    if (key === lastListKey) {
+      refreshStatuses(now, tNow);
+      return;
+    }
+    lastListKey = key;
+
+    if (!groups.length) {
+      $('#list').innerHTML = '<div class="empty"><b>Под эти фильтры ничего нет</b>' +
+        '<span>Попробуйте другое время или другую кухню.</span>' +
+        '<button class="btn btn-secondary" type="button" data-action="reset">Сбросить фильтры</button></div>';
+      return;
+    }
+    $('#list').innerHTML = groups.map(function (g) {
+      return '<h2 class="group-title">' + esc(g.title) + '</h2>' + g.items.map(function (p) { return cardHTML(p, now, tNow); }).join('');
+    }).join('');
+  }
+
+  function refreshStatuses(now, tNow) {
+    places.forEach(function (p) {
+      var pill = document.querySelector('[data-pill="' + p.id + '"]');
+      if (pill) {
+        var lab = T.statusLabel(T.statusAtAbs(p._s, tNow));
+        pill.className = 'pill tone-' + lab.tone;
+        pill.lastChild.textContent = lab.text;
+      }
+      var td = document.querySelector('[data-today="' + p.id + '"]');
+      if (td) td.textContent = todayText(p, now);
+    });
+  }
+
+  function render() {
+    var now = T.mskNow();
+    var tNow = T.absNow(now);
+    if (typeof state.when === 'number' && state.when <= tNow) state.when = 'now';
+    renderClock(now);
+    renderSpinSub(tNow);
+    renderCuisineChips();
+    renderTimeChips(now);
+    renderList(now);
+  }
+
+  /* ---------- Шторка ---------- */
+  function galleryHTML(p) {
+    var photos = (p.photos || []).slice(0, 8);
+    if (!photos.length) return '<div class="gallery">' + placeholderHTML(p) + '</div>';
+    var shots = photos.map(function (ph, i) {
+      return '<div class="shot">' + placeholderHTML(p) + '<img src="' + esc(photoUrl(ph, 'XXL')) + '" alt="' + esc(p.name) + ', фото ' + (i + 1) + '"' +
+        (i ? ' loading="lazy"' : '') + ' decoding="async" referrerpolicy="no-referrer"></div>';
+    }).join('');
+    var dots = photos.length > 1 ? '<div class="dots">' + photos.map(function (_, i) { return '<i' + (i ? '' : ' class="on"') + '></i>'; }).join('') + '</div>' : '';
+    return '<div class="gallery"><div class="track" id="track">' + shots + '</div>' + dots + '</div>';
+  }
+
+  function hoursHTML(p, now) {
+    return '<dl class="hours">' + T.groupDays(p._s).map(function (g) {
+      var isToday = now.dow >= g.from && now.dow <= g.to;
+      return '<dt' + (isToday ? ' class="is-today"' : '') + '>' + esc(g.label) + '</dt><dd' + (isToday ? ' class="is-today"' : '') + '>' + esc(g.text) + '</dd>';
+    }).join('') + '</dl>';
+  }
+
+  function detailBodyHTML(p, now, opts) {
+    var tNow = T.absNow(now);
+    var st = T.statusAtAbs(p._s, tNow);
+    var lab = T.statusLabel(st);
+    var facts = [];
+    facts.push('<div class="fact">' + ICON.pin + '<div>' + esc(p.address) +
+      (p.metro && p.metro.length ? '<div class="meta" style="margin-top:4px">' + p.metro.slice(0, 2).map(function (m) {
+        return metroHTML(m) + (m.distance ? '<span class="muted">' + esc(m.distance) + '</span>' : '');
+      }).join('') + '</div>' : '') + '</div></div>');
+    if (p.price) facts.push('<div class="fact">' + ICON.wallet + '<div>' + esc(p.price) + '</div></div>');
+    var perks = (p.perks || []).map(function (t) { return '<li>' + ICON.spark + '<span>' + esc(t.text) + '</span></li>'; }).join('');
+    return (opts.withTitle ? '<h2 class="title" id="sheetTitle">' + esc(p.name) + '</h2>' : '') +
+      '<div class="meta">' + (p.cuisine || []).map(function (c) { return '<span class="tag">' + esc(c) + '</span>'; }).join('') +
+        (p.type ? '<span>' + esc(p.type) + '</span>' : '') +
+        (p.rating ? '<span>★ ' + fmtRating(p.rating) + ' на Яндексе</span>' : '') + '</div>' +
+      '<div class="status-line tone-' + lab.tone + '"><span class="dot"></span><span>' + esc(lab.text) + '</span>' +
+        '<span class="muted">· ' + esc(todayText(p, now).toLowerCase()) + '</span></div>' +
+      '<div class="facts">' + facts.join('') + '</div>' +
+      (p.description ? '<p class="lead">' + esc(p.description) + '</p>' : '') +
+      (perks ? '<section><h3 class="section-h">Фишки</h3><ul class="perks">' + perks + '</ul><p class="note">Из рилсов в чате: акции и цены могли измениться.</p></section>' : '') +
+      '<section><h3 class="section-h">Часы работы</h3>' + hoursHTML(p, now) + '</section>' +
+      (p.reels && p.reels.length ? '<section><h3 class="section-h">Откуда это место</h3><div class="reels">' +
+        p.reels.map(function (code, i) {
+          return '<a class="reel-link" href="https://www.instagram.com/p/' + esc(code) + '/" target="_blank" rel="noopener" data-external>' +
+            ICON.play + (p.reels.length > 1 ? 'Рилс ' + (i + 1) : 'Смотреть рилс') + '</a>';
+        }).join('') + '</div><p class="note">Рилсы из чата «Места Москва», откроются в Instagram.</p></section>' : '');
+  }
+
+  function actionsHTML(p, mode) {
+    var maps = '<a class="btn btn-primary" href="' + esc(p.yandex) + '" target="_blank" rel="noopener" data-external>' + ICON.map + 'Яндекс Карты</a>';
+    if (mode === 'random') {
+      return '<div class="actions"><button class="btn btn-secondary" type="button" data-action="respin">' + ICON.dice + 'Ещё</button>' + maps + '</div>';
+    }
+    return '<div class="actions">' + maps + '</div>';
+  }
+
+  function openSheet(html) {
+    var sheet = $('#sheet');
+    $('#sheetContent').innerHTML = html;
+    sheet.scrollTop = 0;
+    if (!sheet.classList.contains('is-open')) {
+      sheet.classList.add('is-open');
+      document.documentElement.classList.add('is-locked');
+      sheet.setAttribute('aria-hidden', 'false');
+      if (inTG) { try { tg.BackButton.show(); } catch (e) { /* ок */ } }
+    }
+    try { sheet.focus({ preventScroll: true }); } catch (e) { sheet.focus(); }
+    bindGallery();
+  }
+
+  function closeSheet() {
+    var sheet = $('#sheet');
+    if (!sheet.classList.contains('is-open')) return;
+    spinTimers.forEach(clearTimeout);
+    spinTimers = [];
+    sheet.classList.remove('is-open');
+    sheet.setAttribute('aria-hidden', 'true');
+    document.documentElement.classList.remove('is-locked');
+    sheetPlace = null;
+    if (inTG) { try { tg.BackButton.hide(); } catch (e) { /* ок */ } }
+  }
+
+  function bindGallery() {
+    var track = $('#track');
+    if (!track) return;
+    var dots = document.querySelectorAll('.dots i');
+    track.addEventListener('scroll', function () {
+      var i = Math.round(track.scrollLeft / Math.max(1, track.clientWidth));
+      for (var k = 0; k < dots.length; k++) dots[k].classList.toggle('on', k === i);
+    }, { passive: true });
+  }
+
+  function showPlace(id) {
+    var p = byId[id];
+    if (!p) return;
+    sheetPlace = p;
+    var now = T.mskNow();
+    haptic('impactOccurred', 'light');
+    openSheet('<div class="sheet-inner">' +
+      '<div style="position:relative">' + galleryHTML(p) +
+        '<button class="close" type="button" data-action="close" aria-label="Закрыть">' + ICON.close + '</button></div>' +
+      '<div class="sheet-body">' + detailBodyHTML(p, now, { withTitle: true }) + '</div>' +
+      actionsHTML(p, 'detail') + '</div>');
+  }
+
+  /* ---------- Рандомайзер ---------- */
+  function spin(ignoreCuisine) {
+    var now = T.mskNow();
+    var tNow = T.absNow(now);
+    var pool = spinPool(tNow, ignoreCuisine);
+    var btn = $('#spin');
+    btn.classList.remove('is-rolling');
+    void btn.offsetWidth;
+    btn.classList.add('is-rolling');
+    haptic('impactOccurred', 'medium');
+
+    if (!pool.length) {
+      showNothingOpen(now, tNow, !ignoreCuisine && selectedCuisines().length > 0 && spinPool(tNow, true).length > 0);
+      return;
+    }
+    var choices = pool.length > 1 && lastPick ? pool.filter(function (p) { return p.id !== lastPick; }) : pool;
+    var pick = choices[Math.floor(Math.random() * choices.length)];
+    lastPick = pick.id;
+    sheetPlace = pick;
+
+    openSheet('<div class="sheet-inner" id="randomSheet">' +
+      '<div class="reveal is-spinning" id="reveal">' +
+        '<button class="close" type="button" data-action="close" aria-label="Закрыть">' + ICON.close + '</button>' +
+        '<div class="reveal-eyebrow">Следующая станция</div>' +
+        '<div class="reveal-name" id="sheetTitle" aria-live="polite">' + esc(pool[Math.floor(Math.random() * pool.length)].name) + '</div>' +
+        '<div class="reveal-sub" id="revealSub">Выбираю из ' + pool.length + ' ' + plural(pool.length, 'места', 'мест', 'мест') + '…</div>' +
+      '</div>' +
+      '<div class="is-hidden-until-reveal">' + galleryHTML(pick) + '</div>' +
+      '<div class="sheet-body is-hidden-until-reveal">' + detailBodyHTML(pick, now, { withTitle: false }) + '</div>' +
+      '<div class="is-hidden-until-reveal">' + actionsHTML(pick, 'random') + '</div>' +
+    '</div>');
+
+    var nameEl = $('#reveal .reveal-name');
+    var finish = function () {
+      nameEl.textContent = pick.name;
+      $('#reveal').classList.remove('is-spinning');
+      $('#revealSub').textContent = [pick.cuisine && pick.cuisine.join(', '), pick.metro && pick.metro[0] && ('м. ' + pick.metro[0].name)].filter(Boolean).join(' · ');
+      $('#randomSheet').classList.add('is-revealed');
+      haptic('notificationOccurred', 'success');
+    };
+    if (reduceMotion || pool.length === 1) { finish(); return; }
+    var delays = [60, 60, 70, 80, 90, 110, 130, 160, 200, 250, 320];
+    var acc = 0;
+    var names = pool.map(function (p) { return p.name; });
+    var prev = -1;
+    delays.forEach(function (d) {
+      acc += d;
+      spinTimers.push(setTimeout(function () {
+        var i;
+        do { i = Math.floor(Math.random() * names.length); } while (names.length > 1 && i === prev);
+        prev = i;
+        nameEl.textContent = names[i];
+        haptic('selectionChanged');
+      }, acc));
+    });
+    spinTimers.push(setTimeout(finish, acc + 380));
+  }
+
+  function showNothingOpen(now, tNow, cuisineOnly) {
+    var soon = places.filter(function (p) { return cuisineOnly ? cuisineOk(p) : true; })
+      .map(function (p) { return { p: p, st: T.statusAtAbs(p._s, tNow) }; })
+      .filter(function (x) { return !x.st.open && !x.st.never; })
+      .sort(function (a, b) { return a.st.until - b.st.until; })
+      .slice(0, 4);
+    var list = soon.map(function (x) {
+      var photo = (x.p.photos || [])[0];
+      return '<button class="mini" type="button" data-id="' + esc(x.p.id) + '"><span class="thumb">' + placeholderHTML(x.p) +
+        (photo ? '<img src="' + esc(photoUrl(photo, 'M')) + '" alt="" loading="lazy" referrerpolicy="no-referrer">' : '') + '</span>' +
+        '<span><b>' + esc(x.p.name) + '</b><span>' + esc(T.statusLabel(x.st).text) + '</span></span></button>';
+    }).join('');
+    openSheet('<div class="sheet-inner is-revealed">' +
+      '<div class="reveal"><button class="close" type="button" data-action="close" aria-label="Закрыть">' + ICON.close + '</button>' +
+        '<div class="reveal-eyebrow">' + (cuisineOnly ? 'Эта кухня спит' : 'Москва спит') + '</div>' +
+        '<div class="reveal-name" id="sheetTitle">' + (cuisineOnly ? 'Из выбранного сейчас всё закрыто' : 'Сейчас всё закрыто') + '</div>' +
+        '<div class="reveal-sub">Раньше всех откроются эти места</div></div>' +
+      '<div class="sheet-body"><div class="soonest">' + list + '</div>' +
+        (cuisineOnly ? '<button class="btn btn-primary" type="button" data-action="spin-all">' + ICON.dice + 'Крутить среди всех</button>' : '') +
+      '</div></div>');
+  }
+
+  /* ---------- События ---------- */
+  document.addEventListener('click', function (e) {
+    var t = e.target;
+    var ext = t.closest && t.closest('a[data-external]');
+    if (ext && inTG && tg.openLink) {
+      e.preventDefault();
+      try { tg.openLink(ext.href); } catch (err) { window.open(ext.href, '_blank'); }
+      return;
+    }
+    var act = t.closest && t.closest('[data-action]');
+    if (act) {
+      var a = act.getAttribute('data-action');
+      if (a === 'close') closeSheet();
+      else if (a === 'respin') spin();
+      else if (a === 'spin-all') spin(true);
+      else if (a === 'reset') resetFilters();
+      return;
+    }
+    var card = t.closest && t.closest('[data-id]');
+    if (card) { showPlace(card.getAttribute('data-id')); return; }
+    var chip = t.closest && t.closest('.chip');
+    if (chip) {
+      haptic('selectionChanged');
+      if (chip.hasAttribute('data-cuisine')) {
+        var c = chip.getAttribute('data-cuisine');
+        if (!c) state.cuisines = {};
+        else if (state.cuisines[c]) delete state.cuisines[c];
+        else state.cuisines[c] = true;
+      } else if (chip.hasAttribute('data-when')) {
+        var w = chip.getAttribute('data-when');
+        state.when = (w === 'any' || w === 'now') ? w : Number(w);
+      }
+      render();
+    }
+  });
+
+  $('#spin').addEventListener('click', function () { spin(); });
+  $('#reset').addEventListener('click', resetFilters);
+  $('#q').addEventListener('input', function (e) { state.q = e.target.value; render(); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeSheet(); });
+  document.addEventListener('error', function (e) {
+    if (e.target && e.target.tagName === 'IMG') e.target.remove();
+  }, true);
+
+  function resetFilters() {
+    state.cuisines = {};
+    state.when = 'any';
+    state.q = '';
+    $('#q').value = '';
+    render();
+  }
+
+  /* ---------- Обложка: параллакс при прокрутке и наклон телефона ---------- */
+  function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
+  var hero = $('#hero');
+  var heroMedia = $('#heroMedia');
+  var heroGlare = $('#heroGlare');
+  var heroTop = $('#heroTop');
+  var motion = { tx: 0, ty: 0, cx: 0, cy: 0, scroll: 0, h: hero ? hero.offsetHeight : 600, raf: 0, b0: null, g0: null, tgOn: false };
+
+  function heroFrame() {
+    motion.raf = 0;
+    motion.cx += (motion.tx - motion.cx) * 0.12;
+    motion.cy += (motion.ty - motion.cy) * 0.12;
+    var s = Math.min(motion.scroll, motion.h);
+    var k = s / motion.h;
+    // translateX(-51.5%) держит середину между лицами по центру экрана; scale(1.04) с опорой
+    // на верхний край даёт запас по бокам для наклона, а верх снимка остаётся на месте
+    heroMedia.style.transform =
+      'translateX(-51.5%) translate3d(' + (motion.cx * 6).toFixed(2) + 'px,' + (s * 0.34 + motion.cy * 5).toFixed(2) + 'px,0)' +
+      ' rotateX(' + (-motion.cy * 4).toFixed(2) + 'deg) rotateY(' + (motion.cx * 5).toFixed(2) + 'deg) scale(1.04)';
+    heroGlare.style.setProperty('--gx', (50 + motion.cx * 34).toFixed(1) + '%');
+    heroGlare.style.setProperty('--gy', (32 + motion.cy * 28).toFixed(1) + '%');
+    heroGlare.style.setProperty('--go', (0.3 + Math.min(1, Math.sqrt(motion.cx * motion.cx + motion.cy * motion.cy)) * 0.7).toFixed(3));
+    if (heroTop) {
+      heroTop.style.transform = 'translate3d(' + (-motion.cx * 3).toFixed(2) + 'px,' + (s * 0.18).toFixed(2) + 'px,0)';
+      heroTop.style.opacity = String(clamp(1 - k * 1.6, 0, 1).toFixed(3));
+    }
+    if (Math.abs(motion.tx - motion.cx) > 0.003 || Math.abs(motion.ty - motion.cy) > 0.003) heroSchedule();
+  }
+  function heroSchedule() { if (!motion.raf) motion.raf = requestAnimationFrame(heroFrame); }
+
+  function heroTilt(betaDeg, gammaDeg) {
+    if (motion.b0 === null) { motion.b0 = betaDeg; motion.g0 = gammaDeg; }
+    motion.b0 += (betaDeg - motion.b0) * 0.004;   // медленно подстраиваемся под то, как держат телефон
+    motion.g0 += (gammaDeg - motion.g0) * 0.004;
+    motion.tx = clamp((gammaDeg - motion.g0) / 18, -1, 1);
+    motion.ty = clamp((betaDeg - motion.b0) / 18, -1, 1);
+    heroSchedule();
+  }
+
+  function tgOrientation(on) {
+    if (!inTG || !tg.DeviceOrientation || !(tg.isVersionAtLeast && tg.isVersionAtLeast('8.0'))) return;
+    if (on === motion.tgOn) return;
+    motion.tgOn = on;
+    try { if (on) tg.DeviceOrientation.start({ refresh_rate: 40 }); else tg.DeviceOrientation.stop(); } catch (e) { /* ок */ }
+  }
+
+  if (hero && heroMedia && !reduceMotion) {
+    window.addEventListener('scroll', function () {
+      motion.scroll = window.scrollY || window.pageYOffset || 0;
+      tgOrientation(motion.scroll < motion.h);
+      heroSchedule();
+    }, { passive: true });
+    window.addEventListener('resize', function () { motion.h = hero.offsetHeight || motion.h; heroSchedule(); });
+
+    if (inTG && tg.DeviceOrientation && tg.isVersionAtLeast && tg.isVersionAtLeast('8.0')) {
+      try {
+        tg.onEvent('deviceOrientationChanged', function () {
+          var d = tg.DeviceOrientation;
+          heroTilt((d.beta || 0) * 57.2958, (d.gamma || 0) * 57.2958);
+        });
+      } catch (e) { /* ок */ }
+      tgOrientation(true);
+    } else if ('DeviceOrientationEvent' in window) {
+      window.addEventListener('deviceorientation', function (e) {
+        if (e.beta == null || e.gamma == null) return;
+        heroTilt(e.beta, e.gamma);
+      });
+    }
+    hero.addEventListener('pointermove', function (e) {
+      if (e.pointerType !== 'mouse') return;
+      var r = hero.getBoundingClientRect();
+      motion.tx = clamp(((e.clientX - r.left) / r.width - 0.5) * 1.6, -1, 1);
+      motion.ty = clamp(((e.clientY - r.top) / r.height - 0.5) * 1.6, -1, 1);
+      heroSchedule();
+    });
+    hero.addEventListener('pointerleave', function () { motion.tx = 0; motion.ty = 0; heroSchedule(); });
+    heroSchedule();
+  }
+
+  renderTagline();
+  render();
+  setInterval(function () {
+    render();
+    if (sheetPlace && $('#sheet').classList.contains('is-open') && !$('#reveal')) {
+      var line = $('#sheet .status-line');
+      if (line) {
+        var now = T.mskNow();
+        var lab = T.statusLabel(T.statusAtAbs(sheetPlace._s, T.absNow(now)));
+        line.className = 'status-line tone-' + lab.tone;
+        line.children[1].textContent = lab.text;
+      }
+    }
+  }, 30000);
+})();
+
+</script>
+</body>
+</html>
