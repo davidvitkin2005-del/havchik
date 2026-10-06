@@ -85,7 +85,7 @@ def main():
         addr = re.sub(r'^Москва,\s*', '', y['address'] or '')
         place = {
             'id': key,
-            'name': NAMES.get(key, y['title']),
+            'name': c.get('name') or NAMES.get(key, y['title']),
             'type': c.get('type'),
             'cuisine': c['cuisine'],
             'short': c['short'],
