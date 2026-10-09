@@ -1338,7 +1338,7 @@
      группируются в кружки с числом. Нажатие на метку раскрывает снизу карточку
      с описанием и кнопкой в Яндекс Карты. В обычном виде на телефоне карта не
      перехватывает прокрутку страницы: двигать её можно после «Развернуть». */
-  var YMAPS_KEY = '0f8c4a85-8e30-4ebd-b148-952b0bf424ce';  // бесплатный ключ с developer.tech.yandex.ru, необязательно
+  var YMAPS_KEY = '';  // ключ JavaScript API 2.1 с правом на маршруты (платный тариф Яндекса); бесплатный ключ v3 маршруты не строит
   var MAP = { map: null, clusterer: null, marks: {}, key: '', list: [], active: null, margin: null, failed: false, loading: false, me: null, circle: null };
   var mapCard = $('#mapCard');
   var mapPeek = $('#mapPeek');
