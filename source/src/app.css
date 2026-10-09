@@ -977,3 +977,18 @@ html[data-tg] .hero { --hh: var(--tg-viewport-stable-height, 100svh); }
 .suggest-card span { color: var(--muted); font-size: 13px; }
 .suggest-card .btn { flex: none; width: auto; }
 .suggest-cta { display: flex; width: 100%; margin-top: 14px; }
+
+/* ---------- Свой адрес ---------- */
+.addr-search { margin: 0 0 10px; }
+.addr-list { display: flex; flex-direction: column; gap: 6px; min-height: 8px; }
+.addr-item {
+  display: flex; align-items: flex-start; gap: 10px; width: 100%; text-align: left; cursor: pointer;
+  padding: 12px 14px; border-radius: 14px; border: 1px solid var(--line); background: var(--surface); color: var(--ink);
+  font: 400 14px/1.3 var(--f-body);
+}
+.addr-item > svg, .addr-item > .metro { flex: none; margin-top: 2px; color: var(--muted); }
+.addr-item > .metro i { width: 12px; height: 12px; }
+.addr-item b { display: block; font-weight: 600; }
+.addr-item span span { display: block; color: var(--muted); font-size: 12.5px; margin-top: 2px; }
+.addr-item:focus-visible { outline: 2px solid var(--ketchup); outline-offset: 2px; }
+.addr-state { padding: 10px 2px; color: var(--muted); font-size: 14px; }

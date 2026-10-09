@@ -996,6 +996,21 @@ html[data-tg] .hero { --hh: var(--tg-viewport-stable-height, 100svh); }
 .suggest-card .btn { flex: none; width: auto; }
 .suggest-cta { display: flex; width: 100%; margin-top: 14px; }
 
+/* ---------- Свой адрес ---------- */
+.addr-search { margin: 0 0 10px; }
+.addr-list { display: flex; flex-direction: column; gap: 6px; min-height: 8px; }
+.addr-item {
+  display: flex; align-items: flex-start; gap: 10px; width: 100%; text-align: left; cursor: pointer;
+  padding: 12px 14px; border-radius: 14px; border: 1px solid var(--line); background: var(--surface); color: var(--ink);
+  font: 400 14px/1.3 var(--f-body);
+}
+.addr-item > svg, .addr-item > .metro { flex: none; margin-top: 2px; color: var(--muted); }
+.addr-item > .metro i { width: 12px; height: 12px; }
+.addr-item b { display: block; font-weight: 600; }
+.addr-item span span { display: block; color: var(--muted); font-size: 12.5px; margin-top: 2px; }
+.addr-item:focus-visible { outline: 2px solid var(--ketchup); outline-offset: 2px; }
+.addr-state { padding: 10px 2px; color: var(--muted); font-size: 14px; }
+
 </style>
 </head>
 <body>
@@ -1338,7 +1353,7 @@ html[data-tg] .hero { --hh: var(--tg-viewport-stable-height, 100svh); }
      Геопозиция нужна только чтобы посчитать расстояния: остаётся на телефоне и нигде не сохраняется.
      Сначала спрашиваем через Telegram (LocationManager, Bot API 8.0+), иначе через браузер.
      Если доступа нет, точку можно выбрать на карте. */
-  var LOC = { pos: null, src: '', acc: 0, busy: false, err: '', picking: false };
+  var LOC = { pos: null, src: '', acc: 0, busy: false, err: '', picking: false, label: '' };
   var DIST_STEPS = [1, 2, 5, 10];
 
   function haversineKm(a, b) {
@@ -1378,12 +1393,16 @@ html[data-tg] .hero { --hh: var(--tg-viewport-stable-height, 100svh); }
     if (m >= 20) m = Math.round(m / 5) * 5;
     return '≈ ' + m + ' мин пешком';
   }
-  function fromWhom() { return LOC.src === 'map' ? 'от точки на карте' : 'от вас'; }
+  function isManual() { return LOC.src === 'map' || LOC.src === 'addr'; }
+  function fromWhom() {
+    if (LOC.src === 'addr') return 'от ' + (LOC.label.length > 34 ? LOC.label.slice(0, 33) + '…' : LOC.label);
+    return LOC.src === 'map' ? 'от точки на карте' : 'от вас';
+  }
   // Маршрут в Яндекс Картах. Своё местоположение в ссылку не кладём: Яндекс возьмёт его с телефона сам.
   // Точку, выбранную на карте, передаём, иначе маршрут построится не оттуда.
   function routeUrl(p, mode) {
     var to = p.coords[1].toFixed(6) + ',' + p.coords[0].toFixed(6);
-    var from = LOC.pos && LOC.src === 'map' ? LOC.pos[0].toFixed(6) + ',' + LOC.pos[1].toFixed(6) : '';
+    var from = LOC.pos && isManual() ? LOC.pos[0].toFixed(6) + ',' + LOC.pos[1].toFixed(6) : '';
     return 'https://yandex.ru/maps/?rtext=' + from + '~' + to + '&rtt=' + mode;
   }
 
@@ -1435,9 +1454,10 @@ html[data-tg] .hero { --hh: var(--tg-viewport-stable-height, 100svh); }
     } catch (e) { /* нет Permissions API */ }
   }
 
-  function setLoc(pos, src, acc) {
+  function setLoc(pos, src, acc, label) {
     LOC.pos = [pos[0], pos[1]];
     LOC.src = src;
+    LOC.label = label || '';
     LOC.acc = acc || 0;
     LOC.err = '';
     haptic('notificationOccurred', 'success');
@@ -1455,6 +1475,7 @@ html[data-tg] .hero { --hh: var(--tg-viewport-stable-height, 100svh); }
       label.innerHTML = 'Расстояние';
       html = '<button class="chip chip-loc" type="button" data-action="locate"' + (LOC.busy ? ' aria-busy="true" disabled' : '') + '>' +
           ICON.nav + (LOC.busy ? 'Определяю, где вы…' : 'Показать, сколько до мест') + '</button>' +
+        '<button class="chip" type="button" data-action="addr">' + ICON.search + 'Ввести адрес</button>' +
         '<button class="chip" type="button" data-action="pick-on-map">' + ICON.target + 'Точка на карте</button>';
     } else {
       label.innerHTML = 'Расстояние <span class="filter-sub">' + esc(fromWhom()) + '</span>';
@@ -1464,7 +1485,8 @@ html[data-tg] .hero { --hh: var(--tg-viewport-stable-height, 100svh); }
         html += '<button class="chip" type="button" data-dist="' + km + '" aria-pressed="' + (state.dist === km) + '">до ' + km + ' км<span class="n">' + n + '</span></button>';
       });
       html += '<button class="chip chip-ghost" type="button" data-action="locate"' + (LOC.busy ? ' aria-busy="true" disabled' : '') + '>' +
-          ICON.nav + (LOC.busy ? 'Обновляю…' : (LOC.src === 'map' ? 'Где я' : 'Обновить')) + '</button>' +
+          ICON.nav + (LOC.busy ? 'Обновляю…' : (isManual() ? 'Где я' : 'Обновить')) + '</button>' +
+        '<button class="chip chip-ghost" type="button" data-action="addr">' + ICON.search + (LOC.src === 'addr' ? 'Другой адрес' : 'Ввести адрес') + '</button>' +
         '<button class="chip chip-ghost" type="button" data-action="pick-on-map">' + ICON.target + (LOC.src === 'map' ? 'Другая точка' : 'Точка на карте') + '</button>';
     }
     chips.innerHTML = html;
@@ -1628,6 +1650,104 @@ html[data-tg] .hero { --hh: var(--tg-viewport-stable-height, 100svh); }
     try { id = (inTG && tg.initDataUnsafe && tg.initDataUnsafe.start_param) || ''; } catch (e) { id = ''; }
     if (!id && location.hash.length > 1) { try { id = decodeURIComponent(location.hash.slice(1)); } catch (e) { id = ''; } }
     if (id && byId[id]) showPlace(id);
+  }
+
+  /* ---------- Свой адрес ----------
+     Если геопозиция определилась неверно или нужно посчитать от другого места. Станции метро ищем сами,
+     адреса — геокодером Яндекса (с ключом), запасной вариант — OpenStreetMap. Уходит только введённый текст. */
+  var ADDR = { items: [], timer: 0, seq: 0 };
+  var MSK_BOX = [[55.13, 36.80], [56.03, 38.10]];
+  function inMsk(lat, lon) { return lat > MSK_BOX[0][0] && lat < MSK_BOX[1][0] && lon > MSK_BOX[0][1] && lon < MSK_BOX[1][1]; }
+  function showAddr() {
+    openSheet('<div class="sheet-inner is-revealed">' +
+      '<div class="reveal"><button class="close" type="button" data-action="close" aria-label="Закрыть">' + ICON.close + '</button>' +
+        '<div class="reveal-eyebrow">Откуда считать</div>' +
+        '<div class="reveal-name" id="sheetTitle">Ваш адрес</div>' +
+        '<div class="reveal-sub">Улица и дом, станция метро или место</div></div>' +
+      '<div class="sheet-body">' +
+        '<label class="search addr-search">' + ICON.search +
+          '<input id="addrQ" type="search" placeholder="Например, Тверская 7 или м. Курская" autocomplete="off" enterkeyhint="search" aria-label="Адрес"></label>' +
+        '<div class="addr-list" id="addrList" role="list"></div>' +
+        '<p class="note">Адрес нужен только чтобы посчитать расстояния и время в пути, приложение его не сохраняет. Для поиска введённый текст уходит в поиск Яндекс Карт или OpenStreetMap.</p>' +
+      '</div></div>');
+    var q = $('#addrQ');
+    q.addEventListener('input', function () { clearTimeout(ADDR.timer); ADDR.timer = setTimeout(function () { addrSearch(q.value); }, 350); });
+    q.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); if (ADDR.items.length) pickAddr(0); else addrSearch(q.value); } });
+    setTimeout(function () { try { q.focus(); } catch (e) { /* ок */ } }, 250);
+    if (!YMAPS_KEY || !window.ymaps) loadYmaps();
+  }
+  function addrRender(state) {
+    var box = $('#addrList');
+    if (!box) return;
+    if (state === 'busy' && !ADDR.items.length) { box.innerHTML = '<div class="addr-state">Ищу…</div>'; return; }
+    if (!ADDR.items.length) { box.innerHTML = state === 'none' ? '<div class="addr-state">Ничего не нашлось в Москве. Попробуйте написать иначе или выберите точку на карте.</div>' : ''; return; }
+    box.innerHTML = ADDR.items.map(function (it, i) {
+      return '<button class="addr-item" type="button" role="listitem" data-action="addr-pick" data-i="' + i + '">' +
+        (it.metro ? '<span class="metro"><i style="--c:' + esc(it.color) + '"></i></span>' : ICON.pin) +
+        '<span><b>' + esc(it.title) + '</b>' + (it.sub ? '<span>' + esc(it.sub) + '</span>' : '') + '</span></button>';
+    }).join('');
+  }
+  function metroMatches(q) {
+    if (!METRO) return [];
+    var n = norm(q).replace(/^(м\.?|метро|станция)\s+/, '').trim();
+    if (n.length < 2) return [];
+    var seen = {}, out = [];
+    METRO.stations.forEach(function (st, i) {
+      var name = norm(st[0]);
+      if (name.indexOf(n) !== 0 && name.indexOf(' ' + n) === -1) return;
+      var line = lineOf(i), key = st[0] + '|' + line[0];
+      if (seen[key]) return;
+      seen[key] = 1;
+      out.push({ title: 'м. ' + st[0], sub: line[0], pos: [st[1], st[2]], metro: true, color: line[1], exact: name === n });
+    });
+    out.sort(function (a, b) { return b.exact - a.exact; });
+    return out.slice(0, 4);
+  }
+  function addrSearch(q) {
+    q = (q || '').trim();
+    var seq = ++ADDR.seq;
+    ADDR.items = metroMatches(q);
+    if (q.length < 3) { addrRender(); return; }
+    addrRender('busy');
+    var done = function (list) {
+      if (seq !== ADDR.seq) return;
+      ADDR.items = ADDR.items.concat(list.filter(function (it) { return inMsk(it.pos[0], it.pos[1]); })).slice(0, 8);
+      addrRender(ADDR.items.length ? '' : 'none');
+    };
+    var osm = function () {
+      var url = 'https://nominatim.openstreetmap.org/search?format=jsonv2&addressdetails=1&limit=6&accept-language=ru&countrycodes=ru&bounded=1' +
+        '&viewbox=' + MSK_BOX[0][1] + ',' + MSK_BOX[1][0] + ',' + MSK_BOX[1][1] + ',' + MSK_BOX[0][0] + '&q=' + encodeURIComponent(q + ', Москва');
+      fetch(url).then(function (r) { return r.json(); }).then(function (arr) {
+        done((arr || []).map(function (x) {
+          var ad = x.address || {}, parts = String(x.display_name || '').split(', ');
+          var street = ad.road || ad.pedestrian || ad.square || '';
+          var title = street ? street + (ad.house_number ? ', ' + ad.house_number : '') : parts.slice(0, 2).join(', ');
+          var sub = [x.name && x.name !== street && title.indexOf(x.name) === -1 ? x.name : '', ad.suburb || ad.city_district || ''].filter(Boolean).join(' · ');
+          return { title: title, sub: sub, pos: [Number(x.lat), Number(x.lon)] };
+        }));
+      }, function () { done([]); });
+    };
+    if (YMAPS_KEY && window.ymaps && window.ymaps.geocode) {
+      try {
+        window.ymaps.geocode(q, { boundedBy: MSK_BOX, strictBounds: true, results: 6 }).then(function (res) {
+          var list = [];
+          res.geoObjects.each(function (o) {
+            var c = o.geometry.getCoordinates();
+            list.push({ title: o.getAddressLine ? o.getAddressLine().replace(/^Россия, Москва, /, '') : o.properties.get('name'), sub: o.properties.get('description') || '', pos: c });
+          });
+          if (list.length) done(list); else osm();
+        }, osm);
+        return;
+      } catch (e) { /* ниже запасной вариант */ }
+    }
+    osm();
+  }
+  function pickAddr(i) {
+    var it = ADDR.items[i];
+    if (!it) return;
+    closeSheet();
+    setLoc(it.pos, 'addr', 0, it.title);
+    toast('Считаю расстояния от: ' + it.title);
   }
 
   /* ---------- Предложить место ---------- */
@@ -2332,6 +2452,8 @@ html[data-tg] .hero { --hh: var(--tg-viewport-stable-height, 100svh); }
       else if (a === 'mark') toggleMark(act.getAttribute('data-mark'), act.getAttribute('data-id-mark'));
       else if (a === 'share') sharePlace(act.getAttribute('data-id-mark'));
       else if (a === 'suggest') showSuggest();
+      else if (a === 'addr') showAddr();
+      else if (a === 'addr-pick') pickAddr(Number(act.getAttribute('data-i')));
       else if (a === 'reset') resetFilters();
       else if (a === 'map-full') setMapFull(!mapIsFull());
       else if (a === 'peek-close') closePeek();
@@ -2477,7 +2599,7 @@ html[data-tg] .hero { --hh: var(--tg-viewport-stable-height, 100svh); }
      группируются в кружки с числом. Нажатие на метку раскрывает снизу карточку
      с описанием и кнопкой в Яндекс Карты. В обычном виде на телефоне карта не
      перехватывает прокрутку страницы: двигать её можно после «Развернуть». */
-  var YMAPS_KEY = '';  // бесплатный ключ с developer.tech.yandex.ru, необязательно
+  var YMAPS_KEY = '0f8c4a85-8e30-4ebd-b148-952b0bf424ce';  // бесплатный ключ с developer.tech.yandex.ru, необязательно
   var MAP = { map: null, clusterer: null, marks: {}, key: '', list: [], active: null, margin: null, failed: false, loading: false, me: null, circle: null };
   var mapCard = $('#mapCard');
   var mapPeek = $('#mapPeek');
@@ -2678,7 +2800,7 @@ html[data-tg] .hero { --hh: var(--tg-viewport-stable-height, 100svh); }
     var me = cssVar('--me', '#2F7BF5');
     if (!MAP.MeLayout) MAP.MeLayout = ym.templateLayoutFactory.createClass('<div class="me-dot{% if properties.manual %} is-manual{% endif %}"></div>');
     if (!MAP.me) {
-      MAP.me = new ym.Placemark(LOC.pos, { manual: LOC.src === 'map' }, {
+      MAP.me = new ym.Placemark(LOC.pos, { manual: isManual() }, {
         iconLayout: MAP.MeLayout,
         iconShape: { type: 'Circle', coordinates: [0, 0], radius: 14 },
         zIndex: 1200,
@@ -2688,7 +2810,7 @@ html[data-tg] .hero { --hh: var(--tg-viewport-stable-height, 100svh); }
       MAP.map.geoObjects.add(MAP.me);
     } else {
       MAP.me.geometry.setCoordinates(LOC.pos);
-      MAP.me.properties.set('manual', LOC.src === 'map');
+      MAP.me.properties.set('manual', isManual());
     }
     if (state.dist) {
       if (!MAP.circle) {
