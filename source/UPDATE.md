@@ -40,7 +40,10 @@ Instagram читается только через Chrome пользовател
    Если видишь капчу, не проходи её: сообщи пользователю.
 4. Допиши в `source/data/yandex_ids.json`: `"ключ": ["id", "seoname"]` и скачай карточку:
    `python3 -I source/tools/yafetch.py source/data/yandex_ids.json source/data/yandex_raw.json`
-   (качает только новые). Если у места статус не `open` или нет часов работы — пропусти с причиной.
+   (качает только новые, вместе с телефонами, ссылкой на онлайн-бронь и сайтом). Если у места статус не `open`
+   или нет часов работы — пропусти с причиной.
+   Обновить у уже добавленных мест телефоны, часы, статус и рейтинг, не трогая фото:
+   `python3 -I source/tools/yafetch.py source/data/yandex_ids.json source/data/yandex_raw.json --update`.
    Часы у Яндекса начинаются с воскресенья, `make_places.py` сам переводит их на понедельник.
 
 ## 3. Фото
@@ -88,6 +91,7 @@ python3 -I source/tools/make_places.py      # в конце не должно б
 python3 -I source/tools/build.py            # пишет index.html в корень репозитория
 node source/tests/time.test.js
 python3 source/tests/map_check.py /tmp/map  # необязательно: карта, метки, карточка места
+python3 source/tests/geo_check.py /tmp/geo  # необязательно: геопозиция, расстояния, телефоны
 ```
 
 Закоммить в `main` (в сообщении — какие места добавлены), сделай `git pull --rebase origin main`

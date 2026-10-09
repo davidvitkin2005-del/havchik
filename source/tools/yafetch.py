@@ -2,7 +2,9 @@
 
 Использование: python3 -I tools/yafetch.py ids.json out.json [--refresh]
 ids.json: {"ключ": [id, seoname], ...}
-Уже скачанные карточки пропускаются; --refresh скачивает все заново.
+Уже скачанные карточки пропускаются; --refresh скачивает все заново (фото тоже, их номера
+в photo_picks.json могут съехать); --update у уже скачанных обновляет только телефоны, бронь,
+сайт, часы, статус и рейтинг, а фото не трогает.
 """
 import json
 import re
@@ -12,6 +14,7 @@ import urllib.request
 
 UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
       "(KHTML, like Gecko) Chrome/126.0 Safari/537.36")
+UPDATE_FIELDS = ("phones", "booking", "site", "hours", "hoursText", "status", "rating", "ratingCount")
 STATE_RE = re.compile(r'<script type="application/json" class="state-view">(.*?)</script>', re.S)
 
 
@@ -37,6 +40,14 @@ def find_org(st, oid):
         elif isinstance(o, list):
             stack.extend(o)
     return None
+
+
+def clean_url(u):
+    if not u:
+        return None
+    base, _, query = u.partition("?")
+    keep = [q for q in query.split("&") if q and not q.lower().startswith("utm_")]
+    return base + ("?" + "&".join(keep) if keep else "")
 
 
 def hhmm(t):
@@ -81,6 +92,11 @@ def compact(o):
         "links": [b.get("href") or b.get("url") for b in o.get("businessLinks") or []] if isinstance(o.get("businessLinks"), list) else o.get("businessLinks"),
         "chain": (o.get("chain") or {}).get("name"),
         "logo": ((o.get("businessImages") or {}).get("logo") or {}).get("urlTemplate"),
+        "phones": [{"n": ph.get("number"), "v": ph.get("value"), "i": ph.get("info")}
+                   for ph in (o.get("phones") or []) if isinstance(ph, dict) and ph.get("number")],
+        "booking": next((b.get("href") for b in (o.get("businessLinks") or [])
+                         if isinstance(b, dict) and b.get("type") == "booking" and b.get("href")), None),
+        "site": clean_url((o.get("urls") or [None])[0]),
     }
 
 
@@ -92,7 +108,8 @@ def main():
     except FileNotFoundError:
         out = {}
     for key, (oid, seo) in ids.items():
-        if "--refresh" not in sys.argv and key in out and out[key].get("id") == str(oid) and not out[key].get("error"):
+        update = "--update" in sys.argv and key in out and out[key].get("id") == str(oid) and not out[key].get("error")
+        if not update and "--refresh" not in sys.argv and key in out and out[key].get("id") == str(oid) and not out[key].get("error"):
             continue
         url = "https://yandex.ru/maps/org/%s/%s/" % (seo, oid)
         try:
@@ -102,7 +119,18 @@ def main():
                 out[key] = {"id": str(oid), "error": "captcha" if "captcha" in html.lower()[:5000] else "no state"}
             else:
                 org = find_org(json.loads(m.group(1)), oid)
-                out[key] = compact(org) if org else {"id": str(oid), "error": "org not found"}
+                if not org:
+                    if not update:
+                        out[key] = {"id": str(oid), "error": "org not found"}
+                elif update:
+                    fresh = compact(org)
+                    for fld in UPDATE_FIELDS:
+                        if fld in ("hours", "status") and fresh.get(fld) != out[key].get(fld):
+                            print("  ИЗМЕНИЛОСЬ", key, fld, ":", out[key].get(fld), "->", fresh.get(fld), flush=True)
+                        if fresh.get(fld) is not None or fld in ("booking", "site"):
+                            out[key][fld] = fresh.get(fld)
+                else:
+                    out[key] = compact(org)
         except Exception as e:  # noqa: BLE001
             out[key] = {"id": str(oid), "error": str(e)}
         print(key, "->", out[key].get("title") or out[key].get("error"), flush=True)

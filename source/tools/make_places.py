@@ -103,6 +103,9 @@ def main():
             'yandex': f'https://yandex.ru/maps/org/{y["seoname"]}/{y["id"]}/',
             'coords': y['coords'],
             'logo': photo_key(y['logo']) if y.get('logo') else None,
+            'phones': y.get('phones') or [],
+            'booking': y.get('booking'),
+            'site': y.get('site'),
             'reels': c.get('reels', []),
             'post': TG.get('posts', {}).get(key),
         }

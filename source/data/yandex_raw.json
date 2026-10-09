@@ -91,7 +91,16 @@
   ],
   "links": [],
   "chain": "Карти",
-  "logo": "https://avatars.mds.yandex.net/get-altay/20105336/2a0000019dc3a89e18730255729d92040d9f/%s"
+  "logo": "https://avatars.mds.yandex.net/get-altay/20105336/2a0000019dc3a89e18730255729d92040d9f/%s",
+  "phones": [
+   {
+    "n": "+7 (917) 123-77-64",
+    "v": "+79171237764",
+    "i": null
+   }
+  ],
+  "booking": null,
+  "site": null
  },
  "ruski": {
   "id": "200818672869",
@@ -150,7 +159,7 @@
    "https://avatars.mds.yandex.net/get-altay/4304228/2a000001796122b11059edba5453aebb2884/%s"
   ],
   "rating": 4.9,
-  "ratingCount": 12924,
+  "ratingCount": 12928,
   "features": [
    "средний счёт: от 3000 ₽",
    "кофе с собой",
@@ -197,7 +206,16 @@
   ],
   "links": [],
   "chain": null,
-  "logo": "https://avatars.mds.yandex.net/get-altay/13322921/2a00000193b89f2ab37162359a59f84c070f/%s"
+  "logo": "https://avatars.mds.yandex.net/get-altay/13322921/2a00000193b89f2ab37162359a59f84c070f/%s",
+  "phones": [
+   {
+    "n": "+7 (495) 777-71-11",
+    "v": "+74957777111",
+    "i": null
+   }
+  ],
+  "booking": null,
+  "site": "https://ruski354.ru/"
  },
  "blinnaya": {
   "id": "111394947027",
@@ -258,7 +276,7 @@
    "https://avatars.mds.yandex.net/get-altay/16866637/2a00000197f5e0d91a5564e3ca2b19d8e5b7/%s"
   ],
   "rating": 4.4,
-  "ratingCount": 2501,
+  "ratingCount": 2505,
   "features": [
    "цены: средние",
    "средний счёт: 150–300 ₽",
@@ -291,7 +309,16 @@
   ],
   "links": [],
   "chain": null,
-  "logo": "https://avatars.mds.yandex.net/get-altay/14795029/2a00000199f0a91b1cab5f81e5fe4cd01094/%s"
+  "logo": "https://avatars.mds.yandex.net/get-altay/14795029/2a00000199f0a91b1cab5f81e5fe4cd01094/%s",
+  "phones": [
+   {
+    "n": "+7 (991) 730-71-50",
+    "v": "+79917307150",
+    "i": null
+   }
+  ],
+  "booking": null,
+  "site": "https://blinchikirumochka.ru/"
  },
  "apartment": {
   "id": "155636975560",
@@ -401,7 +428,16 @@
    "https://yandex.ru/web-maps/webview?booking[permalink]=155636975560&booking[standalone]=true&mode=booking&source=partner-cta"
   ],
   "chain": null,
-  "logo": "https://avatars.mds.yandex.net/get-altay/1420183/2a0000016949678aa362cdb927fad8dc081c/%s"
+  "logo": "https://avatars.mds.yandex.net/get-altay/1420183/2a0000016949678aa362cdb927fad8dc081c/%s",
+  "phones": [
+   {
+    "n": "+7 (977) 712-11-11",
+    "v": "+79777121111",
+    "i": null
+   }
+  ],
+  "booking": "https://yandex.ru/web-maps/webview?booking[permalink]=155636975560&booking[standalone]=true&mode=booking&source=partner-cta",
+  "site": "https://apartmentbar.ru/"
  },
  "klich": {
   "id": "146827478262",
@@ -462,7 +498,7 @@
    "https://avatars.mds.yandex.net/get-altay/16914582/2a000001994d3281054833513a07bcc32867/%s"
   ],
   "rating": 5,
-  "ratingCount": 438,
+  "ratingCount": 439,
   "features": [
    "средний счёт: 4200–4200 ₽",
    "доставка еды",
@@ -513,7 +549,16 @@
   ],
   "links": [],
   "chain": null,
-  "logo": "https://avatars.mds.yandex.net/get-altay/16158716/2a000001994d2a2c767568b072b755e67481/%s"
+  "logo": "https://avatars.mds.yandex.net/get-altay/16158716/2a000001994d2a2c767568b072b755e67481/%s",
+  "phones": [
+   {
+    "n": "+7 (965) 229-87-24",
+    "v": "+79652298724",
+    "i": null
+   }
+  ],
+  "booking": null,
+  "site": "https://www.klich.moscow/"
  },
  "donkufta": {
   "id": "233809464975",
@@ -599,7 +644,16 @@
   ],
   "links": [],
   "chain": null,
-  "logo": "https://avatars.mds.yandex.net/get-altay/15267123/2a000001968309c32b410adae92c3520df2c/%s"
+  "logo": "https://avatars.mds.yandex.net/get-altay/15267123/2a000001968309c32b410adae92c3520df2c/%s",
+  "phones": [
+   {
+    "n": "+7 (916) 939-20-00",
+    "v": "+79169392000",
+    "i": null
+   }
+  ],
+  "booking": null,
+  "site": null
  },
  "ivanka": {
   "id": "87581675217",
@@ -703,7 +757,21 @@
   ],
   "links": [],
   "chain": null,
-  "logo": "https://avatars.mds.yandex.net/get-altay/7779554/2a00000187e8a40fc541712e81526f45a0c3/%s"
+  "logo": "https://avatars.mds.yandex.net/get-altay/7779554/2a00000187e8a40fc541712e81526f45a0c3/%s",
+  "phones": [
+   {
+    "n": "+7 (495) 801-64-20",
+    "v": "+74958016420",
+    "i": null
+   },
+   {
+    "n": "+7 (964) 599-72-29",
+    "v": "+79645997229",
+    "i": null
+   }
+  ],
+  "booking": null,
+  "site": "https://ivankarest.ru/"
  },
  "kyomei": {
   "id": "234988610168",
@@ -764,7 +832,7 @@
    "https://avatars.mds.yandex.net/get-altay/13192844/2a00000190db6429aba6853be9ef8ac5ead1/%s"
   ],
   "rating": 5,
-  "ratingCount": 5937,
+  "ratingCount": 5938,
   "features": [
    "средний счёт: 500–1500 ₽",
    "доставка еды",
@@ -822,7 +890,21 @@
   ],
   "links": [],
   "chain": null,
-  "logo": "https://avatars.mds.yandex.net/get-altay/18133168/2a0000019cb21f8dd914edb05bf0239bd487/%s"
+  "logo": "https://avatars.mds.yandex.net/get-altay/18133168/2a0000019cb21f8dd914edb05bf0239bd487/%s",
+  "phones": [
+   {
+    "n": "+7 (968) 193-67-58",
+    "v": "+79681936758",
+    "i": "Манго Яндекс Карты"
+   },
+   {
+    "n": "+7 (926) 888-45-52",
+    "v": "+79268884552",
+    "i": null
+   }
+  ],
+  "booking": null,
+  "site": "https://kyomei.ru/"
  },
  "bolo": {
   "id": "193231860595",
@@ -892,7 +974,16 @@
   ],
   "links": [],
   "chain": null,
-  "logo": "https://avatars.mds.yandex.net/get-altay/17786812/2a0000019f8fc8caf3e22bee6d0248a187a9/%s"
+  "logo": "https://avatars.mds.yandex.net/get-altay/17786812/2a0000019f8fc8caf3e22bee6d0248a187a9/%s",
+  "phones": [
+   {
+    "n": "+7 (919) 964-96-03",
+    "v": "+79199649603",
+    "i": null
+   }
+  ],
+  "booking": null,
+  "site": "https://bolo.ru/"
  },
  "arrurru": {
   "id": "200635606237",
@@ -953,7 +1044,7 @@
    "https://avatars.mds.yandex.net/get-altay/16609617/2a0000019b73f12b4c67e7c8c32c824836f4/%s"
   ],
   "rating": 5,
-  "ratingCount": 745,
+  "ratingCount": 746,
   "features": [
    "средний счёт: до 2500 ₽",
    "доставка еды",
@@ -1009,7 +1100,16 @@
   ],
   "links": [],
   "chain": null,
-  "logo": "https://avatars.mds.yandex.net/get-altay/16399547/2a0000019976b20ab5ad982dd393d308dd26/%s"
+  "logo": "https://avatars.mds.yandex.net/get-altay/16399547/2a0000019976b20ab5ad982dd393d308dd26/%s",
+  "phones": [
+   {
+    "n": "+7 (499) 474-53-32",
+    "v": "+74994745332",
+    "i": null
+   }
+  ],
+  "booking": null,
+  "site": "https://arrurru.ru/"
  },
  "brasserie": {
   "id": "132693640072",
@@ -1068,7 +1168,7 @@
    "https://avatars.mds.yandex.net/get-altay/16330083/2a000001982c8308bfa2428d21ef394b6f2f/%s"
   ],
   "rating": 5,
-  "ratingCount": 772,
+  "ratingCount": 773,
   "features": [
    "средний счёт: 1500–3000 ₽",
    "доставка еды",
@@ -1118,7 +1218,10 @@
   ],
   "links": [],
   "chain": null,
-  "logo": "https://avatars.mds.yandex.net/get-altay/19824988/2a000001a061c0bb632edf62820de4f81d4b/%s"
+  "logo": "https://avatars.mds.yandex.net/get-altay/19824988/2a000001a061c0bb632edf62820de4f81d4b/%s",
+  "phones": [],
+  "booking": null,
+  "site": "https://brasserie.ru/"
  },
  "farsh": {
   "id": "4392096998",
@@ -1177,7 +1280,7 @@
    "https://avatars.mds.yandex.net/get-altay/965007/2a0000016288838b36c85cff1e08c3a8cec5/%s"
   ],
   "rating": 4.8,
-  "ratingCount": 5425,
+  "ratingCount": 5426,
   "features": [
    "доставка еды",
    "средний счёт: от 1200 ₽",
@@ -1224,7 +1327,21 @@
   ],
   "links": [],
   "chain": "#Farш",
-  "logo": "https://avatars.mds.yandex.net/get-altay/15993332/2a00000197c1278b0a13cd32d2a1e3912644/%s"
+  "logo": "https://avatars.mds.yandex.net/get-altay/15993332/2a00000197c1278b0a13cd32d2a1e3912644/%s",
+  "phones": [
+   {
+    "n": "8 (800) 505-22-55",
+    "v": "+78005052255",
+    "i": null
+   },
+   {
+    "n": "+7 (495) 258-42-05",
+    "v": "+74952584205",
+    "i": null
+   }
+  ],
+  "booking": null,
+  "site": "https://farshburger.ru/"
  },
  "shaurlandia": {
   "id": "80485307718",
@@ -1283,7 +1400,7 @@
    "https://avatars.mds.yandex.net/get-altay/18150755/2a0000019cb4a326d259d1656b4bc12a293b/%s"
   ],
   "rating": 4.9,
-  "ratingCount": 2939,
+  "ratingCount": 2941,
   "features": [
    "средний счёт: 190–350 ₽",
    "кофе с собой",
@@ -1306,7 +1423,16 @@
   "social": [],
   "links": [],
   "chain": null,
-  "logo": "https://avatars.mds.yandex.net/get-altay/6674804/2a0000018407dce7820aa113ebc5e40458b8/%s"
+  "logo": "https://avatars.mds.yandex.net/get-altay/6674804/2a0000018407dce7820aa113ebc5e40458b8/%s",
+  "phones": [
+   {
+    "n": "+7 (965) 230-13-43",
+    "v": "+79652301343",
+    "i": null
+   }
+  ],
+  "booking": null,
+  "site": null
  },
  "chudoyudo": {
   "id": "102810707359",
@@ -1366,7 +1492,7 @@
    "https://avatars.mds.yandex.net/get-altay/12838938/2a0000019289eb53e2356940259fab768432/%s"
   ],
   "rating": 4.9,
-  "ratingCount": 6239,
+  "ratingCount": 6240,
   "features": [
    "средний счёт: 2000–2500 ₽",
    "доставка еды",
@@ -1414,7 +1540,21 @@
   "social": [],
   "links": [],
   "chain": null,
-  "logo": "https://avatars.mds.yandex.net/get-altay/6774966/2a00000191282dc91f49e2c4d1f096b65214/%s"
+  "logo": "https://avatars.mds.yandex.net/get-altay/6774966/2a00000191282dc91f49e2c4d1f096b65214/%s",
+  "phones": [
+   {
+    "n": "+7 (965) 229-60-91",
+    "v": "+79652296091",
+    "i": null
+   },
+   {
+    "n": "+7 (932) 698-93-72",
+    "v": "+79326989372",
+    "i": "Бронирование"
+   }
+  ],
+  "booking": null,
+  "site": "https://chudoyudo.com/"
  },
  "smokeis": {
   "id": "224290958595",
@@ -1475,7 +1615,7 @@
    "https://avatars.mds.yandex.net/get-altay/15395175/2a000001986676fe3e5c6f397c99d827dda3/%s"
   ],
   "rating": 4.9,
-  "ratingCount": 1092,
+  "ratingCount": 1093,
   "features": [
    "доставка еды",
    "цена бокала пива: 250–300 ₽",
@@ -1511,7 +1651,16 @@
   ],
   "links": [],
   "chain": null,
-  "logo": "https://avatars.mds.yandex.net/get-altay/20368588/2a000001a05dab598d66a836c13723efc719/%s"
+  "logo": "https://avatars.mds.yandex.net/get-altay/20368588/2a000001a05dab598d66a836c13723efc719/%s",
+  "phones": [
+   {
+    "n": "+7 (926) 024-22-29",
+    "v": "+79260242229",
+    "i": null
+   }
+  ],
+  "booking": null,
+  "site": null
  },
  "loona": {
   "id": "227167313971",
@@ -1572,7 +1721,7 @@
    "https://avatars.mds.yandex.net/get-altay/11940760/2a0000018ec907e720187999676a4669919c/%s"
   ],
   "rating": 4.9,
-  "ratingCount": 8886,
+  "ratingCount": 8887,
   "features": [
    "средний счёт: 3500–3500 ₽",
    "доставка еды",
@@ -1628,7 +1777,21 @@
    "https://yandex.ru/web-maps/webview?booking[permalink]=227167313971&booking[standalone]=true&mode=booking&source=partner-cta"
   ],
   "chain": null,
-  "logo": "https://avatars.mds.yandex.net/get-altay/4961567/2a00000181c8ec6a2f45d43ed5da0859af26/%s"
+  "logo": "https://avatars.mds.yandex.net/get-altay/4961567/2a00000181c8ec6a2f45d43ed5da0859af26/%s",
+  "phones": [
+   {
+    "n": "+7 (495) 146-46-81",
+    "v": "+74951464681",
+    "i": null
+   },
+   {
+    "n": "+7 (916) 035-58-11",
+    "v": "+79160355811",
+    "i": "Telegram"
+   }
+  ],
+  "booking": "https://yandex.ru/web-maps/webview?booking[permalink]=227167313971&booking[standalone]=true&mode=booking&source=partner-cta",
+  "site": "http://loona.rest/"
  },
  "shaurmabasm": {
   "id": "143705429167",
@@ -1688,7 +1851,7 @@
    "https://avatars.mds.yandex.net/get-altay/16299341/2a0000019c4f209d5decaeb83dd5d8d1dce2/%s"
   ],
   "rating": 5,
-  "ratingCount": 1195,
+  "ratingCount": 1198,
   "features": [
    "доставка еды",
    "средний счёт: 280–600 ₽",
@@ -1735,7 +1898,16 @@
   ],
   "links": [],
   "chain": null,
-  "logo": "https://avatars.mds.yandex.net/get-altay/14730529/2a00000194a1ff98585f888692cdbf48e6d6/%s"
+  "logo": "https://avatars.mds.yandex.net/get-altay/14730529/2a00000194a1ff98585f888692cdbf48e6d6/%s",
+  "phones": [
+   {
+    "n": "+7 (936) 277-07-10",
+    "v": "+79362770710",
+    "i": null
+   }
+  ],
+  "booking": null,
+  "site": null
  },
  "plancha": {
   "id": "34279725196",
@@ -1827,7 +1999,16 @@
   ],
   "links": [],
   "chain": "Планча",
-  "logo": "https://avatars.mds.yandex.net/get-altay/20105000/2a0000019fed440e5e3178e0a2137f025522/%s"
+  "logo": "https://avatars.mds.yandex.net/get-altay/20105000/2a0000019fed440e5e3178e0a2137f025522/%s",
+  "phones": [
+   {
+    "n": "+7 (919) 801-77-33",
+    "v": "+79198017733",
+    "i": null
+   }
+  ],
+  "booking": null,
+  "site": null
  },
  "tatooine": {
   "id": "193209633114",
@@ -1888,7 +2069,7 @@
    "https://avatars.mds.yandex.net/get-altay/17754824/2a0000019d975e716d33339a93708bf9ad3a/%s"
   ],
   "rating": 5,
-  "ratingCount": 914,
+  "ratingCount": 916,
   "features": [
    "доставка еды",
    "кофе с собой",
@@ -1934,7 +2115,21 @@
   ],
   "links": [],
   "chain": null,
-  "logo": "https://avatars.mds.yandex.net/get-altay/19699569/2a0000019b93251b7d5ed90685bfc40ce614/%s"
+  "logo": "https://avatars.mds.yandex.net/get-altay/19699569/2a0000019b93251b7d5ed90685bfc40ce614/%s",
+  "phones": [
+   {
+    "n": "+7 (495) 981-08-55",
+    "v": "+74959810855",
+    "i": null
+   },
+   {
+    "n": "+7 (495) 182-30-88",
+    "v": "+74951823088",
+    "i": null
+   }
+  ],
+  "booking": null,
+  "site": "https://tatooine.rest/"
  },
  "nauka": {
   "id": "50196935823",
@@ -1995,7 +2190,7 @@
    "https://avatars.mds.yandex.net/get-altay/9663145/2a000001886dc700403764f20d3a5f716cac/%s"
   ],
   "rating": 5,
-  "ratingCount": 4191,
+  "ratingCount": 4190,
   "features": [
    "доставка еды",
    "цена бокала пива: 380–560 ₽",
@@ -2059,7 +2254,16 @@
   ],
   "links": [],
   "chain": null,
-  "logo": "https://avatars.mds.yandex.net/get-altay/13220791/2a00000194b03667b126dad86434f85a2f39/%s"
+  "logo": "https://avatars.mds.yandex.net/get-altay/13220791/2a00000194b03667b126dad86434f85a2f39/%s",
+  "phones": [
+   {
+    "n": "+7 (925) 125-77-88",
+    "v": "+79251257788",
+    "i": null
+   }
+  ],
+  "booking": null,
+  "site": "https://naukabar.ru/"
  },
  "lea": {
   "id": "23689815864",
@@ -2160,7 +2364,16 @@
   ],
   "links": [],
   "chain": null,
-  "logo": "https://avatars.mds.yandex.net/get-altay/14079384/2a0000019350878e899d7df951ae18f947d6/%s"
+  "logo": "https://avatars.mds.yandex.net/get-altay/14079384/2a0000019350878e899d7df951ae18f947d6/%s",
+  "phones": [
+   {
+    "n": "+7 (934) 008-16-82",
+    "v": "+79340081682",
+    "i": null
+   }
+  ],
+  "booking": null,
+  "site": "http://lea.rest/"
  },
  "zhiest": {
   "id": "1044919573",
@@ -2219,7 +2432,7 @@
    "https://avatars.mds.yandex.net/get-altay/18105464/2a0000019bb7ed106ca9f250d3bd0c92ca47/%s"
   ],
   "rating": 4.7,
-  "ratingCount": 3220,
+  "ratingCount": 3223,
   "features": [
    "средний счёт: 1500–2000 ₽",
    "доставка еды",
@@ -2262,7 +2475,16 @@
    "https://www.restoran.ru/booking-widget-form.php?id=387776&name=%D0%96%D0%B8+%D0%95%D1%81%D1%82%D1%8C"
   ],
   "chain": null,
-  "logo": "https://avatars.mds.yandex.net/get-altay/1045589/2a000001864661bacdad8994e8dad8cbdc83/%s"
+  "logo": "https://avatars.mds.yandex.net/get-altay/1045589/2a000001864661bacdad8994e8dad8cbdc83/%s",
+  "phones": [
+   {
+    "n": "+7 (916) 625-00-01",
+    "v": "+79166250001",
+    "i": null
+   }
+  ],
+  "booking": "https://www.restoran.ru/booking-widget-form.php?id=387776&name=%D0%96%D0%B8+%D0%95%D1%81%D1%82%D1%8C",
+  "site": "http://jiest.ru/"
  },
  "erwin": {
   "id": "185820248177",
@@ -2321,7 +2543,7 @@
    "https://avatars.mds.yandex.net/get-altay/754546/2a0000018bbfdab3240bbbf5f99ce4b48ccd/%s"
   ],
   "rating": 4.8,
-  "ratingCount": 3776,
+  "ratingCount": 3777,
   "features": [
    "средний счёт: 3000–5000 ₽",
    "доставка еды",
@@ -2370,7 +2592,16 @@
   ],
   "links": [],
   "chain": null,
-  "logo": "https://avatars.mds.yandex.net/get-altay/14329771/2a00000194b6c70a01c67c5f58a84d1ef791/%s"
+  "logo": "https://avatars.mds.yandex.net/get-altay/14329771/2a00000194b6c70a01c67c5f58a84d1ef791/%s",
+  "phones": [
+   {
+    "n": "+7 (916) 000-50-00",
+    "v": "+79160005000",
+    "i": null
+   }
+  ],
+  "booking": null,
+  "site": "https://erwin-pavilion.rest/"
  },
  "chaihona": {
   "id": "1254006182",
@@ -2429,7 +2660,7 @@
    "https://avatars.mds.yandex.net/get-altay/14336229/2a000001976e4a52bd6adfcc01d9318cb871/%s"
   ],
   "rating": 4.8,
-  "ratingCount": 9257,
+  "ratingCount": 9296,
   "features": [
    "средний счёт: 2199–2200 ₽",
    "доставка еды",
@@ -2480,7 +2711,21 @@
    "https://yandex.ru/web-maps/webview?booking[permalink]=1254006182&booking[standalone]=true&mode=booking&source=partner-cta"
   ],
   "chain": "Чайхона №1",
-  "logo": "https://avatars.mds.yandex.net/get-altay/11937221/2a0000019023671284e26edc6b0863569fbf/%s"
+  "logo": "https://avatars.mds.yandex.net/get-altay/11937221/2a0000019023671284e26edc6b0863569fbf/%s",
+  "phones": [
+   {
+    "n": "+7 (495) 507-00-21",
+    "v": "+74955070021",
+    "i": null
+   },
+   {
+    "n": "+7 (495) 927-55-55",
+    "v": "+74959275555",
+    "i": null
+   }
+  ],
+  "booking": "https://yandex.ru/web-maps/webview?booking[permalink]=1254006182&booking[standalone]=true&mode=booking&source=partner-cta",
+  "site": "https://chaihona1.ru/"
  },
  "myasoryba": {
   "id": "19395904090",
@@ -2539,7 +2784,7 @@
    "https://avatars.mds.yandex.net/get-altay/14264437/2a0000019136ecfbcb9d532c67c1057653a4/%s"
   ],
   "rating": 4.9,
-  "ratingCount": 8099,
+  "ratingCount": 8100,
   "features": [
    "средний счёт: 2700–2700 ₽",
    "доставка еды",
@@ -2574,7 +2819,21 @@
   ],
   "links": [],
   "chain": "Мясо&Рыба",
-  "logo": "https://avatars.mds.yandex.net/get-altay/16368192/2a0000019ae9bc9cb8a457517c72629e6f00/%s"
+  "logo": "https://avatars.mds.yandex.net/get-altay/16368192/2a0000019ae9bc9cb8a457517c72629e6f00/%s",
+  "phones": [
+   {
+    "n": "+7 (495) 734-70-25",
+    "v": "+74957347025",
+    "i": null
+   },
+   {
+    "n": "+7 (916) 495-25-69",
+    "v": "+79164952569",
+    "i": null
+   }
+  ],
+  "booking": null,
+  "site": "http://meat-and-fish.ru/"
  },
  "penta": {
   "id": "132823476316",
@@ -2694,7 +2953,21 @@
   ],
   "links": [],
   "chain": null,
-  "logo": "https://avatars.mds.yandex.net/get-altay/5298780/2a00000183d01b8caa049006225ce9c59159/%s"
+  "logo": "https://avatars.mds.yandex.net/get-altay/5298780/2a00000183d01b8caa049006225ce9c59159/%s",
+  "phones": [
+   {
+    "n": "+7 (495) 287-01-36",
+    "v": "+74952870136",
+    "i": null
+   },
+   {
+    "n": "+7 (903) 614-15-13",
+    "v": "+79036141513",
+    "i": null
+   }
+  ],
+  "booking": null,
+  "site": "https://www.pentamoscow.ru/eat/"
  },
  "lavirgen": {
   "id": "240105645545",
@@ -2786,7 +3059,16 @@
   ],
   "links": [],
   "chain": null,
-  "logo": "https://avatars.mds.yandex.net/get-altay/6237886/2a00000180cceba7f5923cd243251fb5e2fa/%s"
+  "logo": "https://avatars.mds.yandex.net/get-altay/6237886/2a00000180cceba7f5923cd243251fb5e2fa/%s",
+  "phones": [
+   {
+    "n": "+7 (985) 420-66-60",
+    "v": "+79854206660",
+    "i": null
+   }
+  ],
+  "booking": null,
+  "site": "https://lavirgen.tilda.ws/"
  },
  "bobbyq": {
   "id": "111397150761",
@@ -2847,7 +3129,7 @@
    "https://avatars.mds.yandex.net/get-altay/15682944/2a0000019995ecc0990492a3c0df56bec6f6/%s"
   ],
   "rating": 5,
-  "ratingCount": 525,
+  "ratingCount": 527,
   "features": [
    "доставка еды",
    "средний счёт: 300–500 ₽",
@@ -2877,7 +3159,16 @@
   ],
   "links": [],
   "chain": null,
-  "logo": "https://avatars.mds.yandex.net/get-altay/15416268/2a0000019953c003c225f71e8d58452fcfd5/%s"
+  "logo": "https://avatars.mds.yandex.net/get-altay/15416268/2a0000019953c003c225f71e8d58452fcfd5/%s",
+  "phones": [
+   {
+    "n": "+7 (925) 521-65-47",
+    "v": "+79255216547",
+    "i": null
+   }
+  ],
+  "booking": null,
+  "site": null
  },
  "lafferia": {
   "id": "227863439698",
@@ -2938,7 +3229,7 @@
    "https://avatars.mds.yandex.net/get-altay/14097168/2a00000193d96f3dac1d2cfdb1453f1663b9/%s"
   ],
   "rating": 5,
-  "ratingCount": 397,
+  "ratingCount": 399,
   "features": [
    "доставка еды",
    "средний счёт: 300–700 ₽",
@@ -2989,7 +3280,16 @@
   ],
   "links": [],
   "chain": null,
-  "logo": "https://avatars.mds.yandex.net/get-altay/16130837/2a0000019ba3a505be30bc37a1448eb65d64/%s"
+  "logo": "https://avatars.mds.yandex.net/get-altay/16130837/2a0000019ba3a505be30bc37a1448eb65d64/%s",
+  "phones": [
+   {
+    "n": "+7 (939) 888-87-89",
+    "v": "+79398888789",
+    "i": null
+   }
+  ],
+  "booking": null,
+  "site": null
  },
  "shaurmacity": {
   "id": "57995358768",
@@ -3050,7 +3350,7 @@
    "https://avatars.mds.yandex.net/get-altay/16480550/2a0000019b31be6c604bfb844d738f2f49da/%s"
   ],
   "rating": 5,
-  "ratingCount": 206,
+  "ratingCount": 210,
   "features": [
    "доставка еды",
    "кофе с собой",
@@ -3085,7 +3385,16 @@
   ],
   "links": [],
   "chain": "Shaurma City",
-  "logo": "https://avatars.mds.yandex.net/get-altay/19539707/2a0000019cb885b9ae6512622afeee17b7f3/%s"
+  "logo": "https://avatars.mds.yandex.net/get-altay/19539707/2a0000019cb885b9ae6512622afeee17b7f3/%s",
+  "phones": [
+   {
+    "n": "+7 (996) 976-73-40",
+    "v": "+79969767340",
+    "i": null
+   }
+  ],
+  "booking": null,
+  "site": "https://shaurmacity.ru/"
  },
  "meatcrew": {
   "id": "146942630283",
@@ -3146,7 +3455,7 @@
    "https://avatars.mds.yandex.net/get-altay/9331640/2a000001881f92de8a1794a511de9ebac79f/%s"
   ],
   "rating": 4.8,
-  "ratingCount": 1651,
+  "ratingCount": 1652,
   "features": [
    "средний счёт: 650–1200 ₽",
    "доставка еды",
@@ -3203,7 +3512,16 @@
    "https://yandex.ru/web-maps/webview?booking[permalink]=146942630283&booking[standalone]=true&mode=booking&source=partner-cta"
   ],
   "chain": "Meat Crew",
-  "logo": "https://avatars.mds.yandex.net/get-altay/16494614/2a0000019a8809eb5d98e3a260c07bafb2b2/%s"
+  "logo": "https://avatars.mds.yandex.net/get-altay/16494614/2a0000019a8809eb5d98e3a260c07bafb2b2/%s",
+  "phones": [
+   {
+    "n": "+7 (926) 680-28-11",
+    "v": "+79266802811",
+    "i": null
+   }
+  ],
+  "booking": "https://yandex.ru/web-maps/webview?booking[permalink]=146942630283&booking[standalone]=true&mode=booking&source=partner-cta",
+  "site": "https://meatcrew.ru/belorusskaya"
  },
  "burgeravenue": {
   "id": "145132524930",
@@ -3263,7 +3581,7 @@
    "https://avatars.mds.yandex.net/get-altay/20478540/2a0000019ed0b390de623a012bf9786130cc/%s"
   ],
   "rating": 4.8,
-  "ratingCount": 62,
+  "ratingCount": 63,
   "features": [
    "туалет",
    "посещение с животными: запрещено с животными",
@@ -3279,7 +3597,16 @@
   "social": [],
   "links": [],
   "chain": null,
-  "logo": "https://avatars.mds.yandex.net/get-altay/13791177/2a0000019ed0b0a9455c627a886695a0fb22/%s"
+  "logo": "https://avatars.mds.yandex.net/get-altay/13791177/2a0000019ed0b0a9455c627a886695a0fb22/%s",
+  "phones": [
+   {
+    "n": "+7 (963) 199-01-01",
+    "v": "+79631990101",
+    "i": null
+   }
+  ],
+  "booking": null,
+  "site": "https://burger-avenue-mosfilmovskaja-ulitsa.clients.site/"
  },
  "rustyrat": {
   "id": "94015478437",
@@ -3338,7 +3665,7 @@
    "https://avatars.mds.yandex.net/get-altay/16472720/2a0000019b526d0ab745b8bda82de8a65c43/%s"
   ],
   "rating": 4.8,
-  "ratingCount": 776,
+  "ratingCount": 778,
   "features": [
    "средний счёт: от 2000 ₽",
    "еда навынос",
@@ -3360,7 +3687,16 @@
   ],
   "links": [],
   "chain": null,
-  "logo": "https://avatars.mds.yandex.net/get-altay/21173611/2a000001a0cf035c9fdf4b3628fe21d60096/%s"
+  "logo": "https://avatars.mds.yandex.net/get-altay/21173611/2a000001a0cf035c9fdf4b3628fe21d60096/%s",
+  "phones": [
+   {
+    "n": "+7 (968) 890-00-60",
+    "v": "+79688900060",
+    "i": null
+   }
+  ],
+  "booking": null,
+  "site": "https://rustyratpizza.tilda.ws/"
  },
  "lars": {
   "id": "86560638264",
@@ -3486,7 +3822,16 @@
   ],
   "links": [],
   "chain": null,
-  "logo": "https://avatars.mds.yandex.net/get-altay/1546430/2a0000016ca91710ae1ebc5a59a12044c7a6/%s"
+  "logo": "https://avatars.mds.yandex.net/get-altay/1546430/2a0000016ca91710ae1ebc5a59a12044c7a6/%s",
+  "phones": [
+   {
+    "n": "+7 (495) 001-46-85",
+    "v": "+74950014685",
+    "i": null
+   }
+  ],
+  "booking": null,
+  "site": "https://larsvegans.ru/"
  },
  "uhvat": {
   "id": "129106521343",
@@ -3546,7 +3891,7 @@
    "https://avatars.mds.yandex.net/get-altay/2006845/2a0000016ec6877418e54e60fa88369d5d4b/%s"
   ],
   "rating": 4.9,
-  "ratingCount": 6437,
+  "ratingCount": 6438,
   "features": [
    "средний счёт: 3000–5000 ₽",
    "доставка еды",
@@ -3598,7 +3943,16 @@
   ],
   "links": [],
   "chain": null,
-  "logo": "https://avatars.mds.yandex.net/get-altay/2366463/2a000001738185d9abf22d3e08aae66604a0/%s"
+  "logo": "https://avatars.mds.yandex.net/get-altay/2366463/2a000001738185d9abf22d3e08aae66604a0/%s",
+  "phones": [
+   {
+    "n": "+7 (939) 320-78-99",
+    "v": "+79393207899",
+    "i": null
+   }
+  ],
+  "booking": null,
+  "site": "http://uhvat.restaurant/"
  },
  "tyomajo": {
   "id": "29858634500",
@@ -3669,7 +4023,16 @@
   "social": [],
   "links": [],
   "chain": null,
-  "logo": "https://avatars.mds.yandex.net/get-altay/18111128/2a0000019c2e5081cdaa04d1248ef290be64/%s"
+  "logo": "https://avatars.mds.yandex.net/get-altay/18111128/2a0000019c2e5081cdaa04d1248ef290be64/%s",
+  "phones": [
+   {
+    "n": "+7 (910) 005-53-06",
+    "v": "+79100055306",
+    "i": null
+   }
+  ],
+  "booking": null,
+  "site": null
  },
  "iskendi": {
   "id": "52119597703",
@@ -3757,7 +4120,16 @@
   ],
   "links": [],
   "chain": null,
-  "logo": "https://avatars.mds.yandex.net/get-altay/16454077/2a0000019a351ef95926e5250675884993b4/%s"
+  "logo": "https://avatars.mds.yandex.net/get-altay/16454077/2a0000019a351ef95926e5250675884993b4/%s",
+  "phones": [
+   {
+    "n": "+7 (993) 629-71-19",
+    "v": "+79936297119",
+    "i": null
+   }
+  ],
+  "booking": null,
+  "site": null
  },
  "beeffish": {
   "id": "194390663541",
@@ -3843,7 +4215,16 @@
   "social": [],
   "links": [],
   "chain": null,
-  "logo": "https://avatars.mds.yandex.net/get-altay/20192526/2a000001a033fbbb4a914226431a17518bec/%s"
+  "logo": "https://avatars.mds.yandex.net/get-altay/20192526/2a000001a033fbbb4a914226431a17518bec/%s",
+  "phones": [
+   {
+    "n": "+7 (991) 161-66-33",
+    "v": "+79911616633",
+    "i": null
+   }
+  ],
+  "booking": null,
+  "site": null
  },
  "bijou": {
   "id": "130868248749",
@@ -3904,7 +4285,7 @@
    "https://avatars.mds.yandex.net/get-altay/6928818/2a0000018348423763ebfcc77fcfbf5f4e99/%s"
   ],
   "rating": 4.8,
-  "ratingCount": 1227,
+  "ratingCount": 1230,
   "features": [
    "средний счёт: 1500–2500 ₽",
    "цены: выше среднего",
@@ -3940,7 +4321,16 @@
   ],
   "links": [],
   "chain": null,
-  "logo": "https://avatars.mds.yandex.net/get-altay/19619196/2a0000019cd6bfd02cd861fa33abbd39a8a8/%s"
+  "logo": "https://avatars.mds.yandex.net/get-altay/19619196/2a0000019cd6bfd02cd861fa33abbd39a8a8/%s",
+  "phones": [
+   {
+    "n": "+7 (495) 130-02-95",
+    "v": "+74951300295",
+    "i": null
+   }
+  ],
+  "booking": null,
+  "site": "https://bijoubar.ru/"
  },
  "savoy": {
   "id": "1121853221",
@@ -4000,7 +4390,7 @@
    "https://avatars.mds.yandex.net/get-altay/18748915/2a0000019df35c5079a54a943b3bb327d378/%s"
   ],
   "rating": 4.8,
-  "ratingCount": 2070,
+  "ratingCount": 2071,
   "features": [
    "средний счёт: от 5000 ₽",
    "доставка еды",
@@ -4053,7 +4443,21 @@
    "https://www.restoran.ru/booking-widget-form.php?id=386937&name=%D0%A1%D0%B0%D0%B2%D0%BE%D0%B9"
   ],
   "chain": null,
-  "logo": "https://avatars.mds.yandex.net/get-altay/1546430/2a0000016d4986d2cb754e514d2faf76ff24/%s"
+  "logo": "https://avatars.mds.yandex.net/get-altay/1546430/2a0000016d4986d2cb754e514d2faf76ff24/%s",
+  "phones": [
+   {
+    "n": "+7 (985) 310-72-03",
+    "v": "+79853107203",
+    "i": null
+   },
+   {
+    "n": "+7 (985) 850-96-78",
+    "v": "+79858509678",
+    "i": "Хостес"
+   }
+  ],
+  "booking": "https://www.restoran.ru/booking-widget-form.php?id=386937&name=%D0%A1%D0%B0%D0%B2%D0%BE%D0%B9",
+  "site": "https://savoy.rest/"
  },
  "bereg": {
   "id": "110523496108",
@@ -4209,7 +4613,16 @@
   ],
   "links": [],
   "chain": null,
-  "logo": "https://avatars.mds.yandex.net/get-altay/18132699/2a0000019caf2d56096df800c07c2fe64b74/%s"
+  "logo": "https://avatars.mds.yandex.net/get-altay/18132699/2a0000019caf2d56096df800c07c2fe64b74/%s",
+  "phones": [
+   {
+    "n": "+7 (495) 929-70-40",
+    "v": "+74959297040",
+    "i": null
+   }
+  ],
+  "booking": null,
+  "site": "https://bereg.moscow/"
  },
  "munch": {
   "id": "6172733110",
@@ -4299,7 +4712,16 @@
   ],
   "links": [],
   "chain": null,
-  "logo": "https://avatars.mds.yandex.net/get-altay/20105000/2a0000019e83e27178c042ab37098e42c618/%s"
+  "logo": "https://avatars.mds.yandex.net/get-altay/20105000/2a0000019e83e27178c042ab37098e42c618/%s",
+  "phones": [
+   {
+    "n": "+7 (967) 077-99-95",
+    "v": "+79670779995",
+    "i": null
+   }
+  ],
+  "booking": null,
+  "site": null
  },
  "vanlav": {
   "id": "241760750343",
@@ -4360,7 +4782,7 @@
    "https://avatars.mds.yandex.net/get-altay/15352901/2a00000195d7281d5790d3daf2090f13a732/%s"
   ],
   "rating": 5,
-  "ratingCount": 1463,
+  "ratingCount": 1462,
   "features": [
    "кофе с собой",
    "доставка продуктов",
@@ -4382,7 +4804,16 @@
   ],
   "links": [],
   "chain": "Ванлав",
-  "logo": "https://avatars.mds.yandex.net/get-altay/20967380/2a000001a0c58358ce53ac99d95c84c5ce5c/%s"
+  "logo": "https://avatars.mds.yandex.net/get-altay/20967380/2a000001a0c58358ce53ac99d95c84c5ce5c/%s",
+  "phones": [
+   {
+    "n": "+7 (989) 156-61-18",
+    "v": "+79891566118",
+    "i": null
+   }
+  ],
+  "booking": null,
+  "site": "https://msk.vanlav.ru/"
  },
  "kiez": {
   "id": "69022450761",
@@ -4482,7 +4913,16 @@
   ],
   "links": [],
   "chain": null,
-  "logo": "https://avatars.mds.yandex.net/get-altay/20089935/2a0000019d199ab8d722a3cceab372613c85/%s"
+  "logo": "https://avatars.mds.yandex.net/get-altay/20089935/2a0000019d199ab8d722a3cceab372613c85/%s",
+  "phones": [
+   {
+    "n": "+7 (993) 590-97-17",
+    "v": "+79935909717",
+    "i": null
+   }
+  ],
+  "booking": null,
+  "site": null
  },
  "chapa": {
   "id": "207980869972",
@@ -4555,7 +4995,10 @@
   ],
   "links": [],
   "chain": null,
-  "logo": null
+  "logo": null,
+  "phones": [],
+  "booking": null,
+  "site": null
  },
  "ozkebab": {
   "id": "119919342995",
@@ -4615,7 +5058,7 @@
    "https://avatars.mds.yandex.net/get-altay/15042938/2a0000019ad5c753d9a2c3de931936b7255d/%s"
   ],
   "rating": 4.9,
-  "ratingCount": 1644,
+  "ratingCount": 1646,
   "features": [
    "средний счёт: 750–2500 ₽",
    "кофе с собой",
@@ -4648,7 +5091,16 @@
   ],
   "links": [],
   "chain": null,
-  "logo": "https://avatars.mds.yandex.net/get-altay/16411237/2a0000019adfac6167781a00dae9260df47b/%s"
+  "logo": "https://avatars.mds.yandex.net/get-altay/16411237/2a0000019adfac6167781a00dae9260df47b/%s",
+  "phones": [
+   {
+    "n": "+7 (916) 679-74-29",
+    "v": "+79166797429",
+    "i": null
+   }
+  ],
+  "booking": null,
+  "site": null
  },
  "lovin": {
   "id": "128203840323",
@@ -4708,7 +5160,7 @@
    "https://avatars.mds.yandex.net/get-altay/19082209/2a0000019e2314ccac705163120b1c23c643/%s"
   ],
   "rating": 5,
-  "ratingCount": 1494,
+  "ratingCount": 1498,
   "features": [
    "средний счёт: 1500–1700 ₽",
    "кофе с собой",
@@ -4741,7 +5193,16 @@
   ],
   "links": [],
   "chain": null,
-  "logo": "https://avatars.mds.yandex.net/get-altay/18128678/2a0000019d6cea1fcecc1b94fe355ee52f04/%s"
+  "logo": "https://avatars.mds.yandex.net/get-altay/18128678/2a0000019d6cea1fcecc1b94fe355ee52f04/%s",
+  "phones": [
+   {
+    "n": "+7 (991) 253-03-33",
+    "v": "+79912530333",
+    "i": null
+   }
+  ],
+  "booking": null,
+  "site": "https://lovin-burgers.ru/"
  },
  "crabcaviar": {
   "id": "124983353621",
@@ -4819,7 +5280,16 @@
   "social": [],
   "links": [],
   "chain": null,
-  "logo": "https://avatars.mds.yandex.net/get-altay/367090/2a0000018fe7e1973d2e79f420338ebdc475/%s"
+  "logo": "https://avatars.mds.yandex.net/get-altay/367090/2a0000018fe7e1973d2e79f420338ebdc475/%s",
+  "phones": [
+   {
+    "n": "+7 (968) 820-82-82",
+    "v": "+79688208282",
+    "i": null
+   }
+  ],
+  "booking": null,
+  "site": null
  },
  "underdog": {
   "id": "181544007639",
@@ -4879,7 +5349,7 @@
    "https://avatars.mds.yandex.net/get-altay/2761244/2a000001736c12b564de307c04124e959bb1/%s"
   ],
   "rating": 4.7,
-  "ratingCount": 3591,
+  "ratingCount": 3593,
   "features": [
    "доставка еды",
    "цены: средние",
@@ -4908,7 +5378,16 @@
   "social": [],
   "links": [],
   "chain": null,
-  "logo": "https://avatars.mds.yandex.net/get-altay/20784471/2a000001a0fda3fd3c0433a595a577fd187e/%s"
+  "logo": "https://avatars.mds.yandex.net/get-altay/20784471/2a000001a0fda3fd3c0433a595a577fd187e/%s",
+  "phones": [
+   {
+    "n": "+7 (985) 420-02-28",
+    "v": "+79854200228",
+    "i": null
+   }
+  ],
+  "booking": null,
+  "site": "http://underdog-moscow.ru/"
  },
  "dreamfish": {
   "id": "190919154252",
@@ -4969,7 +5448,7 @@
    "https://avatars.mds.yandex.net/get-altay/3954938/2a000001763caef878e07704af1ca5d95179/%s"
   ],
   "rating": 4.9,
-  "ratingCount": 2955,
+  "ratingCount": 2956,
   "features": [
    "средний счёт: 5000–10000 ₽",
    "доставка еды",
@@ -5030,7 +5509,21 @@
    "https://www.restoran.ru/booking-widget-form.php?id=2768299&name=%D0%A0%D1%8B%D0%B1%D0%B0+%D0%9C%D0%B5%D1%87%D1%82%D1%8B+"
   ],
   "chain": null,
-  "logo": "https://avatars.mds.yandex.net/get-altay/6141684/2a00000182eb9f1d9d7100a0989d49753183/%s"
+  "logo": "https://avatars.mds.yandex.net/get-altay/6141684/2a00000182eb9f1d9d7100a0989d49753183/%s",
+  "phones": [
+   {
+    "n": "+7 (915) 377-73-77",
+    "v": "+79153777377",
+    "i": "для бронирования столов"
+   },
+   {
+    "n": "+7 (495) 127-08-88",
+    "v": "+74951270888",
+    "i": "для бронирования столов"
+   }
+  ],
+  "booking": "https://www.restoran.ru/booking-widget-form.php?id=2768299&name=%D0%A0%D1%8B%D0%B1%D0%B0+%D0%9C%D0%B5%D1%87%D1%82%D1%8B+",
+  "site": "http://dreamfish.moscow/"
  },
  "dreamfish_smol": {
   "id": "64940796391",
@@ -5091,7 +5584,7 @@
    "https://avatars.mds.yandex.net/get-altay/13220782/2a00000191b7cde1ab408de9336681b54bbe/%s"
   ],
   "rating": 5,
-  "ratingCount": 849,
+  "ratingCount": 850,
   "features": [
    "средний счёт: 1500–2500 ₽",
    "доставка еды",
@@ -5150,6 +5643,15 @@
   ],
   "links": [],
   "chain": null,
-  "logo": "https://avatars.mds.yandex.net/get-altay/16329243/2a0000019ca036855a83a2ff5da687faabe9/%s"
+  "logo": "https://avatars.mds.yandex.net/get-altay/16329243/2a0000019ca036855a83a2ff5da687faabe9/%s",
+  "phones": [
+   {
+    "n": "+7 (916) 837-77-37",
+    "v": "+79168377737",
+    "i": "Забронировать стол"
+   }
+  ],
+  "booking": null,
+  "site": "https://dreamfishsmolenka.moscow/"
  }
 }

@@ -41,6 +41,7 @@
   --pill-bg: rgba(255, 255, 255, 0.94);
   --pill-ink: #141414;
   --on-photo: #FFFFFF;
+  --me: #2F7BF5;               /* «я» на карте и расстояния */
   --shadow: 0 1px 2px rgba(20, 20, 20, 0.06), 0 12px 26px -16px rgba(20, 20, 20, 0.35);
   --f-display: "Unbounded", "Arial Black", "Helvetica Neue", system-ui, sans-serif;
   --f-body: "Golos Text", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
@@ -609,6 +610,9 @@ html[data-tg] .hero { --hh: var(--tg-viewport-stable-height, 100svh); }
   font-size: 14px;
   pointer-events: none;
 }
+#mapFallback { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; }
+#mapFallback[hidden] { display: none; }
+#mapFallback .btn { flex: none; height: 44px; font-size: 15px; pointer-events: auto; }
 .map-full-btn {
   position: absolute;
   top: 10px;
@@ -786,6 +790,156 @@ html[data-tg] .hero { --hh: var(--tg-viewport-stable-height, 100svh); }
   font-variant-numeric: tabular-nums;
 }
 
+
+/* ---------- Где я и расстояния ---------- */
+.filter-sub { margin-left: 4px; text-transform: none; letter-spacing: 0; font-weight: 500; color: var(--ink-2); }
+.chip svg { flex: none; }
+.chip-loc { background: var(--cheese); border-color: var(--cheese); color: var(--cheese-ink); font-weight: 600; }
+.chip-loc[aria-busy="true"] { opacity: 0.75; }
+.chip-ghost { background: transparent; }
+.chip-ghost svg { color: var(--me); }
+.loc-msg { margin: 0; font-size: 12px; line-height: 1.4; color: var(--muted); max-width: 62ch; }
+.loc-msg .link-btn { font-size: 12px; }
+.dist { display: inline-flex; align-items: center; gap: 4px; font-weight: 600; color: var(--ink); font-variant-numeric: tabular-nums; }
+.dist svg { color: var(--me); }
+.dist-line { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 8px; color: var(--ink); }
+.dist-line b { font-size: 16px; font-variant-numeric: tabular-nums; }
+.dist-line .link-btn { font-size: 14px; }
+.route-btns { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.route-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 34px;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--ink);
+  font: 500 13px/1 var(--f-body);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.route-btn:focus-visible { outline: 2px solid var(--ketchup); outline-offset: 2px; }
+.route-btns.modes { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.route-btns.modes .route-btn { justify-content: center; padding: 0 4px; font-size: 12.5px; }
+@media (max-width: 379px) { .route-btns.modes { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.route-btn-strong { background: var(--ink); border-color: var(--ink); color: var(--bg); font-weight: 600; }
+.hint { margin: 6px 0 0; font-size: 12px; color: var(--muted); }
+.fact-h { margin-bottom: 2px; font-weight: 600; color: var(--ink); }
+.phone-row { display: flex; flex-wrap: wrap; align-items: center; gap: 2px 10px; min-height: 38px; }
+.phone-num { color: var(--ink); font-size: 16px; font-weight: 600; font-variant-numeric: tabular-nums; text-decoration: none; }
+.phone-num:focus-visible { outline: 2px solid var(--ketchup); outline-offset: 2px; border-radius: 4px; }
+.phone-info { flex-basis: 100%; margin-top: -4px; font-size: 12px; color: var(--muted); }
+.icon-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  display: inline-grid;
+  place-items: center;
+  background: var(--surface);
+  color: var(--ink-2);
+  cursor: pointer;
+}
+.icon-btn:focus-visible { outline: 2px solid var(--ketchup); outline-offset: 2px; }
+.btn-icon { flex: 0 0 52px; padding: 0; }
+.btn-secondary svg { flex: none; }
+
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: calc(92px + env(safe-area-inset-bottom, 0px));
+  z-index: 40;
+  transform: translateX(-50%);
+  max-width: calc(100% - 32px);
+  padding: 11px 16px;
+  border-radius: 14px;
+  background: var(--ink);
+  color: var(--bg);
+  font: 500 14px/1.3 var(--f-body);
+  text-align: center;
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+  animation: toast-in 0.2s ease both;
+}
+@keyframes toast-in { from { opacity: 0; transform: translate(-50%, 8px); } to { opacity: 1; transform: translate(-50%, 0); } }
+
+.map-loc-btn {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 3;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 0;
+  display: grid;
+  place-items: center;
+  background: var(--pill-bg);
+  color: var(--me);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.18);
+  cursor: pointer;
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+.map-loc-btn:focus-visible { outline: 2px solid var(--ketchup); outline-offset: 2px; }
+.map-card.is-full .map-loc-btn { top: calc(10px + env(safe-area-inset-top, 0px)); }
+.pick-banner {
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  bottom: 12px;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 10px 10px 14px;
+  border-radius: 14px;
+  background: var(--ink);
+  color: var(--bg);
+  font: 600 14px/1.3 var(--f-body);
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+}
+.pick-banner button {
+  flex: none;
+  border: 0;
+  border-radius: 10px;
+  padding: 9px 12px;
+  background: var(--surface-2);
+  color: var(--ink);
+  font: 600 13px/1 var(--f-body);
+  cursor: pointer;
+}
+.map-card.is-full .pick-banner { bottom: calc(14px + env(safe-area-inset-bottom, 0px)); max-width: 520px; margin-inline: auto; }
+.map-card.is-picking .ymap { cursor: crosshair; }
+
+/* «Я» на карте: подложка карты светлая в обеих темах, поэтому обводка белая */
+.me-dot {
+  position: absolute;
+  left: -11px;
+  top: -11px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 3px solid #FFFFFF;
+  background: var(--me);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+}
+.me-dot::after {
+  content: "";
+  position: absolute;
+  inset: -10px;
+  z-index: -1;
+  border-radius: 50%;
+  background: var(--me);
+  opacity: 0.25;
+  animation: me-pulse 2s ease-out infinite;
+}
+.me-dot.is-manual { background: var(--ketchup); }
+.me-dot.is-manual::after { background: var(--ketchup); }
+@keyframes me-pulse { from { transform: scale(0.55); opacity: 0.45; } to { transform: scale(1.5); opacity: 0; } }
+
 @media (prefers-reduced-motion: reduce) {
   .hero-media img, .logo, .clock, .tagline { animation: none; }
   .hero-media { will-change: auto; }
@@ -794,6 +948,7 @@ html[data-tg] .hero { --hh: var(--tg-viewport-stable-height, 100svh); }
   .is-hidden-until-reveal { transition: none; }
   .card, .btn, .sign, .pin { transition: none; }
   .map-peek { animation: none; }
+  .me-dot::after, .toast { animation: none; }
 }
 
 </style>
@@ -845,6 +1000,12 @@ html[data-tg] .hero { --hh: var(--tg-viewport-stable-height, 100svh); }
       <div class="chips" id="timeChips"></div>
     </section>
 
+    <section class="filter" aria-label="Расстояние">
+      <div class="filter-label" id="distLabel">Расстояние</div>
+      <div class="chips" id="distChips"></div>
+      <p class="loc-msg" id="locMsg" hidden></p>
+    </section>
+
     <section class="map-section" aria-label="Карта мест">
       <div class="map-head">
         <div class="filter-label">На карте</div>
@@ -853,8 +1014,10 @@ html[data-tg] .hero { --hh: var(--tg-viewport-stable-height, 100svh); }
       <div class="map-card" id="mapCard">
         <div class="ymap" id="ymap"></div>
         <div class="map-state" id="mapLoading">Загружаю карту…</div>
-        <div class="map-state" id="mapFallback" hidden>Карта Яндекса откроется в приложении в Telegram</div>
+        <div class="map-state" id="mapFallback" hidden><span>Карта не загрузилась</span><button class="btn btn-secondary" type="button" data-action="map-retry">Попробовать ещё раз</button></div>
         <button class="map-full-btn" id="mapFullBtn" type="button" data-action="map-full" aria-label="Развернуть карту"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg><span>Развернуть</span></button>
+        <button class="map-loc-btn" id="mapLocBtn" type="button" data-action="map-me" aria-label="Показать, где я"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 10.5 20 4l-6.5 16.5-2.4-7.2z"/></svg></button>
+        <div class="pick-banner" id="pickBanner" hidden><span>Нажмите на карту там, где вы будете</span><button type="button" data-action="pick-cancel">Отмена</button></div>
         <div class="map-peek" id="mapPeek" hidden></div>
       </div>
     </section>
@@ -866,7 +1029,7 @@ html[data-tg] .hero { --hh: var(--tg-viewport-stable-height, 100svh); }
 
     <main class="list" id="list"></main>
 
-    <p class="foot">Часы работы, адреса и фото взяты из Яндекс Карт, фишки из рилсов в чате «Места Москва». Перед выходом лучше открыть место на карте и проверить.</p>
+    <p class="foot">Часы работы, адреса, телефоны и фото взяты из Яндекс Карт, фишки из рилсов в чате «Места Москва». Перед выходом лучше открыть место на карте и проверить.</p>
   </div>
 </div>
 
@@ -874,7 +1037,9 @@ html[data-tg] .hero { --hh: var(--tg-viewport-stable-height, 100svh); }
   <div id="sheetContent"></div>
 </div>
 
-<script>window.__PLACES__=[{"id":"karti","name":"Карти","type":"Фастфуд","cuisine":["Стритфуд"],"short":"Большая картошка фри с кучей начинок, есть сладкая версия на десерт","description":"Фастфуд, где главное блюдо — крупная картошка фри. Её подают с разными начинками и соусами, а на десерт делают сладкую версию. Удобно заскочить по пути: Лубянка в пяти минутах.","perks":[{"text":"14 видов начинки к картошке"},{"text":"Сладкая картошка на десерт"},{"text":"Можно с собакой"}],"tags":["картошка с начинками"],"address":"ул. Большая Лубянка, 13/16с1","metro":[{"name":"Лубянка","colors":["#f23d30"],"distance":"570 м"},{"name":"Тургеневская","colors":["#f28b24"],"distance":"610 м"}],"hours":["12:00-22:00","12:00-22:00","12:00-22:00","12:00-22:00","12:00-22:00","12:00-22:00","12:00-22:00"],"price":"Средний чек от 800 ₽","rating":4.9,"ratingCount":88,"photos":["18806283/2a0000019d2a33f4774bc576451ae10a8387","19636095/2a0000019e89f1d31c22e58b9113ca4ddb45","16340554/2a0000019df7f800929ddbb49a5f2b943ac4","20308240/2a0000019ef9cca56129ac9c54cdcb96e385","20191917/2a0000019ef8f07f52bfb8e0a2bfb64f7069","19582126/2a0000019deda1dd30f1c8648adf76cc660c"],"yandex":"https://yandex.ru/maps/org/karti/88735030313/","coords":[37.629371,55.764343],"logo":"20105336/2a0000019dc3a89e18730255729d92040d9f","reels":["DYXSDfWtMvf","DY1xjL5i8vM","DWwCksGDXfp"],"post":null},{"id":"ruski","name":"Ruski","type":"Ресторан","cuisine":["Русская кухня"],"short":"Русская кухня на высоте 354 метров в башне «ОКО»","description":"Ресторан русской кухни с панорамой на весь город: он находится на высоте 354 метров в башне «ОКО» в Москва-Сити. Есть своя пекарня, бранчи и живая музыка.","perks":[{"text":"По будням борщ бесплатно (так было в рилсе, лучше уточнить)"},{"text":"Вид на Москву с 354 метров"},{"text":"Пт и сб до 2 ночи"}],"tags":["борщ бесплатно в будни","вид на Сити"],"address":"1-й Красногвардейский пр., 21, стр. 2","metro":[{"name":"Москва-Сити","colors":["#21abd9","#ff4c4c"],"distance":"108 м"},{"name":"Деловой центр","colors":["#ffd000"],"distance":"277 м"}],"hours":["12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00","12:00-02:00","12:00-02:00","12:00-00:00"],"price":"Средний чек от 3000 ₽","rating":4.9,"ratingCount":12924,"photos":["4441482/2a00000179611eacc3d59dfad488e39694cc","1003740/2a00000161475822bf1b7218abc7306bb02f","4304228/2a000001796122b11059edba5453aebb2884","4465779/2a00000179612af91105ad2757e371bd7883","1871013/2a0000016b8c71b3cb6c482a96d931b8e217","2029876/2a0000016ec6875d7f07b7187de1cc9f45c8"],"yandex":"https://yandex.ru/maps/org/ruski/200818672869/","coords":[37.534287,55.749432],"logo":"13322921/2a00000193b89f2ab37162359a59f84c070f","reels":["DcyPCaLo94H"],"post":null},{"id":"blinnaya","name":"Блины на Воронцовской","type":"Блинная","cuisine":["Русская кухня"],"short":"Советская блинная у «Таганской», которая работает с 60-х","description":"Легендарная блинная прямо у метро «Таганская», почти не изменившаяся с советских времён: столики-стойки, каменные стены, простые блюда и цены, будто инфляции не было. Театр на Таганке за углом, и говорят, сюда заходил Высоцкий.","perks":[{"text":"Советский интерьер, слегка подсвеченный неоном"},{"text":"Можно заказать обычную яичницу, а не скрэмбл"}],"tags":["с 60-х годов","чек 150–300 ₽"],"address":"Воронцовская ул., 8, стр. 1","metro":[{"name":"Таганская","colors":["#8647b2","#805139"],"distance":"300 м"},{"name":"Марксистская","colors":["#ffd000"],"distance":"360 м"}],"hours":["11:00-23:00","11:00-23:00","11:00-23:00","11:00-23:00","11:00-00:00","11:00-00:00","11:00-23:00"],"price":"Средний чек 150–300 ₽","rating":4.4,"ratingCount":2501,"photos":["16866637/2a00000197f5e0d91a5564e3ca2b19d8e5b7","16318204/2a0000019895961456f1f0b3207c07fd500c","5498343/2a0000017d7bee64e33f03937753317bf2f3","10879408/2a00000192f3176080b0ac2c89a3009e2cb6","19546938/2a0000019da91a5d8507b46251f45443f852","14774583/2a0000019a740c7380fe452351777174760b"],"yandex":"https://yandex.ru/maps/org/pancakes_on_vorontsovskaya/111394947027/","coords":[37.655967,55.739206],"logo":"14795029/2a00000199f0a91b1cab5f81e5fe4cd01094","reels":["DYFX7LFIxqJ"],"post":null},{"id":"apartment","name":"Апартмент","type":"Лаунж-бар","cuisine":["Кавказ и Восток","Бары"],"short":"Лаунж-бар с восточной кухней и дневными кальянами на Мясницкой","description":"Уютный лаунж-бар в самом центре, с авторской восточной кухней. Днём здесь выгодно, а в пятницу и субботу работают до 3 ночи.","perks":[{"text":"Каждый день с 12:00 до 17:00 кальян за 1499 ₽"},{"text":"Кальян «как раньше» на фольге и чай с финиками"},{"text":"Настольные игры и приставки"}],"tags":["кальян 1499 ₽ днём"],"address":"Мясницкая ул., 18","metro":[{"name":"Лубянка","colors":["#f23d30"],"distance":"310 м"},{"name":"Китай-город","colors":["#f28b24","#8647b2"],"distance":"510 м"}],"hours":["12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00","12:00-03:00","12:00-03:00","12:00-00:00"],"price":"Средний чек 2400 ₽","rating":4.9,"ratingCount":768,"photos":["12820607/2a000001938c0e1fa853b77e615d73ba4c83","1860543/2a0000016eae65a2e6b4ac6c44b5246e6b3c","13904936/2a000001938c0e20088364730e2cd07ba568","14185024/2a000001938c0e27a231806712f5c4fa3a36","13083354/2a0000018fd8cc03bc4e59f924d5b55cf792","14021655/2a000001938c0e26b28ae988898f7ab6ce6a"],"yandex":"https://yandex.ru/maps/org/apartment/155636975560/","coords":[37.632355,55.761073],"logo":"1420183/2a0000016949678aa362cdb927fad8dc081c","reels":["DcEjhvmMqYS","DczMYEIsP6l"],"post":null},{"id":"klich","name":"Клич","type":"Ресторан","cuisine":["Европейская","Завтраки"],"short":"Большой красивый ресторан у воды с итальянской и французской кухней","description":"Просторный ресторан на набережной Марка Шагала с итальянской, французской и средиземноморской кухней. Есть устричный бар, открытая кухня, по утрам завтраки, для детей анимация.","perks":[{"text":"Завтраки с 10:00"},{"text":"Устричный бар"},{"text":"Можно с небольшой собакой"}],"tags":["устричный бар","завтраки"],"address":"наб. Марка Шагала, 1, корп. 2","metro":[{"name":"ЗИЛ","colors":["#177245"],"distance":"1,07 км"}],"hours":["10:00-23:00","10:00-23:00","10:00-23:00","10:00-23:00","10:00-00:00","10:00-00:00","10:00-23:00"],"price":"Средний чек 4200 ₽","rating":5,"ratingCount":438,"photos":["18141736/2a0000019cb971b4acc8580b53b72f51c9fd","16403814/2a000001994d384487a611df34e2274b737a","14920258/2a000001994d3251bb7dcd75db3234ab7eef","16378552/2a000001994d37d34ff1fb5c23291d016628","15395175/2a0000019a20999f9485a4010a904faa6cac","16485345/2a000001994d325205e8062f2a8be98a70fb"],"yandex":"https://yandex.ru/maps/org/klich/146827478262/","coords":[37.630434,55.700157],"logo":"16158716/2a000001994d2a2c767568b072b755e67481","reels":["Dd3am6WsmmS"],"post":null},{"id":"donkufta","name":"Дон Кюфта","type":"Стритфуд","cuisine":["Шаурма и кебаб"],"short":"Кюфта, шаурма и мясной стритфуд у «Парка культуры» почти круглые сутки","description":"Мясной стритфуд у «Парка культуры»: кюфта, шаурма и другое мясное. Ребята постоянно что-то улучшают в меню, а работают с 8 утра до 6 утра.","perks":[{"text":"Работает до 6 утра"},{"text":"Халяль"}],"tags":["до 6 утра","халяль"],"address":"Комсомольский просп., 7","metro":[{"name":"Парк культуры","colors":["#805139","#f23d30"],"distance":"480 м"},{"name":"Фрунзенская","colors":["#f23d30"],"distance":"940 м"}],"hours":["08:00-06:00","08:00-06:00","08:00-06:00","08:00-06:00","08:00-06:00","08:00-06:00","08:00-06:00"],"price":"Средний чек до 500 ₽","rating":4.9,"ratingCount":319,"photos":["16457969/2a0000019c2493a32446aa95e299e4b8b54b","16415892/2a0000019e658e665fb1d7bf1ac9a75d76b0","15291179/2a00000199d012794535f24380d90a9d680a","22407718/2a000001a0ea63df75e3718c94a0ff952029","19756885/2a0000019e658e163fc134f7b28f10a30be9"],"yandex":"https://yandex.ru/maps/org/don_kufta/233809464975/","coords":[37.592027,55.731476],"logo":"15267123/2a000001968309c32b410adae92c3520df2c","reels":["DZxbDi5oGZl","DapmRSxNgC6"],"post":null},{"id":"ivanka","name":"Ivanka Сити","type":"Ресторан","cuisine":["Европейская"],"short":"Ресторан в Москва-Сити с панорамой и тематическими ужинами","description":"Ресторан в Москва-Сити с панорамными окнами, авторской и средиземноморской кухней. По выходным здесь устраивают тематические ужины, посвящённые кухне одной страны, например Испании или Греции.","perks":[{"text":"Тематические гастроужины по пятницам и субботам"},{"text":"Панорамный вид"},{"text":"Пт и сб до 2 ночи"}],"tags":["тематические ужины"],"address":"1-й Красногвардейский пр., 22, стр. 1","metro":[{"name":"Москва-Сити","colors":["#21abd9","#ff4c4c"],"distance":"320 м"},{"name":"Деловой центр","colors":["#ffd000"],"distance":"520 м"}],"hours":["12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00","12:00-02:00","12:00-02:00","12:00-00:00"],"price":"Средний чек 3500–4500 ₽","rating":4.7,"ratingCount":869,"photos":["14917207/2a0000019a2b7922628d42a7feaa947d3cc3","927916/2a00000186eb13e4a3f9f97c0a6875e12b0f","13453452/2a0000018ee7ea2d219a3db34505f9d85884","11409713/2a0000018ee7ea1fa9335c255feb58653672","11940760/2a0000018ee7ea2a1e422caa295f50d06742","12550566/2a0000018ee7ea2197eeeff1f82ed81114fd"],"yandex":"https://yandex.ru/maps/org/ivanka_city/87581675217/","coords":[37.534636,55.751483],"logo":"7779554/2a00000187e8a40fc541712e81526f45a0c3","reels":["DdJb1D8o6lc"],"post":null},{"id":"kyomei","name":"Киомей","type":"Бистро","cuisine":["Азия"],"short":"Азиатское бистро с раменом и очень дешёвыми будними ланчами","description":"Паназиатское бистро на Большой Новодмитровской: рамены, роллы, сашими, роти, лапша. Его любят за будние ланчи и стабильно высокий рейтинг.","perks":[{"text":"Ланчи по будням с 12 до 18, блюда от 190 ₽"},{"text":"С 16 до 18 к ланчу дарят шампанское, чай, кофе или воду"},{"text":"Рейтинг 5,0 почти при 6 тысячах оценок"}],"tags":["ланчи от 190 ₽","шампанское к ланчу"],"address":"Большая Новодмитровская ул., 36, стр. 2","metro":[{"name":"Дмитровская","colors":["#999999"],"distance":"540 м"}],"hours":["12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00"],"price":"Средний чек 500–1500 ₽","rating":5,"ratingCount":5937,"photos":["15416336/2a00000199957b2b1785325bf3cf1bca9fd8","16792294/2a00000199910b1ec481496c082cfa4fdf9e","11937221/2a0000019119343f5933115d575c9f438bc7","16011054/2a000001999110963184d1e7760fd1e2d6e7","13818104/2a00000191b78994682cc25c051c733dd07a","16309283/2a0000019998b6ac7d8ea00fe2e7773f9105"],"yandex":"https://yandex.ru/maps/org/kyomei/234988610168/","coords":[37.585569,55.805356],"logo":"18133168/2a0000019cb21f8dd914edb05bf0239bd487","reels":["DaN98IatZjl"],"post":null},{"id":"arrurru","name":"Arrurru","type":"Ресторан","cuisine":["Латинская Америка","Завтраки"],"short":"Мексиканская и авторская кухня на Остоженке, ла ротина в начале недели","description":"Ресторан на Остоженке с мексиканскими и авторскими блюдами, завтраками и диджеями по вечерам. Блогеры советуют ла ротину, которую готовят только в начале недели.","perks":[{"text":"Ла ротина по понедельникам, вторникам и средам"},{"text":"Завтраки с 11 до 14"},{"text":"Можно с небольшой собакой"}],"tags":["ла ротина пн–ср","завтраки"],"address":"ул. Остоженка, 3/14","metro":[{"name":"Кропоткинская","colors":["#f23d30"],"distance":"170 м"},{"name":"Боровицкая","colors":["#999999"],"distance":"960 м"}],"hours":["11:00-00:00","11:00-00:00","11:00-00:00","11:00-00:00","11:00-01:00","11:00-01:00","11:00-00:00"],"price":"Средний чек до 2500 ₽","rating":5,"ratingCount":745,"photos":["15434007/2a0000019b73e29f42b9365ab7acc5cdafbe","16443419/2a0000019b73f0e13ac9e4c70914dee92b5b","15344725/2a00000199aa18679428ca86a0d320f8bbee","17750410/2a0000019b73f12b3f32ce44cd2f246bfa80","19547275/2a0000019b73f0e0e571b8f79e8f843d35dc","15408870/2a0000019b73f0e0e14e899817cdf238441e"],"yandex":"https://yandex.ru/maps/org/arrurru/200635606237/","coords":[37.60196,55.743857],"logo":"16399547/2a0000019976b20ab5ad982dd393d308dd26","reels":["DZ5EZcpI8J4"],"post":null},{"id":"brasserie","name":"Brasserie 2.0","type":"Ресторан","cuisine":["Европейская"],"short":"Французская брассери на Красной Пресне с щедрыми порциями","description":"Французская брассери на Красной Пресне: сытная европейская кухня, пиво, джаз и диско. Блогер хвалит её как раз за щедрость порций.","perks":[{"text":"Бизнес-ланч"},{"text":"Летняя веранда"},{"text":"Можно с собакой"}],"tags":["щедрые порции"],"address":"ул. Красная Пресня, 22","metro":[{"name":"Краснопресненская","colors":["#805139"],"distance":"530 м"},{"name":"Улица 1905 года","colors":["#8647b2"],"distance":"620 м"}],"hours":["12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00"],"price":"Средний чек 1500–3000 ₽","rating":5,"ratingCount":772,"photos":["14920258/2a00000197e5b338bd7608909c50f1346395","15267123/2a000001970ce16c7848696d45af944d87a4","15438512/2a000001977450eae64fc51e4bcd10d653c5","18098886/2a0000019ee53003452a41ee93326df2183e","12721348/2a00000197bfbbe3a3279f35000172ba636a"],"yandex":"https://yandex.ru/maps/org/brasserie_2_0/132693640072/","coords":[37.570561,55.762032],"logo":"19824988/2a000001a061c0bb632edf62820de4f81d4b","reels":["DX1r_4Wo3aw"],"post":null},{"id":"farsh","name":"Farш","type":"Бургерная","cuisine":["Бургеры"],"short":"Известная сеть бургерных, точка на Никольской у Лубянки","description":"Московская сеть бургерных, эта точка на Никольской, в двух шагах от Красной площади. Классические бургеры, картошка и бизнес-ланчи. Других точек по городу много.","perks":[{"text":"Студентам скидка 20%: фото студенческого и телефон нужно заранее отправить им на почту"},{"text":"Бизнес-ланч"},{"text":"Каждый день с 10:00 до полуночи"}],"tags":["−20% студентам"],"address":"Никольская ул., 12","metro":[{"name":"Лубянка","colors":["#f23d30"],"distance":"100 м"},{"name":"Площадь Революции","colors":["#0070bf"],"distance":"380 м"}],"hours":["10:00-00:00","10:00-00:00","10:00-00:00","10:00-00:00","10:00-00:00","10:00-00:00","10:00-00:00"],"price":"Средний чек от 1200 ₽","rating":4.8,"ratingCount":5425,"photos":["965007/2a0000016288838b36c85cff1e08c3a8cec5","18098886/2a0000019f277d4b7f790deece1f14b94f7b","1680678/2a0000016b8c63bc56ec706c4d0d30d2359e","19303228/2a0000019f277d4c9352e219050f8b7dd7cf","19996834/2a0000019f92f2c224f2f35341287fbe5378","20824784/2a0000019f92f2e645f93dcc2f9d6401e081"],"yandex":"https://yandex.ru/maps/org/farsh/4392096998/","coords":[37.625031,55.758838],"logo":"15993332/2a00000197c1278b0a13cd32d2a1e3912644","reels":["DYA_7B5IXlG"],"post":null},{"id":"shaurlandia","name":"Шаурляндия","type":"Шаурмичная","cuisine":["Шаурма и кебаб"],"short":"Арабская шаурма за 279 ₽ у «Шаболовской»","description":"Шаурмичная прямо у метро «Шаболовская», куда блогер ходит за арабской шаурмой. Открывается в 7 утра, так что подходит и для завтрака по пути.","perks":[{"text":"Арабская шаурма за 279 ₽"},{"text":"Открыто с 7:00 до полуночи"},{"text":"Перерыв с 20:30 до 21:00"}],"tags":["шаурма за 279 ₽","с 7 утра"],"address":"ул. Шаболовка, 30/12","metro":[{"name":"Шаболовская","colors":["#f28b24"],"distance":"146 м"}],"hours":["07:00-20:30,21:00-00:00","07:00-20:30,21:00-00:00","07:00-20:30,21:00-00:00","07:00-20:30,21:00-00:00","07:00-20:30,21:00-00:00","07:00-20:30,21:00-00:00","07:00-20:30,21:00-00:00"],"price":"Средний чек 190–350 ₽","rating":4.9,"ratingCount":2939,"photos":["3717246/2a0000017b5cbbc595f5d88dcdba3b19a80f","5236391/2a0000017b5cbaf8b78cd5bcf21789271d96","4587805/2a0000017b5cbb8a3d610be50693e367744b","5236391/2a0000017b5cbb30415a1d3c640640022e60","18150755/2a0000019cb4a326d259d1656b4bc12a293b","4335885/2a00000190cbf8b3176c311a8bba3975470d"],"yandex":"https://yandex.ru/maps/org/shaurlandiy/80485307718/","coords":[37.608548,55.719477],"logo":"6674804/2a0000018407dce7820aa113ebc5e40458b8","reels":["DYXQOIHqu3b"],"post":null},{"id":"chudoyudo","name":"Чудо-Юдо","type":"Ресторан","cuisine":["Русская кухня","Европейская"],"short":"Ресторан-избушка на Новом Арбате с печью и наличниками с глазами","description":"Ресторан, оформленный как сказочная изба: открытая кухня с печью в кувшинах, старинные резные наличники с глазами, грубая деревянная мебель. В меню русские и европейские блюда, от борща до ризотто с рваной говядиной.","perks":[{"text":"Лавандовый хлеб"},{"text":"Необычный туалет с бегущими иероглифами"},{"text":"Можно с небольшой собакой"}],"tags":["сказочная изба"],"address":"ул. Новый Арбат, 21","metro":[{"name":"Смоленская","colors":["#21abd9","#0070bf"],"distance":"720 м"},{"name":"Арбатская","colors":["#21abd9"],"distance":"1,02 км"}],"hours":["12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00"],"price":"Средний чек 2000–2500 ₽","rating":4.9,"ratingCount":6239,"photos":["12838938/2a0000019289eb53e2356940259fab768432","14271118/2a0000019289ebcd8771947178d366dd5d51","11748256/2a0000019289ec293f28426fc2ae6252d838","13897576/2a0000019289ebd11c8556198594a7850e6e","13197739/2a0000019289eb52672246a75b687aa00b1f","10228783/2a0000019289ebde979c5aafce343f23ab8d"],"yandex":"https://yandex.ru/maps/org/chudo_yudo/102810707359/","coords":[37.587361,55.751979],"logo":"6774966/2a00000191282dc91f49e2c4d1f096b65214","reels":["DXmROh2CBd_"],"post":null},{"id":"smokeis","name":"Smoke is","type":"Гриль-бар","cuisine":["Мясо и гриль","Бары"],"short":"Гриль-бар с американской кухней, на выходных до утра","description":"Гриль-бар с американской кухней на 3-й улице Ямского Поля. Блогер настойчиво советует его всем, и москвичам, и гостям города. В пятницу и субботу работает до 6 утра.","perks":[{"text":"Пт и сб до 6:00"},{"text":"Можно с собакой"}],"tags":["пт и сб до 6 утра"],"address":"3-я ул. Ямского Поля, 2, корп. 5","metro":[{"name":"Белорусская","colors":["#3aa63a"],"distance":"1,09 км"}],"hours":["14:00-00:00","14:00-00:00","14:00-00:00","14:00-00:00","14:00-06:00","14:00-06:00","14:00-00:00"],"price":"Средний чек 500–1500 ₽","rating":4.9,"ratingCount":1092,"photos":["16270073/2a00000198092c0a7bacfe04ce31dfdb661a","7695774/2a000001884fe98ff6af8fb9b652e6341a98","15344916/2a000001967963e5a870eceb4116beffc210","14584627/2a000001966c084a4293f573c6655ee4eb23","16403814/2a0000019a1d58258e99749866ece874f289","7691421/2a00000185e92790362bcb62fafaba87d48d"],"yandex":"https://yandex.ru/maps/org/smoke_is/224290958595/","coords":[37.581809,55.783677],"logo":"20368588/2a000001a05dab598d66a836c13723efc719","reels":["Dafqigcsfvd"],"post":null},{"id":"loona","name":"Loona","type":"Ресторан","cuisine":["Европейская","Завтраки"],"short":"Ресторан на Тверском бульваре, где «очень вкусно»","description":"Ресторан на Тверском бульваре с европейской и итальянской кухней, открытой кухней и завтраками с утра. Блогер ходит сюда за тем, что «очень вкусно», а не просто вкусно.","perks":[{"text":"Завтраки с 9:00"},{"text":"Почти 9 тысяч оценок на Яндексе"},{"text":"Можно с собакой"}],"tags":["завтраки с 9"],"address":"Тверской бул., 24, стр. 1","metro":[{"name":"Пушкинская","colors":["#8647b2"],"distance":"254 м"},{"name":"Тверская","colors":["#3aa63a"],"distance":"275 м"}],"hours":["09:00-00:00","09:00-00:00","09:00-00:00","09:00-00:00","09:00-00:00","09:00-00:00","09:00-00:00"],"price":"Средний чек 3500 ₽","rating":4.9,"ratingCount":8886,"photos":["11940760/2a0000018ec907e720187999676a4669919c","14271118/2a00000193c772b1d9e22d85927b7332d3a6","11374564/2a00000193c77b476b545296c4112d3602ca","13805978/2a00000193c7589ea4eaa69d5ae3afcfa609","14244043/2a00000193c77b73989f8cc00a9d41201b8f","13719877/2a00000193c77b66b3e5d5fd30e3b5ae1cd9"],"yandex":"https://yandex.ru/maps/org/loona/227167313971/","coords":[37.603564,55.762347],"logo":"4961567/2a00000181c8ec6a2f45d43ed5da0859af26","reels":["DVyYLGfDV9h"],"post":null},{"id":"shaurmabasm","name":"Шаурма на Басманной","type":"Шаурмичная","cuisine":["Шаурма и кебаб"],"short":"Душевная шаурмичная без лоска, где почти всегда очередь","description":"Шаурмичная без лоска, куда хочется возвращаться: в меню много необычных сочетаний, цены приятные, поэтому очередь почти всегда. Есть вторая точка на Новой Басманной.","perks":[{"text":"Фирменный бульон на косточке"},{"text":"Халяль"},{"text":"Рейтинг 5,0 на Яндексе"}],"tags":["бульон на косточке","халяль"],"address":"Старая Басманная ул., 20, стр. 1","metro":[{"name":"Курская","colors":["#805139","#0070bf"],"distance":"870 м"},{"name":"Комсомольская","colors":["#f23d30"],"distance":"1,07 км"}],"hours":["11:00-23:00","11:00-23:00","11:00-23:00","11:00-23:00","11:00-23:00","11:00-23:00","11:00-23:00"],"price":"Средний чек 280–600 ₽","rating":5,"ratingCount":1195,"photos":["14235465/2a00000194a1d27dc3578f8719d016c989f5","18114977/2a0000019e75321f9a8937243c90bc8bce51","10232404/2a00000190176d890be69c26c84560b03a88","16299341/2a0000019c4f209d5decaeb83dd5d8d1dce2","11398069/2a0000019050c3a059c68a0654456253499f"],"yandex":"https://yandex.ru/maps/org/shaurma_na_basmannoy/143705429167/","coords":[37.664348,55.766589],"logo":"14730529/2a00000194a1ff98585f888692cdbf48e6d6","reels":["DYMLsHEiFyo"],"post":null},{"id":"plancha","name":"Планча","type":"Стритфуд","cuisine":["Шаурма и кебаб","Кавказ и Восток"],"short":"Арабско-ливанский стритфуд прямо в парке Горького","description":"Ливанский и арабский стритфуд на Пушкинской набережной в парке Горького. Удобно взять с собой на прогулку вдоль реки. Есть вторая точка на Большой Никитской.","perks":[{"text":"Халяль"},{"text":"Летняя веранда в парке"},{"text":"Открытая кухня"}],"tags":["в парке Горького","халяль"],"address":"Пушкинская наб., 37","metro":[{"name":"Парк культуры","colors":["#805139","#f23d30"],"distance":"1,15 км"}],"hours":["12:00-22:00","12:00-22:00","12:00-22:00","12:00-22:00","12:00-22:00","12:00-22:00","12:00-22:00"],"price":"Средний чек 650–2000 ₽","rating":5,"ratingCount":143,"photos":["17700564/2a0000019faca8ab873893f37d71605e4cd6","20105000/2a0000019e93cfd048d1316f1153294f36f5","16416664/2a0000019df4d1fcb91cec98b3fa35a0fd93","19785895/2a0000019e0437dea37841612a3d52221b0a","20420873/2a0000019ea0ed9ae170f59bb581a001998d","18780150/2a0000019e596dcbaaa8d415ec9be5825552"],"yandex":"https://yandex.ru/maps/org/plancha/34279725196/","coords":[37.597315,55.728976],"logo":"20105000/2a0000019fed440e5e3178e0a2137f025522","reels":["DYmh1jFIdE4"],"post":null},{"id":"tatooine","name":"Tatooine","type":"Ресторан","cuisine":["Кавказ и Восток","Мясо и гриль"],"short":"Ресторан с космической подачей, вход со двора на Петровке","description":"Один из самых необычных ресторанов Москвы: подача и интерьер такие, будто телепортировался на другую планету. Кухня кавказская и армянская с авторскими блюдами и мясом.","perks":[{"text":"Вход со двора: Петровка, 23/10с5"},{"text":"Пт и сб до 2 ночи"},{"text":"Халяль"}],"tags":["самый необычный"],"address":"ул. Петровка, 23/10с5","metro":[{"name":"Пушкинская","colors":["#8647b2"],"distance":"570 м"},{"name":"Чеховская","colors":["#999999"],"distance":"600 м"}],"hours":["12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00","12:00-02:00","12:00-02:00","12:00-00:00"],"price":null,"rating":5,"ratingCount":914,"photos":["17783115/2a0000019e6eef6833177caca5cddb0b6915","19902702/2a0000019e6eeb08bcccb3c5875b050c6edb","20840239/2a000001a010cb43f18c8e6dd847ec5a8a23","19871159/2a0000019e6eeaf3f0bdf38909c4071a221c","16465668/2a0000019b9866ed60972ae9a8c392493931","17754824/2a0000019d975e716d33339a93708bf9ad3a"],"yandex":"https://yandex.ru/maps/org/tatooine/193209633114/","coords":[37.615016,55.766081],"logo":"19699569/2a0000019b93251b7d5ed90685bfc40ce614","reels":["DUV8K1BiDU7"],"post":null},{"id":"nauka","name":"Наука и жизнь","type":"Бар-ресторан","cuisine":["Бары","Европейская"],"short":"Круглосуточный бар у «Кузнецкого Моста» с живой музыкой","description":"Бар-ресторан, который не закрывается никогда, с живой музыкой, DJ, стендапами и настольными играми. Блогеры хвалят креветки в тайском стиле, а в кофейне рядом — хот-доги.","perks":[{"text":"Круглосуточно, кухня тоже"},{"text":"Креветки в тайском стиле"},{"text":"Бизнес-ланч за 470 ₽"}],"tags":["круглосуточно","креветки по-тайски"],"address":"Пушечная ул., 7/5с2","metro":[{"name":"Кузнецкий Мост","colors":["#8647b2"],"distance":"160 м"},{"name":"Лубянка","colors":["#f23d30"],"distance":"271 м"}],"hours":["00:00-00:00","00:00-00:00","00:00-00:00","00:00-00:00","00:00-00:00","00:00-00:00","00:00-00:00"],"price":"Средний чек 1500–2400 ₽","rating":5,"ratingCount":4191,"photos":["10488540/2a0000018c073a7f5282334c3e36d220219e","10488540/2a0000018c0739f4ca8d2e674df1c34e75a3","15401795/2a00000197ae1530b161375b0d4f94f3c4f6","13206104/2a00000194ffa6e3552ac0f7fb11c5e4ef7a","14920258/2a00000197aeaa4550514cefa70bf53b4f51","14093322/2a00000192e441396cc3c14812b4e2f913b3"],"yandex":"https://yandex.ru/maps/org/nauka_i_zhizn/50196935823/","coords":[37.62308,55.76087],"logo":"13220791/2a00000194b03667b126dad86434f85a2f39","reels":["Db0IBuIMLHp"],"post":null},{"id":"lea","name":"Lea","type":"Бистро-бар","cuisine":["Рыба и морепродукты","Европейская","Завтраки"],"short":"Круглосуточное бистро с морепродуктами из аквариума","description":"Бистро-бар на Зубовской площади с южноевропейской кухней. Морепродукты берут прямо из аквариума, а кухня работает круглые сутки.","perks":[{"text":"Круглосуточно"},{"text":"Морепродукты из аквариума"},{"text":"Своя пекарня и завтраки"}],"tags":["круглосуточно","морепродукты"],"address":"Зубовская площадь, 3, стр. 1","metro":[{"name":"Парк культуры","colors":["#f23d30","#805139"],"distance":"620 м"}],"hours":["00:00-00:00","00:00-00:00","00:00-00:00","00:00-00:00","00:00-00:00","00:00-00:00","00:00-00:00"],"price":"Средний чек до 2500 ₽","rating":4.7,"ratingCount":576,"photos":["16478002/2a0000019b2d2c7cf70b2340ec816c307b08","14460764/2a00000193ace3aaee0a7f06e88aa8a64fec","17783115/2a0000019c5a8a3a62e8e8aae37180703032","19647201/2a0000019c5a9414764219e976a86d692bdc","18780150/2a0000019c5a8b02a3a8ed599fe062b85fc7","16329243/2a0000019c5a9f48b3f5870993090ce76c7c"],"yandex":"https://yandex.ru/maps/org/lea/23689815864/","coords":[37.585473,55.737937],"logo":"14079384/2a0000019350878e899d7df951ae18f947d6","reels":["DbMIAAFvmLv"],"post":null},{"id":"zhiest","name":"Жи Есть","type":"Ресторан","cuisine":["Кавказ и Восток"],"short":"Халяльный кавказский ресторан с верандой, открыт до 5 утра","description":"Халяльный ресторан кавказской кухни с аутентичным интерьером и верандой, недалеко от «Площади Гагарина». Открыт с 10 утра до 5 утра.","perks":[{"text":"Каждый день до 5:00"},{"text":"Халяль"},{"text":"Бесплатная парковка"}],"tags":["до 5 утра","халяль"],"address":"ул. Орджоникидзе, 11, стр. 17","metro":[{"name":"Площадь Гагарина","colors":["#ff4c4c"],"distance":"390 м"},{"name":"Ленинский проспект","colors":["#f28b24"],"distance":"390 м"}],"hours":["10:00-05:00","10:00-05:00","10:00-05:00","10:00-05:00","10:00-05:00","10:00-05:00","10:00-05:00"],"price":"Средний чек 1500–2000 ₽","rating":4.7,"ratingCount":3220,"photos":["19519244/2a0000019bb7ed21a5bb45942794ed255e5f","18152412/2a0000019b666f1ba51999c231d85d0a4bb3","1592431/2a0000016eea0252652d812a126255e2e873","1583511/2a0000016eea020e0520cc6396b1ad16578c","19749282/2a0000019e9cf2f6a896ff9a276a1ce5679e","1975185/2a0000016eea025e44648389caedd56daaa2"],"yandex":"https://yandex.ru/maps/org/zhi_yest/1044919573/","coords":[37.591377,55.708285],"logo":"1045589/2a000001864661bacdad8994e8dad8cbdc83","reels":["DbMIAAFvmLv"],"post":null},{"id":"erwin","name":"Erwin. Павильон","type":"Ресторан","cuisine":["Рыба и морепродукты"],"short":"Рыбный ресторан в павильоне прямо на Патриарших прудах","description":"Морской ресторан в павильоне на Патриарших прудах, с верандой у самой воды. Рыба, морепродукты, средиземноморская кухня и джаз.","perks":[{"text":"Веранда прямо у пруда"},{"text":"Можно с собакой"}],"tags":["на Патриарших"],"address":"Большой Патриарший пер., 5","metro":[{"name":"Пушкинская","colors":["#8647b2"],"distance":"860 м"},{"name":"Маяковская","colors":["#3aa63a"],"distance":"880 м"}],"hours":["12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00"],"price":"Средний чек 3000–5000 ₽","rating":4.8,"ratingCount":3776,"photos":["7179902/2a000001843589c119649f171701a74ab22f","4336412/2a00000178a0ef00b7e382cac3afd0023d55","3691419/2a000001787346623b96ca61fb36bbc7654b","4012790/2a00000178a0ee9128bcdd4ba265101cdc6a","4236413/2a00000178a0ee0b3fec523b26c4d54f504d","11244149/2a0000018b7881687ab72c37a461a7d5491d"],"yandex":"https://yandex.ru/maps/org/erwin_pavilion_patriki/185820248177/","coords":[37.592901,55.763429],"logo":"14329771/2a00000194b6c70a01c67c5f58a84d1ef791","reels":["DbMIAAFvmLv"],"post":null},{"id":"chaihona","name":"Чайхона № 1","type":"Ресторан","cuisine":["Кавказ и Восток","Завтраки"],"short":"Восточный ресторан на Новом Арбате, открыт почти круглые сутки","description":"Ресторан сети «Чайхона № 1» на Новом Арбате: узбекская и кавказская кухня, яркий восточный интерьер, веранда. Открыт с 10 утра до 6 утра.","perks":[{"text":"Работает с 10:00 до 6:00"},{"text":"DJ и настольные игры"},{"text":"Завтраки"}],"tags":["до 6 утра"],"address":"ул. Новый Арбат, 21","metro":[{"name":"Смоленская","colors":["#21abd9","#0070bf"],"distance":"630 м"},{"name":"Арбатская","colors":["#21abd9"],"distance":"1,08 км"}],"hours":["10:00-06:00","10:00-06:00","10:00-06:00","10:00-06:00","10:00-06:00","10:00-06:00","10:00-06:00"],"price":"Средний чек 2199–2200 ₽","rating":4.8,"ratingCount":9257,"photos":["15231053/2a000001976e4a3f1e78dea970c87a7d3fa0","16330083/2a000001976e4a4b43e243cc35d364083573","16161139/2a000001976e4a3f184173877ef23ebf9ef5","16069310/2a000001976e4a48ef4efe7bfe09d9dc376b","15031174/2a000001976e4a4c3e400ec3ad1efadd92ad","15045776/2a000001976e4a3f2b2892e44361171c1c90"],"yandex":"https://yandex.ru/maps/org/chajkhona_1/1254006182/","coords":[37.585799,55.751898],"logo":"11937221/2a0000019023671284e26edc6b0863569fbf","reels":["DbMIAAFvmLv"],"post":null},{"id":"myasoryba","name":"Мясо & Рыба","type":"Ресторан","cuisine":["Мясо и гриль","Рыба и морепродукты"],"short":"Круглосуточный ресторан мяса и рыбы на Тверской","description":"Круглосуточный ресторан с большим меню мяса, рыбы и гриля и живой музыкой. У сети около десяти ресторанов в Москве, этот на Тверской у «Пушкинской».","perks":[{"text":"Круглосуточно"},{"text":"Живая музыка"},{"text":"Бизнес-ланч"}],"tags":["круглосуточно","живая музыка"],"address":"Тверская ул., 23, стр. 1","metro":[{"name":"Пушкинская","colors":["#8647b2"],"distance":"320 м"},{"name":"Тверская","colors":["#3aa63a"],"distance":"360 м"}],"hours":["00:00-00:00","00:00-00:00","00:00-00:00","00:00-00:00","00:00-00:00","00:00-00:00","00:00-00:00"],"price":"Средний чек 2700 ₽","rating":4.9,"ratingCount":8099,"photos":["7668046/2a000001836a4c693cd8311c73d9a984de24","16136409/2a000001997c4cfb5da504d0b24d33bbec27","6145759/2a000001836a4d16e9ed20c0e722b12993f5","6955494/2a000001836a4f49d115177384246b14c39c","6145759/2a000001836a4eef832bc4fe16c064c57fd8","6145759/2a000001836a4c88d3a0213be50e22578742"],"yandex":"https://yandex.ru/maps/org/meat_fish/19395904090/","coords":[37.59991,55.766662],"logo":"16368192/2a0000019ae9bc9cb8a457517c72629e6f00","reels":["DbMIAAFvmLv"],"post":null},{"id":"penta","name":"Penta","type":"Гастробар","cuisine":["Бары","Европейская"],"short":"Круглосуточный гастробар в отеле на Новом Арбате с бильярдом","description":"Гастробар при отеле Pentahotel на Новом Арбате, открытый круглые сутки. Можно поесть, сыграть в бильярд или настолки и посмотреть футбол.","perks":[{"text":"Круглосуточно"},{"text":"Бильярд, настольные игры и приставки"},{"text":"Трансляции матчей"}],"tags":["круглосуточно","бильярд"],"address":"ул. Новый Арбат, 15","metro":[{"name":"Арбатская","colors":["#21abd9","#0070bf"],"distance":"680 м"},{"name":"Смоленская","colors":["#0070bf"],"distance":"950 м"}],"hours":["00:00-00:00","00:00-00:00","00:00-00:00","00:00-00:00","00:00-00:00","00:00-00:00","00:00-00:00"],"price":"Средний чек 1500–3500 ₽","rating":4.8,"ratingCount":461,"photos":["7383884/2a000001839f9a1a47a55d1bb389f95ae9bf","6236655/2a00000183b8ea5a24908e01437f967b2458","5538812/2a0000018385651c4498919eb1f1212d7951","10830675/2a0000018b610917d553443e898eebaff9a0","6197788/2a000001838081a28bea5170c1152a3c6a6a","6514890/2a00000183845e804f9c7a51da3ee7b2bd2f"],"yandex":"https://yandex.ru/maps/org/gastrobar_penta/132823476316/","coords":[37.592667,55.752175],"logo":"5298780/2a00000183d01b8caa049006225ce9c59159","reels":["DbMIAAFvmLv"],"post":null},{"id":"lavirgen","name":"La Virgen","type":"Такерия","cuisine":["Латинская Америка"],"short":"Тайная мексиканская такерия у Лубянки","description":"Небольшая «тайная» мексиканская такерия прямо у Лубянки. За тако, кесадильей и чуррос, или просто если хочется на вечер в Мексику.","perks":[{"text":"Тако, кесадилья и чуррос"},{"text":"Пт и сб до часу ночи"}],"tags":["тако и чуррос"],"address":"Лубянский пр., 5, стр. 1","metro":[{"name":"Лубянка","colors":["#f23d30"],"distance":"160 м"},{"name":"Китай-город","colors":["#f28b24","#8647b2"],"distance":"239 м"}],"hours":["13:00-23:00","13:00-23:00","13:00-23:00","13:00-23:00","13:00-01:00","13:00-01:00","13:00-23:00"],"price":"Средний чек 700–1500 ₽","rating":5,"ratingCount":3082,"photos":["13477341/2a0000018f5e304c73b75e0c1431555b2ee1","18148618/2a0000019b6c8472dcca29a6fabae02b1ab5","11401274/2a0000018d931eb15318445000b945f3c46e","14910910/2a00000197d5e42e74f2f2731caf9aeb6823","11886651/2a0000018dc175e9d2846c8e93b1f67bbf94","10092863/2a0000018da8bb9917bebd553b7346db1a70"],"yandex":"https://yandex.ru/maps/org/la_virgen/240105645545/","coords":[37.629511,55.758605],"logo":"6237886/2a00000180cceba7f5923cd243251fb5e2fa","reels":["Da3gN73MAjY"],"post":null},{"id":"bobbyq","name":"Бобби-Кю · Bobby Q","type":"Кебабная","cuisine":["Шаурма и кебаб"],"short":"Кебабы из свежего мяса с мангала у «Марьиной Рощи»","description":"Кебабная, где мясо жарят на мангале прямо при тебе, без заготовок. Обходятся без тяжёлых майонезных соусов: минимум лишнего, только хорошие продукты.","perks":[{"text":"Мясо жарят при тебе"},{"text":"Без майонезных соусов"}],"tags":["мангал при тебе"],"address":"ул. Сущёвский Вал, 53","metro":[{"name":"Марьина Роща","colors":["#9fbf00","#60bfbf"],"distance":"162 м"}],"hours":["12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00"],"price":"Средний чек 300–500 ₽","rating":5,"ratingCount":525,"photos":["16299341/2a0000019aa7920fa480c1155accc6d5d3aa","15388054/2a0000019995eddf11df79f147f686ebc5ab","16136444/2a0000019aa7922613669ecf35a467842365","16888214/2a0000019aa7911f31a8ec2602d971ad7e3f","16338459/2a0000019995ddd2f3c6702cc6f89acf53f9","15682944/2a0000019995ecc0990492a3c0df56bec6f6"],"yandex":"https://yandex.ru/maps/org/bobby_q/111397150761/","coords":[37.613431,55.793511],"logo":"15416268/2a0000019953c003c225f71e8d58452fcfd5","reels":["Daui3VMO4bd"],"post":null},{"id":"lafferia","name":"Лаффериа · Lafferia","type":"Бистро","cuisine":["Шаурма и кебаб"],"short":"44 вида шаурмы, хит — «Биткоин» со вкусом Биг Тейсти","description":"Бистро у «Бауманской» с 44 видами шаурмы: владелец собирал рецепты, объездив полмира. Попробуйте «Биткоин» с говядиной, а для смелых есть шаурма с тунцом.","perks":[{"text":"44 вида шаурмы"},{"text":"Хит — «Биткоин» с говядиной"},{"text":"Можно с небольшой собакой"}],"tags":["44 вида шаурмы"],"address":"Малая Почтовая ул., 8, стр. 2","metro":[{"name":"Бауманская","colors":["#0070bf"],"distance":"520 м"}],"hours":["11:00-23:00","11:00-23:00","11:00-23:00","11:00-23:00","11:00-23:00","11:00-23:00","11:00-23:00"],"price":"Средний чек 300–700 ₽","rating":5,"ratingCount":397,"photos":["19547455/2a0000019e1d84e023edf36ea10bc93bb1e1","19580059/2a0000019e1d852e702f1b7d00cabac2a9e1","13951679/2a00000192b3e60037a6fec419bc3d3603d9","18150755/2a0000019dbef412e804fcffd9d9f3f909aa","18152412/2a0000019bcb96261ccd489acff1d674660e","13229346/2a0000019461b631fac60fc76445a7afec5d"],"yandex":"https://yandex.ru/maps/org/lafferia/227863439698/","coords":[37.686351,55.771569],"logo":"16130837/2a0000019ba3a505be30bc37a1448eb65d64","reels":["DaNxAUvobhW","Db8ix2VREFz"],"post":null},{"id":"shaurmacity","name":"Шаурма Сити","type":"Шаурмичная","cuisine":["Шаурма и кебаб"],"short":"Круглосуточная шаурма из шашлыка на Покровке","description":"Шаурмичная на Покровке, где в лаваш кладут куски шашлыка, а не мясо с вертела. Мясо жарят на электромангале каждые 30 минут. Ещё есть закрытая пицца, гирос, люля-кебаб и вок.","perks":[{"text":"Круглосуточно"},{"text":"Закрытая пицца — совсем не кальцоне"},{"text":"Бизнес-ланч за 399 ₽"}],"tags":["круглосуточно","закрытая пицца"],"address":"ул. Покровка, 4, стр. 1","metro":[{"name":"Китай-город","colors":["#8647b2","#f28b24"],"distance":"640 м"},{"name":"Чистые пруды","colors":["#f23d30"],"distance":"880 м"}],"hours":["00:00-00:00","00:00-00:00","00:00-00:00","00:00-00:00","00:00-00:00","00:00-00:00","00:00-00:00"],"price":null,"rating":5,"ratingCount":206,"photos":["19619196/2a0000019d53d3c7413333dabe6c9ed948a2","15043309/2a0000019b16f99b31ddf7830608647b1155","18148618/2a0000019bf9a65b39baf3a34701cd18e0cf","17737331/2a0000019c7665476b18cca0f020ff168dec","18128678/2a0000019c766563637f414cb8dc2e710347","16480550/2a0000019b31be6c604bfb844d738f2f49da"],"yandex":"https://yandex.ru/maps/org/shaurma_city/57995358768/","coords":[37.641703,55.758684],"logo":"19539707/2a0000019cb885b9ae6512622afeee17b7f3","reels":["DadYPU7x6gJ"],"post":null},{"id":"meatcrew","name":"Meat Crew","type":"Мясной бар","cuisine":["Мясо и гриль","Бургеры"],"short":"Мясо из техасского смокера и бургеры у Белорусской","description":"Мясной ресторан-бар с южноамериканским колоритом. Мясо томят в техасском смокере от нескольких часов до суток, поэтому рёбра и брискет получаются очень нежными. Летом открывают террасу с красивым видом.","perks":[{"text":"Мясо из техасского смокера"},{"text":"Сеты на большую компанию"},{"text":"Бизнес-ланчи"}],"tags":["техасский смокер"],"address":"ул. Грузинский Вал, 11, стр. 4","metro":[{"name":"Белорусская","colors":["#805139","#3aa63a"],"distance":"390 м"}],"hours":["12:00-23:00","12:00-23:00","12:00-23:00","12:00-23:00","12:00-23:00","12:00-23:00","12:00-23:00"],"price":"Средний чек 650–1200 ₽","rating":4.8,"ratingCount":1651,"photos":["771751/2a0000018847fa83469a8713bfe665fbfc1c","5234013/2a00000187e8376a63b2c139529839a15d08","9954022/2a00000188d5493f51a752b73116870dd6a6","6674804/2a00000187f6204c89671d95901ab4df56e8","9331640/2a00000187e8401dab7661b0e9339f7dce29"],"yandex":"https://yandex.ru/maps/org/meat_crew/146942630283/","coords":[37.577711,55.773828],"logo":"16494614/2a0000019a8809eb5d98e3a260c07bafb2b2","reels":["DYzepUaoGpf"],"post":null},{"id":"burgeravenue","name":"Бургер Авеню","type":"Бургерная","cuisine":["Бургеры"],"short":"Бургеры и пицца на Мосфильмовской до 3 ночи","description":"Бургерная на Мосфильмовской, недалеко от «Раменок». Американский фастфуд и пицца, открыто каждый день до 3 ночи.","perks":[{"text":"Каждый день до 3:00"},{"text":"Летняя веранда"}],"tags":["до 3 ночи"],"address":"Мосфильмовская ул., 55","metro":[{"name":"Раменки","colors":["#ffd000"],"distance":"590 м"}],"hours":["12:00-03:00","12:00-03:00","12:00-03:00","12:00-03:00","12:00-03:00","12:00-03:00","12:00-03:00"],"price":null,"rating":4.8,"ratingCount":62,"photos":["15696528/2a0000019ed0b3e01ac2af9dbc8ff974c527","20427853/2a0000019ed0b3f6b3ffefba6f96f108b59f","15696528/2a0000019ed0b3f6b94f0286002d6b9db406","18105299/2a0000019ed0b390d083170bfbf59eabf928","19303228/2a0000019ed0b4ff686117af066238ef4b34","16329243/2a0000019ed0b4ff9e453651b380289acec9"],"yandex":"https://yandex.ru/maps/org/burger_avenue/145132524930/","coords":[37.495115,55.702831],"logo":"13791177/2a0000019ed0b0a9455c627a886695a0fb22","reels":["DbOnGCwtetg"],"post":null},{"id":"rustyrat","name":"Rusty Rat & Pizza","type":"Пиццерия","cuisine":["Пицца"],"short":"Пиццерия у «Китай-города», куда ходят за пиццей и пастой","description":"Пиццерия в Большом Черкасском переулке, у «Китай-города». Блогеры теперь ходят за пиццей и пастой только сюда.","perks":[{"text":"Пицца и паста"},{"text":"В сб и вс открываются в 10:00"},{"text":"Летняя веранда"}],"tags":["пицца и паста"],"address":"Большой Черкасский пер., 13, стр. 4","metro":[{"name":"Китай-город","colors":["#f28b24","#8647b2"],"distance":"215 м"},{"name":"Лубянка","colors":["#f23d30"],"distance":"340 м"}],"hours":["13:00-00:00","13:00-00:00","13:00-00:00","13:00-00:00","13:00-00:00","10:00-00:00","10:00-00:00"],"price":"Средний чек от 2000 ₽","rating":4.8,"ratingCount":776,"photos":["16386092/2a0000019c3db094ba9828218325df2c881c","18384802/2a0000019b2e9d887b12de85dd1ac774fe5b","16472720/2a0000019b526d0ab745b8bda82de8a65c43","18147375/2a0000019e333380d45028fec2fca3a07685","18703564/2a0000019dce5947b8c82cbbc6b5a96bdb8b","18136130/2a0000019e333383e0ae5bc81994f90a2851"],"yandex":"https://yandex.ru/maps/org/rusty_rat_pizza/94015478437/","coords":[37.627666,55.757119],"logo":"21173611/2a000001a0cf035c9fdf4b3628fe21d60096","reels":["DZUh6eVtqru"],"post":null},{"id":"lars","name":"Ларс · Lars","type":"Закусочная","cuisine":["Латинская Америка"],"short":"Бразильская закусочная с акциями каждый день и латино-вечеринками","description":"Бразильская закусочная у «Дмитровской». Акции здесь каждый день по своему календарю, а по пятницам и субботам устраивают латиноамериканские вечеринки с живой музыкой.","perks":[{"text":"Акции каждый день по календарю"},{"text":"Латино-вечеринки с живой музыкой по пт и сб"},{"text":"Со среды по воскресенье до 6 утра"}],"tags":["латино-вечеринки"],"address":"Новодмитровская ул., 1, стр. 23","metro":[{"name":"Дмитровская","colors":["#999999"],"distance":"410 м"}],"hours":["11:00-23:00","11:00-03:00","11:00-06:00","11:00-06:00","11:00-06:00","11:00-06:00","11:00-06:00"],"price":"Средний чек 700–1400 ₽","rating":5,"ratingCount":5917,"photos":["14246212/2a00000199cd953a21b45ae787f4997a75d2","15416336/2a00000199cd954ffbc69d41be260d74a055","15682944/2a00000199cd95456b9f03e4ac00cc62a696","15712112/2a00000199cd95427134af5b42a3a1bba73e","10768168/2a000001905e1ef67f057862fa09c046a9ad","15608211/2a000001987a373a1c4137ca2008935635d8"],"yandex":"https://yandex.ru/maps/org/lars/86560638264/","coords":[37.584887,55.806361],"logo":"1546430/2a0000016ca91710ae1ebc5a59a12044c7a6","reels":["DbFtSDaofNS"],"post":null},{"id":"uhvat","name":"Ухват","type":"Ресторан","cuisine":["Русская кухня"],"short":"Русская кухня из печи на Трёхгорной мануфактуре","description":"Ресторан русской кухни, где многое готовят в настоящей печи и подают в чугунках: кедровую кашу с полбой, борщ, который томится 12 часов, пожарскую котлету. Блогер называет её одной из лучших в Москве.","perks":[{"text":"Комплимент: корзина из 4 видов хлеба и топлёное масло-свеча"},{"text":"Кедровая каша и борщ из печи"},{"text":"Своя пекарня"}],"tags":["русская печь","хлеб в комплимент"],"address":"Рочдельская ул., 15, стр. 41","metro":[{"name":"Улица 1905 года","colors":["#8647b2"],"distance":"1,08 км"}],"hours":["12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00"],"price":"Средний чек 3000–5000 ₽","rating":4.9,"ratingCount":6437,"photos":["15294573/2a0000019764895d3574d083256e96a604b5","1886165/2a0000016cb4f7bde3922d5bd32b0f6c8821","14907426/2a000001987f986e24128f96d545e080e5f9","1651981/2a0000016ec6876d081613bd2ceab4a907a8","1583613/2a0000016ec6877742f3da81040762db9439","2006845/2a0000016ec6877418e54e60fa88369d5d4b"],"yandex":"https://yandex.ru/maps/org/uhvat/129106521343/","coords":[37.561909,55.755983],"logo":"2366463/2a000001738185d9abf22d3e08aae66604a0","reels":["DaCy7cotz2q"],"post":null},{"id":"tyomajo","name":"Тёмаджо","type":"Ламаджо","cuisine":["Кавказ и Восток","Стритфуд"],"short":"Ламаджо и выпечка из печи у «Менделеевской»","description":"Стритфуд у «Менделеевской», где главное блюдо — ламаджо: тонкая лепёшка с мясной начинкой. Напротив Искенди, можно устроить сравнение, как в рилсе.","perks":[{"text":"Ламаджо"},{"text":"Напротив Искенди"}],"tags":["ламаджо"],"address":"Новослободская ул., 20","metro":[{"name":"Менделеевская","colors":["#999999"],"distance":"130 м"},{"name":"Новослободская","colors":["#805139"],"distance":"430 м"}],"hours":["11:00-22:00","11:00-22:00","11:00-22:00","11:00-22:00","11:00-22:00","11:00-22:00","11:00-22:00"],"price":"Средний чек 350–500 ₽","rating":5,"ratingCount":235,"photos":["17637863/2a0000019bf67d3004b8808bbbc6941086cc","18005133/2a0000019bc95f67fa091901f9a781df6794","16157592/2a0000019bff8355170fb8fb5ba740a96a84","17753003/2a0000019c0bf32b7813ac1bdbe7ed1fa309","19720204/2a0000019bc95f6c30201b2ca4d85a2e224f","19619196/2a0000019c12a1495635e1624cd5e956f72c"],"yandex":"https://yandex.ru/maps/org/tyomadzho/29858634500/","coords":[37.598621,55.782253],"logo":"18111128/2a0000019c2e5081cdaa04d1248ef290be64","reels":["DcN3pE8qENw","DYuOuafs-7b","Ddl8pSqgBzn"],"post":null},{"id":"iskendi","name":"Искенди","type":"Турецкий стритфуд","cuisine":["Шаурма и кебаб"],"short":"Турецкие дюрюмы напротив Тёмаджо","description":"Турецкий стритфуд с открытой кухней на Новослободской, прямо напротив Тёмаджо. Блогеры отдельно сравнивали их балык-дюрюм с рыбой.","perks":[{"text":"Балык-дюрюм с рыбой"},{"text":"Открытая кухня"},{"text":"Можно с собакой"}],"tags":["балык-дюрюм"],"address":"Новослободская ул., 19, стр. 1","metro":[{"name":"Менделеевская","colors":["#999999"],"distance":"94 м"},{"name":"Новослободская","colors":["#805139"],"distance":"209 м"}],"hours":["11:30-22:00","11:30-22:00","11:30-22:00","11:30-22:00","11:30-23:00","12:00-23:00","12:00-23:00"],"price":null,"rating":4.7,"ratingCount":296,"photos":["17843434/2a0000019d49f5f8acc2fb49263263488145","17679358/2a0000019b65e3a3a1c4f18e004ec9f3d3fe","17785064/2a0000019eeba67f0b94c92ceeaa9a714461","19553098/2a0000019cde2ee242c14b332ee2b0d7231e","19883212/2a0000019bd2328667cc71a75a953419ed79","4200646/2a0000019cdcfd19ad763ad0b0f6eaf102ca"],"yandex":"https://yandex.ru/maps/org/iskendy/52119597703/","coords":[37.599319,55.780828],"logo":"16454077/2a0000019a351ef95926e5250675884993b4","reels":["Ddl8pSqgBzn"],"post":null},{"id":"beeffish","name":"Биф & Фиш","type":"Бистро","cuisine":["Шаурма и кебаб","Рыба и морепродукты"],"short":"Турецкое бистро с рыбой и мясом у выхода из «Крылатского»","description":"Турецкое бистро с рыбой и мясом в формате быстрой еды, буквально в 15 метрах от метро «Крылатское».","perks":[{"text":"15 метров от метро"}],"tags":["у метро Крылатское"],"address":"Осенний бул., 10","metro":[{"name":"Крылатское","colors":["#0070bf"],"distance":"15 м"}],"hours":["11:00-00:00","11:00-00:00","11:00-00:00","11:00-00:00","11:00-00:00","11:00-00:00","11:00-00:00"],"price":"Средний чек 400–600 ₽","rating":4.2,"ratingCount":50,"photos":["20879831/2a000001a0dda08f738e9c30e5877560c7db","21535825/2a000001a0e739db51b27b8805ceb01c647a","17787346/2a000001a05e65bb9d4603881a22726d6a88","20192526/2a000001a0afeb84134b84a33cbcc03a87a7","19809277/2a000001a0c16e372e7a7bd61a1207f360fa"],"yandex":"https://yandex.ru/maps/org/bif_fish/194390663541/","coords":[37.40884,55.757653],"logo":"20192526/2a000001a033fbbb4a914226431a17518bec","reels":["DdjW_IStAAs"],"post":null},{"id":"bijou","name":"Bijou","type":"Бистро","cuisine":["Европейская"],"short":"Французское бистро для свидания с сетом на двоих","description":"Камерное французское бистро у Белорусской, хорошее место для романтического ужина. Есть готовый сет на двоих, где в каждом из трёх курсов можно выбрать блюдо, и за одним столом получаются два разных ужина.","perks":[{"text":"Французский сет на двоих: 6 блюд за 3800 ₽"},{"text":"Устрицы и коктейли"},{"text":"Бизнес-ланч"}],"tags":["сет 6 блюд за 3800 ₽"],"address":"2-я Брестская ул., 39, стр. 3","metro":[{"name":"Белорусская","colors":["#805139","#3aa63a"],"distance":"217 м"},{"name":"Маяковская","colors":["#3aa63a"],"distance":"940 м"}],"hours":["12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00","12:00-02:00","14:00-02:00","14:00-00:00"],"price":"Средний чек 1500–2500 ₽","rating":4.8,"ratingCount":1227,"photos":["19593321/2a0000019cd6c4b7cd51ad1672a2cae5fd7e","17651669/2a0000019cd6c4df21fa713f47d585107953","18108291/2a0000019cd6c50f488e68068df8f4b20477","17843434/2a0000019cd6c4a16d8b96bc4e1fb7d0376d","1920875/2a0000017f27cc64f6cb216d2a24d6473b3b","6145759/2a0000018348418956e5b3a863470c0887aa"],"yandex":"https://yandex.ru/maps/org/bijou/130868248749/","coords":[37.584602,55.773978],"logo":"19619196/2a0000019cd6bfd02cd861fa33abbd39a8a8","reels":["DdtFn2uuCFF"],"post":null},{"id":"savoy","name":"Савой","type":"Ресторан","cuisine":["Русская кухня","Завтраки"],"short":"Исторический ресторан с «царским» завтраком на полтора килограмма","description":"Исторический ресторан отеля «Савой» с русской и французской кухней и джазом. Здесь подают «царский» завтрак: полтора килограмма блюд по мотивам завтраков Николая II.","perks":[{"text":"Царский завтрак на 1,5 кг"},{"text":"Завтраки с 8 утра"},{"text":"Джаз"}],"tags":["царский завтрак"],"address":"Пушечная ул., 6","metro":[{"name":"Кузнецкий Мост","colors":["#8647b2"],"distance":"167 м"},{"name":"Лубянка","colors":["#f23d30"],"distance":"248 м"}],"hours":["08:00-23:00","08:00-23:00","08:00-23:00","08:00-23:00","08:00-23:00","08:00-23:00","08:00-23:00"],"price":"Средний чек от 5000 ₽","rating":4.8,"ratingCount":2070,"photos":["17773264/2a0000019d0a57eb2f02a1c06d21497170c5","11356085/2a000001912130c2bfc373a3140418632b93","18173477/2a0000019df35d0383c2f055c204bb86aba2","20431688/2a0000019df3675cded3a310ff636c45cb45","16874425/2a0000019df35abfc8a5418070720385a795","17754824/2a0000019df372651dc566fef5e374a81490"],"yandex":"https://yandex.ru/maps/org/savoy/1121853221/","coords":[37.62318,55.760634],"logo":"1546430/2a0000016d4986d2cb754e514d2faf76ff24","reels":["DbBssBINwvT"],"post":null},{"id":"bereg","name":"Берег","type":"Ресторан","cuisine":["Европейская"],"short":"Ресторан у воды в Строгино с верандой и кино под открытым небом","description":"Ресторан на берегу в Строгино: веранда у воды, DJ и танцпол, летом кино под открытым небом. Меню большое, от пасты до шашлыка.","perks":[{"text":"Кино под открытым небом летом"},{"text":"Завтраки с 11 до 16"},{"text":"Бесплатная парковка"}],"tags":["у воды","кино летом"],"address":"ул. Исаковского, 37, корп. 2, стр. 1","metro":[{"name":"Строгино","colors":["#0070bf"],"distance":"1,62 км"}],"hours":["12:00-23:00","12:00-23:00","12:00-23:00","12:00-23:00","12:00-00:00","12:00-00:00","12:00-23:00"],"price":"Средний чек 2500–3500 ₽","rating":4.7,"ratingCount":5184,"photos":["16823151/2a000001987ef5597a7f307be23e56760d44","14763372/2a0000019407fd9acc4fec9487f99e4c5d5d","13083354/2a0000019054c101b191ae249e453a594c5c","14005436/2a00000193bea2dd5b7b0259669ae9b100ed","14238289/2a0000019407fd9a76ae106fe783ee554bd8","11408080/2a00000193bea066d7ad3aa22ee65307f6ee"],"yandex":"https://yandex.ru/maps/org/bereg/110523496108/","coords":[37.426565,55.804567],"logo":"18132699/2a0000019caf2d56096df800c07c2fe64b74","reels":["DbNbP5qOACy"],"post":null},{"id":"munch","name":"Манч · Munch","type":"Бургерная","cuisine":["Бургеры"],"short":"Бургерная у «Раменок», открыта до 2 ночи","description":"Бургерная у «Раменок», которая в рилсах разбирает, каким должен быть хороший бургер. Халяльно, открыто каждый день до 2 ночи.","perks":[{"text":"Каждый день до 2:00"},{"text":"Халяль"}],"tags":["до 2 ночи","халяль"],"address":"Мичуринский просп., 26","metro":[{"name":"Раменки","colors":["#ffd000"],"distance":"178 м"},{"name":"Ломоносовский проспект","colors":["#ffd000"],"distance":"960 м"}],"hours":["12:00-02:00","12:00-02:00","12:00-02:00","12:00-02:00","12:00-02:00","12:00-02:00","12:00-02:00"],"price":"Средний чек 700–1210 ₽","rating":5,"ratingCount":111,"photos":["16309447/2a0000019cbcb4f08331210b359dcc926d16","15394162/2a0000019d0798462c3486f8252f1ec92722","20179596/2a0000019e83e5ffd9c9075641922d00cbc4","18777611/2a0000019e83ea89e727c1407ab2f62bcaf5","19807214/2a0000019e83e463cfc545f8b7c326a91e30"],"yandex":"https://yandex.ru/maps/org/manch/6172733110/","coords":[37.501797,55.699973],"logo":"20105000/2a0000019e83e27178c042ab37098e42c618","reels":["Dd8ps_txQfA"],"post":null},{"id":"vanlav","name":"Ванлав","type":"Кондитерская","cuisine":["Кофе и десерты"],"short":"Круглосуточная кондитерская и кофейня у «Маяковской»","description":"Кондитерская-кофейня, которая работает круглые сутки: можно зайти за десертом и кофе хоть ночью. В рилсе шеф показывает свои любимые позиции.","perks":[{"text":"Круглосуточно"},{"text":"Халяль"},{"text":"У сети есть и другие точки"}],"tags":["круглосуточно","десерты"],"address":"1-я Тверская-Ямская ул., 11","metro":[{"name":"Маяковская","colors":["#3aa63a"],"distance":"400 м"},{"name":"Белорусская","colors":["#805139","#3aa63a"],"distance":"680 м"}],"hours":["00:00-00:00","00:00-00:00","00:00-00:00","00:00-00:00","00:00-00:00","00:00-00:00","00:00-00:00"],"price":null,"rating":5,"ratingCount":1463,"photos":["15157522/2a00000195d7281e25f9b45634f68b36d509","14460769/2a00000195d7281e08dbb3191a18c6a9fc84","14885978/2a00000195d7282e632a12eb0015cb4108b4","15074774/2a00000195d728279a8a3bd6e1c02bc82f79","14234746/2a00000195d728296787078de4811a898ab9","15502563/2a00000195d7281d778e037f6a5b46860400"],"yandex":"https://yandex.ru/maps/org/vanlav/241760750343/","coords":[37.590426,55.772843],"logo":"20967380/2a000001a0c58358ce53ac99d95c84c5ce5c","reels":["DYrVNmGyUCX"],"post":null},{"id":"kiez","name":"Киц · Kiez","type":"Коктейльный бар","cuisine":["Бары"],"short":"Коктейльный бар с кухней и танцами, на выходных до утра","description":"Коктейльный бар с европейской кухней у «Улицы 1905 года»: DJ, живая музыка и танцы. В пятницу и субботу работает до 6 утра, в понедельник выходной.","perks":[{"text":"Пт и сб до 6:00"},{"text":"DJ и живая музыка"},{"text":"Понедельник выходной"}],"tags":["пт и сб до 6 утра","DJ"],"address":"Столярный пер., 3, корп. 12","metro":[{"name":"Улица 1905 года","colors":["#8647b2"],"distance":"600 м"},{"name":"Краснопресненская","colors":["#805139"],"distance":"940 м"}],"hours":[null,"18:00-00:00","18:00-00:00","18:00-00:00","18:00-06:00","18:00-06:00","14:00-00:00"],"price":"Средний чек от 1800 ₽","rating":5,"ratingCount":68,"photos":["19541413/2a0000019d6da8945ac5599609d628745659","18150755/2a0000019d6da8908f0e0d5a625596f21ae3","18148618/2a0000019d6da5f701435a4d4b6b5c4b179c","19648454/2a0000019d6dabdf6e13a319f2d84c02ccd3","19871159/2a0000019d6da5f27daea305941a950b2dc6","19392709/2a0000019d6dabdc5e5574b85895a8d40d01"],"yandex":"https://yandex.ru/maps/org/kiez/69022450761/","coords":[37.56903,55.764342],"logo":"20089935/2a0000019d199ab8d722a3cceab372613c85","reels":["DZF7FrIjAeT"],"post":null},{"id":"chapa","name":"Чапа","type":"Кофейня","cuisine":["Кофе и десерты"],"short":"Кофейное окно у «Чистых прудов» для прогулки","description":"Кофейня у «Чистых прудов», удобная точка, чтобы взять кофе и перекус на прогулку по центру.","perks":[{"text":"Кофе с собой"},{"text":"Можно с собакой"}],"tags":["кофе с собой"],"address":"ул. Жуковского, 1/2/10с2","metro":[{"name":"Чистые пруды","colors":["#f23d30"],"distance":"560 м"},{"name":"Тургеневская","colors":["#f28b24"],"distance":"620 м"}],"hours":["10:00-20:00","10:00-20:00","10:00-20:00","10:00-20:00","10:00-20:00","10:00-20:00","10:00-20:00"],"price":null,"rating":4.2,"ratingCount":373,"photos":["18098886/2a0000019f100e72fe44c43dfcc3c331abc0","15413593/2a00000199a998483846df310e946a805cac","16325379/2a00000198c230597551e399e9cec19db5f2","18785127/2a0000019df99509a7508e0542fbcf17d8c2","19862889/2a0000019e992d095b387e3929208b1c40cd","14910910/2a00000198a98ac8872277cf29d579142ec3"],"yandex":"https://yandex.ru/maps/org/chapa/207980869972/","coords":[37.645096,55.764249],"logo":null,"reels":["DZF7FrIjAeT"],"post":null},{"id":"ozkebab","name":"Öz kebab","type":"Бистро","cuisine":["Шаурма и кебаб"],"short":"Турецкое бистро с авторскими кебабами на Покровке","description":"Турецкое бистро на Покровке с авторским взглядом на кебабы и стритфуд. Днём бизнес-ланч, на выходных бранчи.","perks":[{"text":"Бизнес-ланч за 1000 ₽"},{"text":"Бранчи"},{"text":"Пт и сб до полуночи"}],"tags":["авторские кебабы"],"address":"ул. Покровка, 33","metro":[{"name":"Курская","colors":["#0070bf","#805139"],"distance":"860 м"},{"name":"Чистые пруды","colors":["#f23d30"],"distance":"1,04 км"}],"hours":["12:00-23:00","12:00-23:00","12:00-23:00","12:00-23:00","12:00-00:00","12:00-00:00","12:00-23:00"],"price":"Средний чек 750–2500 ₽","rating":4.9,"ratingCount":1644,"photos":["18132699/2a0000019c35bb0c83d6e112adb847f61019","14907397/2a0000019ad5c7590dca64880f8ac746e6ce","18780150/2a0000019d49882c9abca0f639d1b946ca36","15629777/2a0000019adfb0486eafc370fb61594d8952","16398472/2a0000019adfae08d3098326877242c7541d","18114977/2a0000019bc9659f583365aba4e37d0b75f2"],"yandex":"https://yandex.ru/maps/org/z_kebab/119919342995/","coords":[37.650316,55.761084],"logo":"16411237/2a0000019adfac6167781a00dae9260df47b","reels":["DZF7FrIjAeT"],"post":null},{"id":"lovin","name":"Lovin","type":"Бургерная","cuisine":["Бургеры"],"short":"Бургерная в Кривоколенном переулке с рейтингом 5,0","description":"Бургерная в Кривоколенном переулке, между «Лубянкой» и «Чистыми прудами». Халяльные бургеры, есть вегетарианские.","perks":[{"text":"Халяль"},{"text":"Есть вегетарианские бургеры"},{"text":"Летняя веранда"}],"tags":["халяль","есть вегетарианские"],"address":"Кривоколенный пер., 3","metro":[{"name":"Лубянка","colors":["#f23d30"],"distance":"330 м"},{"name":"Китай-город","colors":["#f28b24","#8647b2"],"distance":"530 м"}],"hours":["12:00-23:00","12:00-23:00","12:00-23:00","12:00-23:00","12:00-23:00","12:00-23:00","12:00-23:00"],"price":"Средний чек 1500–1700 ₽","rating":5,"ratingCount":1494,"photos":["17712904/2a0000019db98f87e65b1077ceae65865542","19708557/2a0000019ef5484ac591a8419086809cd8b5","19785895/2a0000019ea784fe61c8638f095b4831de7c","18806283/2a0000019dfcd029e8641be92e8672202739","17750410/2a0000019eadce168b2bbf0bbfcd1b410548"],"yandex":"https://yandex.ru/maps/org/lovin/128203840323/","coords":[37.632943,55.760732],"logo":"18128678/2a0000019d6cea1fcecc1b94fe355ee52f04","reels":["DZF7FrIjAeT"],"post":null},{"id":"crabcaviar","name":"Crab and caviar","type":"Рыбное бистро","cuisine":["Рыба и морепродукты"],"short":"Краб, икра и морепродукты недорого у «Трубной»","description":"Морепродукты недорого на Рождественском бульваре у «Трубной»: краб, икра и рыба. Удобно перекусить во время прогулки по бульварам.","perks":[{"text":"Сб и вс до полуночи"}],"tags":["краб и икра"],"address":"Рождественский бул., 1","metro":[{"name":"Трубная","colors":["#9fbf00"],"distance":"248 м"},{"name":"Кузнецкий Мост","colors":["#8647b2"],"distance":"660 м"}],"hours":["10:00-23:00","10:00-23:00","10:00-23:00","10:00-23:00","10:00-23:00","10:00-00:00","10:00-00:00"],"price":"Средний чек 700–1300 ₽","rating":4.1,"ratingCount":115,"photos":["19646909/2a0000019d1ee3851b96f690d8884dd98c7a","13229524/2a0000018fe7e88666c91a8c21482f389e9f","13267750/2a0000018ff22b9032af2d6bc7e0b1fecd1b","10804279/2a0000018ff22bb19303db779453d79f134e","10095165/2a0000018fe7e8364c6b39d20744770cdae0","5534836/2a000001846c51b146fbfca3c728f41bfd5a"],"yandex":"https://yandex.ru/maps/org/crab_and_caviar/124983353621/","coords":[37.623898,55.766766],"logo":"367090/2a0000018fe7e1973d2e79f420338ebdc475","reels":["DZF7FrIjAeT"],"post":null},{"id":"underdog","name":"Underdog","type":"Хот-доги и бар","cuisine":["Стритфуд","Бары"],"short":"Хот-доги, американский стритфуд и бар на Маросейке","description":"Бар с хот-догами и другим американским стритфудом на Маросейке, у «Китай-города». Летом работает веранда.","perks":[{"text":"Летняя веранда"},{"text":"Пт и сб до часу ночи"},{"text":"Можно с собакой"}],"tags":["хот-доги","летняя веранда"],"address":"ул. Маросейка, 6-8с1","metro":[{"name":"Китай-город","colors":["#8647b2","#f28b24"],"distance":"281 м"},{"name":"Лубянка","colors":["#f23d30"],"distance":"630 м"}],"hours":["13:00-00:00","13:00-00:00","13:00-00:00","13:00-00:00","13:00-01:00","13:00-01:00","13:00-00:00"],"price":"Средний чек 500–1500 ₽","rating":4.7,"ratingCount":3591,"photos":["10878699/2a00000193493c11e6350ce1c175718283f8","19519244/2a0000019dd38c6e0c4541777a2666d3bb65","20245311/2a0000019dd396fbfb04db91eb8dedf98c4e","15696528/2a0000019dd389b9077023a5e80157f8d466","4465274/2a00000178dba88df65cd91bb5aae0b072fc","18105464/2a0000019dd38ba113605f25ff04cda6ee6d"],"yandex":"https://yandex.ru/maps/org/underdog/181544007639/","coords":[37.635571,55.757402],"logo":"20784471/2a000001a0fda3fd3c0433a595a577fd187e","reels":["DZF7FrIjAeT"],"post":null},{"id":"dreamfish","name":"Рыба Мечты · Dream Fish","type":"Ресторан","cuisine":["Рыба и морепродукты"],"short":"Премиальный рыбный ресторан с большим сетом икры и блинов","description":"Премиальный рыбный ресторан на Садовнической улице: морепродукты, устрицы, живая музыка. Блогер советует его сет с 600 граммами икры, блинами, оладьями и топпингами вместо модных дорогих завтраков.","perks":[{"text":"Сет: 600 г икры с блинами и оладьями, к нему бокал креман или шот водки"},{"text":"Живая музыка"}],"tags":["икра с блинами"],"address":"Садовническая ул., 57, стр. 1","metro":[{"name":"Павелецкая","colors":["#3aa63a"],"distance":"1,25 км"}],"hours":["12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00"],"price":"Средний чек 5000–10000 ₽","rating":4.9,"ratingCount":2955,"photos":["15131175/2a0000019532cc9acc31ae83ca596650f334","13754922/2a00000191a3fce57eede6118ff97c32a83a","14402904/2a000001938d4e86c3e46409bf4485984b05","897342/2a0000018b1e1ab4ed817f432f2dfa291800","4001569/2a000001763cae35c077734167f5f408e790","3966989/2a000001763caf01358a4c7e9edbc4b0893b"],"yandex":"https://yandex.ru/maps/org/dream_fish/190919154252/","coords":[37.640876,55.740294],"logo":"6141684/2a00000182eb9f1d9d7100a0989d49753183","reels":["DbtbeOQNd9n"],"post":null}];window.__META__={"users": 11, "channel": ""};</script>
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+<script>window.__PLACES__=[{"id":"karti","name":"Карти","type":"Фастфуд","cuisine":["Стритфуд"],"short":"Большая картошка фри с кучей начинок, есть сладкая версия на десерт","description":"Фастфуд, где главное блюдо — крупная картошка фри. Её подают с разными начинками и соусами, а на десерт делают сладкую версию. Удобно заскочить по пути: Лубянка в пяти минутах.","perks":[{"text":"14 видов начинки к картошке"},{"text":"Сладкая картошка на десерт"},{"text":"Можно с собакой"}],"tags":["картошка с начинками"],"address":"ул. Большая Лубянка, 13/16с1","metro":[{"name":"Лубянка","colors":["#f23d30"],"distance":"570 м"},{"name":"Тургеневская","colors":["#f28b24"],"distance":"610 м"}],"hours":["12:00-22:00","12:00-22:00","12:00-22:00","12:00-22:00","12:00-22:00","12:00-22:00","12:00-22:00"],"price":"Средний чек от 800 ₽","rating":4.9,"ratingCount":88,"photos":["18806283/2a0000019d2a33f4774bc576451ae10a8387","19636095/2a0000019e89f1d31c22e58b9113ca4ddb45","16340554/2a0000019df7f800929ddbb49a5f2b943ac4","20308240/2a0000019ef9cca56129ac9c54cdcb96e385","20191917/2a0000019ef8f07f52bfb8e0a2bfb64f7069","19582126/2a0000019deda1dd30f1c8648adf76cc660c"],"yandex":"https://yandex.ru/maps/org/karti/88735030313/","coords":[37.629371,55.764343],"logo":"20105336/2a0000019dc3a89e18730255729d92040d9f","phones":[{"n":"+7 (917) 123-77-64","v":"+79171237764","i":null}],"booking":null,"site":null,"reels":["DYXSDfWtMvf","DY1xjL5i8vM","DWwCksGDXfp"],"post":null},{"id":"ruski","name":"Ruski","type":"Ресторан","cuisine":["Русская кухня"],"short":"Русская кухня на высоте 354 метров в башне «ОКО»","description":"Ресторан русской кухни с панорамой на весь город: он находится на высоте 354 метров в башне «ОКО» в Москва-Сити. Есть своя пекарня, бранчи и живая музыка.","perks":[{"text":"По будням борщ бесплатно (так было в рилсе, лучше уточнить)"},{"text":"Вид на Москву с 354 метров"},{"text":"Пт и сб до 2 ночи"}],"tags":["борщ бесплатно в будни","вид на Сити"],"address":"1-й Красногвардейский пр., 21, стр. 2","metro":[{"name":"Москва-Сити","colors":["#21abd9","#ff4c4c"],"distance":"108 м"},{"name":"Деловой центр","colors":["#ffd000"],"distance":"277 м"}],"hours":["12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00","12:00-02:00","12:00-02:00","12:00-00:00"],"price":"Средний чек от 3000 ₽","rating":4.9,"ratingCount":12928,"photos":["4441482/2a00000179611eacc3d59dfad488e39694cc","1003740/2a00000161475822bf1b7218abc7306bb02f","4304228/2a000001796122b11059edba5453aebb2884","4465779/2a00000179612af91105ad2757e371bd7883","1871013/2a0000016b8c71b3cb6c482a96d931b8e217","2029876/2a0000016ec6875d7f07b7187de1cc9f45c8"],"yandex":"https://yandex.ru/maps/org/ruski/200818672869/","coords":[37.534287,55.749432],"logo":"13322921/2a00000193b89f2ab37162359a59f84c070f","phones":[{"n":"+7 (495) 777-71-11","v":"+74957777111","i":null}],"booking":null,"site":"https://ruski354.ru/","reels":["DcyPCaLo94H"],"post":null},{"id":"blinnaya","name":"Блины на Воронцовской","type":"Блинная","cuisine":["Русская кухня"],"short":"Советская блинная у «Таганской», которая работает с 60-х","description":"Легендарная блинная прямо у метро «Таганская», почти не изменившаяся с советских времён: столики-стойки, каменные стены, простые блюда и цены, будто инфляции не было. Театр на Таганке за углом, и говорят, сюда заходил Высоцкий.","perks":[{"text":"Советский интерьер, слегка подсвеченный неоном"},{"text":"Можно заказать обычную яичницу, а не скрэмбл"}],"tags":["с 60-х годов","чек 150–300 ₽"],"address":"Воронцовская ул., 8, стр. 1","metro":[{"name":"Таганская","colors":["#8647b2","#805139"],"distance":"300 м"},{"name":"Марксистская","colors":["#ffd000"],"distance":"360 м"}],"hours":["11:00-23:00","11:00-23:00","11:00-23:00","11:00-23:00","11:00-00:00","11:00-00:00","11:00-23:00"],"price":"Средний чек 150–300 ₽","rating":4.4,"ratingCount":2505,"photos":["16866637/2a00000197f5e0d91a5564e3ca2b19d8e5b7","16318204/2a0000019895961456f1f0b3207c07fd500c","5498343/2a0000017d7bee64e33f03937753317bf2f3","10879408/2a00000192f3176080b0ac2c89a3009e2cb6","19546938/2a0000019da91a5d8507b46251f45443f852","14774583/2a0000019a740c7380fe452351777174760b"],"yandex":"https://yandex.ru/maps/org/pancakes_on_vorontsovskaya/111394947027/","coords":[37.655967,55.739206],"logo":"14795029/2a00000199f0a91b1cab5f81e5fe4cd01094","phones":[{"n":"+7 (991) 730-71-50","v":"+79917307150","i":null}],"booking":null,"site":"https://blinchikirumochka.ru/","reels":["DYFX7LFIxqJ"],"post":null},{"id":"apartment","name":"Апартмент","type":"Лаунж-бар","cuisine":["Кавказ и Восток","Бары"],"short":"Лаунж-бар с восточной кухней и дневными кальянами на Мясницкой","description":"Уютный лаунж-бар в самом центре, с авторской восточной кухней. Днём здесь выгодно, а в пятницу и субботу работают до 3 ночи.","perks":[{"text":"Каждый день с 12:00 до 17:00 кальян за 1499 ₽"},{"text":"Кальян «как раньше» на фольге и чай с финиками"},{"text":"Настольные игры и приставки"}],"tags":["кальян 1499 ₽ днём"],"address":"Мясницкая ул., 18","metro":[{"name":"Лубянка","colors":["#f23d30"],"distance":"310 м"},{"name":"Китай-город","colors":["#f28b24","#8647b2"],"distance":"510 м"}],"hours":["12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00","12:00-03:00","12:00-03:00","12:00-00:00"],"price":"Средний чек 2400 ₽","rating":4.9,"ratingCount":768,"photos":["12820607/2a000001938c0e1fa853b77e615d73ba4c83","1860543/2a0000016eae65a2e6b4ac6c44b5246e6b3c","13904936/2a000001938c0e20088364730e2cd07ba568","14185024/2a000001938c0e27a231806712f5c4fa3a36","13083354/2a0000018fd8cc03bc4e59f924d5b55cf792","14021655/2a000001938c0e26b28ae988898f7ab6ce6a"],"yandex":"https://yandex.ru/maps/org/apartment/155636975560/","coords":[37.632355,55.761073],"logo":"1420183/2a0000016949678aa362cdb927fad8dc081c","phones":[{"n":"+7 (977) 712-11-11","v":"+79777121111","i":null}],"booking":"https://yandex.ru/web-maps/webview?booking[permalink]=155636975560&booking[standalone]=true&mode=booking&source=partner-cta","site":"https://apartmentbar.ru/","reels":["DcEjhvmMqYS","DczMYEIsP6l"],"post":null},{"id":"klich","name":"Клич","type":"Ресторан","cuisine":["Европейская","Завтраки"],"short":"Большой красивый ресторан у воды с итальянской и французской кухней","description":"Просторный ресторан на набережной Марка Шагала с итальянской, французской и средиземноморской кухней. Есть устричный бар, открытая кухня, по утрам завтраки, для детей анимация.","perks":[{"text":"Завтраки с 10:00"},{"text":"Устричный бар"},{"text":"Можно с небольшой собакой"}],"tags":["устричный бар","завтраки"],"address":"наб. Марка Шагала, 1, корп. 2","metro":[{"name":"ЗИЛ","colors":["#177245"],"distance":"1,07 км"}],"hours":["10:00-23:00","10:00-23:00","10:00-23:00","10:00-23:00","10:00-00:00","10:00-00:00","10:00-23:00"],"price":"Средний чек 4200 ₽","rating":5,"ratingCount":439,"photos":["18141736/2a0000019cb971b4acc8580b53b72f51c9fd","16403814/2a000001994d384487a611df34e2274b737a","14920258/2a000001994d3251bb7dcd75db3234ab7eef","16378552/2a000001994d37d34ff1fb5c23291d016628","15395175/2a0000019a20999f9485a4010a904faa6cac","16485345/2a000001994d325205e8062f2a8be98a70fb"],"yandex":"https://yandex.ru/maps/org/klich/146827478262/","coords":[37.630434,55.700157],"logo":"16158716/2a000001994d2a2c767568b072b755e67481","phones":[{"n":"+7 (965) 229-87-24","v":"+79652298724","i":null}],"booking":null,"site":"https://www.klich.moscow/","reels":["Dd3am6WsmmS"],"post":null},{"id":"donkufta","name":"Дон Кюфта","type":"Стритфуд","cuisine":["Шаурма и кебаб"],"short":"Кюфта, шаурма и мясной стритфуд у «Парка культуры» почти круглые сутки","description":"Мясной стритфуд у «Парка культуры»: кюфта, шаурма и другое мясное. Ребята постоянно что-то улучшают в меню, а работают с 8 утра до 6 утра.","perks":[{"text":"Работает до 6 утра"},{"text":"Халяль"}],"tags":["до 6 утра","халяль"],"address":"Комсомольский просп., 7","metro":[{"name":"Парк культуры","colors":["#805139","#f23d30"],"distance":"480 м"},{"name":"Фрунзенская","colors":["#f23d30"],"distance":"940 м"}],"hours":["08:00-06:00","08:00-06:00","08:00-06:00","08:00-06:00","08:00-06:00","08:00-06:00","08:00-06:00"],"price":"Средний чек до 500 ₽","rating":4.9,"ratingCount":319,"photos":["16457969/2a0000019c2493a32446aa95e299e4b8b54b","16415892/2a0000019e658e665fb1d7bf1ac9a75d76b0","15291179/2a00000199d012794535f24380d90a9d680a","22407718/2a000001a0ea63df75e3718c94a0ff952029","19756885/2a0000019e658e163fc134f7b28f10a30be9"],"yandex":"https://yandex.ru/maps/org/don_kufta/233809464975/","coords":[37.592027,55.731476],"logo":"15267123/2a000001968309c32b410adae92c3520df2c","phones":[{"n":"+7 (916) 939-20-00","v":"+79169392000","i":null}],"booking":null,"site":null,"reels":["DZxbDi5oGZl","DapmRSxNgC6"],"post":null},{"id":"ivanka","name":"Ivanka Сити","type":"Ресторан","cuisine":["Европейская"],"short":"Ресторан в Москва-Сити с панорамой и тематическими ужинами","description":"Ресторан в Москва-Сити с панорамными окнами, авторской и средиземноморской кухней. По выходным здесь устраивают тематические ужины, посвящённые кухне одной страны, например Испании или Греции.","perks":[{"text":"Тематические гастроужины по пятницам и субботам"},{"text":"Панорамный вид"},{"text":"Пт и сб до 2 ночи"}],"tags":["тематические ужины"],"address":"1-й Красногвардейский пр., 22, стр. 1","metro":[{"name":"Москва-Сити","colors":["#21abd9","#ff4c4c"],"distance":"320 м"},{"name":"Деловой центр","colors":["#ffd000"],"distance":"520 м"}],"hours":["12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00","12:00-02:00","12:00-02:00","12:00-00:00"],"price":"Средний чек 3500–4500 ₽","rating":4.7,"ratingCount":869,"photos":["14917207/2a0000019a2b7922628d42a7feaa947d3cc3","927916/2a00000186eb13e4a3f9f97c0a6875e12b0f","13453452/2a0000018ee7ea2d219a3db34505f9d85884","11409713/2a0000018ee7ea1fa9335c255feb58653672","11940760/2a0000018ee7ea2a1e422caa295f50d06742","12550566/2a0000018ee7ea2197eeeff1f82ed81114fd"],"yandex":"https://yandex.ru/maps/org/ivanka_city/87581675217/","coords":[37.534636,55.751483],"logo":"7779554/2a00000187e8a40fc541712e81526f45a0c3","phones":[{"n":"+7 (495) 801-64-20","v":"+74958016420","i":null},{"n":"+7 (964) 599-72-29","v":"+79645997229","i":null}],"booking":null,"site":"https://ivankarest.ru/","reels":["DdJb1D8o6lc"],"post":null},{"id":"kyomei","name":"Киомей","type":"Бистро","cuisine":["Азия"],"short":"Азиатское бистро с раменом и очень дешёвыми будними ланчами","description":"Паназиатское бистро на Большой Новодмитровской: рамены, роллы, сашими, роти, лапша. Его любят за будние ланчи и стабильно высокий рейтинг.","perks":[{"text":"Ланчи по будням с 12 до 18, блюда от 190 ₽"},{"text":"С 16 до 18 к ланчу дарят шампанское, чай, кофе или воду"},{"text":"Рейтинг 5,0 почти при 6 тысячах оценок"}],"tags":["ланчи от 190 ₽","шампанское к ланчу"],"address":"Большая Новодмитровская ул., 36, стр. 2","metro":[{"name":"Дмитровская","colors":["#999999"],"distance":"540 м"}],"hours":["12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00"],"price":"Средний чек 500–1500 ₽","rating":5,"ratingCount":5938,"photos":["15416336/2a00000199957b2b1785325bf3cf1bca9fd8","16792294/2a00000199910b1ec481496c082cfa4fdf9e","11937221/2a0000019119343f5933115d575c9f438bc7","16011054/2a000001999110963184d1e7760fd1e2d6e7","13818104/2a00000191b78994682cc25c051c733dd07a","16309283/2a0000019998b6ac7d8ea00fe2e7773f9105"],"yandex":"https://yandex.ru/maps/org/kyomei/234988610168/","coords":[37.585569,55.805356],"logo":"18133168/2a0000019cb21f8dd914edb05bf0239bd487","phones":[{"n":"+7 (968) 193-67-58","v":"+79681936758","i":"Манго Яндекс Карты"},{"n":"+7 (926) 888-45-52","v":"+79268884552","i":null}],"booking":null,"site":"https://kyomei.ru/","reels":["DaN98IatZjl"],"post":null},{"id":"arrurru","name":"Arrurru","type":"Ресторан","cuisine":["Латинская Америка","Завтраки"],"short":"Мексиканская и авторская кухня на Остоженке, ла ротина в начале недели","description":"Ресторан на Остоженке с мексиканскими и авторскими блюдами, завтраками и диджеями по вечерам. Блогеры советуют ла ротину, которую готовят только в начале недели.","perks":[{"text":"Ла ротина по понедельникам, вторникам и средам"},{"text":"Завтраки с 11 до 14"},{"text":"Можно с небольшой собакой"}],"tags":["ла ротина пн–ср","завтраки"],"address":"ул. Остоженка, 3/14","metro":[{"name":"Кропоткинская","colors":["#f23d30"],"distance":"170 м"},{"name":"Боровицкая","colors":["#999999"],"distance":"960 м"}],"hours":["11:00-00:00","11:00-00:00","11:00-00:00","11:00-00:00","11:00-01:00","11:00-01:00","11:00-00:00"],"price":"Средний чек до 2500 ₽","rating":5,"ratingCount":746,"photos":["15434007/2a0000019b73e29f42b9365ab7acc5cdafbe","16443419/2a0000019b73f0e13ac9e4c70914dee92b5b","15344725/2a00000199aa18679428ca86a0d320f8bbee","17750410/2a0000019b73f12b3f32ce44cd2f246bfa80","19547275/2a0000019b73f0e0e571b8f79e8f843d35dc","15408870/2a0000019b73f0e0e14e899817cdf238441e"],"yandex":"https://yandex.ru/maps/org/arrurru/200635606237/","coords":[37.60196,55.743857],"logo":"16399547/2a0000019976b20ab5ad982dd393d308dd26","phones":[{"n":"+7 (499) 474-53-32","v":"+74994745332","i":null}],"booking":null,"site":"https://arrurru.ru/","reels":["DZ5EZcpI8J4"],"post":null},{"id":"brasserie","name":"Brasserie 2.0","type":"Ресторан","cuisine":["Европейская"],"short":"Французская брассери на Красной Пресне с щедрыми порциями","description":"Французская брассери на Красной Пресне: сытная европейская кухня, пиво, джаз и диско. Блогер хвалит её как раз за щедрость порций.","perks":[{"text":"Бизнес-ланч"},{"text":"Летняя веранда"},{"text":"Можно с собакой"}],"tags":["щедрые порции"],"address":"ул. Красная Пресня, 22","metro":[{"name":"Краснопресненская","colors":["#805139"],"distance":"530 м"},{"name":"Улица 1905 года","colors":["#8647b2"],"distance":"620 м"}],"hours":["12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00"],"price":"Средний чек 1500–3000 ₽","rating":5,"ratingCount":773,"photos":["14920258/2a00000197e5b338bd7608909c50f1346395","15267123/2a000001970ce16c7848696d45af944d87a4","15438512/2a000001977450eae64fc51e4bcd10d653c5","18098886/2a0000019ee53003452a41ee93326df2183e","12721348/2a00000197bfbbe3a3279f35000172ba636a"],"yandex":"https://yandex.ru/maps/org/brasserie_2_0/132693640072/","coords":[37.570561,55.762032],"logo":"19824988/2a000001a061c0bb632edf62820de4f81d4b","phones":[],"booking":null,"site":"https://brasserie.ru/","reels":["DX1r_4Wo3aw"],"post":null},{"id":"farsh","name":"Farш","type":"Бургерная","cuisine":["Бургеры"],"short":"Известная сеть бургерных, точка на Никольской у Лубянки","description":"Московская сеть бургерных, эта точка на Никольской, в двух шагах от Красной площади. Классические бургеры, картошка и бизнес-ланчи. Других точек по городу много.","perks":[{"text":"Студентам скидка 20%: фото студенческого и телефон нужно заранее отправить им на почту"},{"text":"Бизнес-ланч"},{"text":"Каждый день с 10:00 до полуночи"}],"tags":["−20% студентам"],"address":"Никольская ул., 12","metro":[{"name":"Лубянка","colors":["#f23d30"],"distance":"100 м"},{"name":"Площадь Революции","colors":["#0070bf"],"distance":"380 м"}],"hours":["10:00-00:00","10:00-00:00","10:00-00:00","10:00-00:00","10:00-00:00","10:00-00:00","10:00-00:00"],"price":"Средний чек от 1200 ₽","rating":4.8,"ratingCount":5426,"photos":["965007/2a0000016288838b36c85cff1e08c3a8cec5","18098886/2a0000019f277d4b7f790deece1f14b94f7b","1680678/2a0000016b8c63bc56ec706c4d0d30d2359e","19303228/2a0000019f277d4c9352e219050f8b7dd7cf","19996834/2a0000019f92f2c224f2f35341287fbe5378","20824784/2a0000019f92f2e645f93dcc2f9d6401e081"],"yandex":"https://yandex.ru/maps/org/farsh/4392096998/","coords":[37.625031,55.758838],"logo":"15993332/2a00000197c1278b0a13cd32d2a1e3912644","phones":[{"n":"8 (800) 505-22-55","v":"+78005052255","i":null},{"n":"+7 (495) 258-42-05","v":"+74952584205","i":null}],"booking":null,"site":"https://farshburger.ru/","reels":["DYA_7B5IXlG"],"post":null},{"id":"shaurlandia","name":"Шаурляндия","type":"Шаурмичная","cuisine":["Шаурма и кебаб"],"short":"Арабская шаурма за 279 ₽ у «Шаболовской»","description":"Шаурмичная прямо у метро «Шаболовская», куда блогер ходит за арабской шаурмой. Открывается в 7 утра, так что подходит и для завтрака по пути.","perks":[{"text":"Арабская шаурма за 279 ₽"},{"text":"Открыто с 7:00 до полуночи"},{"text":"Перерыв с 20:30 до 21:00"}],"tags":["шаурма за 279 ₽","с 7 утра"],"address":"ул. Шаболовка, 30/12","metro":[{"name":"Шаболовская","colors":["#f28b24"],"distance":"146 м"}],"hours":["07:00-20:30,21:00-00:00","07:00-20:30,21:00-00:00","07:00-20:30,21:00-00:00","07:00-20:30,21:00-00:00","07:00-20:30,21:00-00:00","07:00-20:30,21:00-00:00","07:00-20:30,21:00-00:00"],"price":"Средний чек 190–350 ₽","rating":4.9,"ratingCount":2941,"photos":["3717246/2a0000017b5cbbc595f5d88dcdba3b19a80f","5236391/2a0000017b5cbaf8b78cd5bcf21789271d96","4587805/2a0000017b5cbb8a3d610be50693e367744b","5236391/2a0000017b5cbb30415a1d3c640640022e60","18150755/2a0000019cb4a326d259d1656b4bc12a293b","4335885/2a00000190cbf8b3176c311a8bba3975470d"],"yandex":"https://yandex.ru/maps/org/shaurlandiy/80485307718/","coords":[37.608548,55.719477],"logo":"6674804/2a0000018407dce7820aa113ebc5e40458b8","phones":[{"n":"+7 (965) 230-13-43","v":"+79652301343","i":null}],"booking":null,"site":null,"reels":["DYXQOIHqu3b"],"post":null},{"id":"chudoyudo","name":"Чудо-Юдо","type":"Ресторан","cuisine":["Русская кухня","Европейская"],"short":"Ресторан-избушка на Новом Арбате с печью и наличниками с глазами","description":"Ресторан, оформленный как сказочная изба: открытая кухня с печью в кувшинах, старинные резные наличники с глазами, грубая деревянная мебель. В меню русские и европейские блюда, от борща до ризотто с рваной говядиной.","perks":[{"text":"Лавандовый хлеб"},{"text":"Необычный туалет с бегущими иероглифами"},{"text":"Можно с небольшой собакой"}],"tags":["сказочная изба"],"address":"ул. Новый Арбат, 21","metro":[{"name":"Смоленская","colors":["#21abd9","#0070bf"],"distance":"720 м"},{"name":"Арбатская","colors":["#21abd9"],"distance":"1,02 км"}],"hours":["12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00"],"price":"Средний чек 2000–2500 ₽","rating":4.9,"ratingCount":6240,"photos":["12838938/2a0000019289eb53e2356940259fab768432","14271118/2a0000019289ebcd8771947178d366dd5d51","11748256/2a0000019289ec293f28426fc2ae6252d838","13897576/2a0000019289ebd11c8556198594a7850e6e","13197739/2a0000019289eb52672246a75b687aa00b1f","10228783/2a0000019289ebde979c5aafce343f23ab8d"],"yandex":"https://yandex.ru/maps/org/chudo_yudo/102810707359/","coords":[37.587361,55.751979],"logo":"6774966/2a00000191282dc91f49e2c4d1f096b65214","phones":[{"n":"+7 (965) 229-60-91","v":"+79652296091","i":null},{"n":"+7 (932) 698-93-72","v":"+79326989372","i":"Бронирование"}],"booking":null,"site":"https://chudoyudo.com/","reels":["DXmROh2CBd_"],"post":null},{"id":"smokeis","name":"Smoke is","type":"Гриль-бар","cuisine":["Мясо и гриль","Бары"],"short":"Гриль-бар с американской кухней, на выходных до утра","description":"Гриль-бар с американской кухней на 3-й улице Ямского Поля. Блогер настойчиво советует его всем, и москвичам, и гостям города. В пятницу и субботу работает до 6 утра.","perks":[{"text":"Пт и сб до 6:00"},{"text":"Можно с собакой"}],"tags":["пт и сб до 6 утра"],"address":"3-я ул. Ямского Поля, 2, корп. 5","metro":[{"name":"Белорусская","colors":["#3aa63a"],"distance":"1,09 км"}],"hours":["14:00-00:00","14:00-00:00","14:00-00:00","14:00-00:00","14:00-06:00","14:00-06:00","14:00-00:00"],"price":"Средний чек 500–1500 ₽","rating":4.9,"ratingCount":1093,"photos":["16270073/2a00000198092c0a7bacfe04ce31dfdb661a","7695774/2a000001884fe98ff6af8fb9b652e6341a98","15344916/2a000001967963e5a870eceb4116beffc210","14584627/2a000001966c084a4293f573c6655ee4eb23","16403814/2a0000019a1d58258e99749866ece874f289","7691421/2a00000185e92790362bcb62fafaba87d48d"],"yandex":"https://yandex.ru/maps/org/smoke_is/224290958595/","coords":[37.581809,55.783677],"logo":"20368588/2a000001a05dab598d66a836c13723efc719","phones":[{"n":"+7 (926) 024-22-29","v":"+79260242229","i":null}],"booking":null,"site":null,"reels":["Dafqigcsfvd"],"post":null},{"id":"loona","name":"Loona","type":"Ресторан","cuisine":["Европейская","Завтраки"],"short":"Ресторан на Тверском бульваре, где «очень вкусно»","description":"Ресторан на Тверском бульваре с европейской и итальянской кухней, открытой кухней и завтраками с утра. Блогер ходит сюда за тем, что «очень вкусно», а не просто вкусно.","perks":[{"text":"Завтраки с 9:00"},{"text":"Почти 9 тысяч оценок на Яндексе"},{"text":"Можно с собакой"}],"tags":["завтраки с 9"],"address":"Тверской бул., 24, стр. 1","metro":[{"name":"Пушкинская","colors":["#8647b2"],"distance":"254 м"},{"name":"Тверская","colors":["#3aa63a"],"distance":"275 м"}],"hours":["09:00-00:00","09:00-00:00","09:00-00:00","09:00-00:00","09:00-00:00","09:00-00:00","09:00-00:00"],"price":"Средний чек 3500 ₽","rating":4.9,"ratingCount":8887,"photos":["11940760/2a0000018ec907e720187999676a4669919c","14271118/2a00000193c772b1d9e22d85927b7332d3a6","11374564/2a00000193c77b476b545296c4112d3602ca","13805978/2a00000193c7589ea4eaa69d5ae3afcfa609","14244043/2a00000193c77b73989f8cc00a9d41201b8f","13719877/2a00000193c77b66b3e5d5fd30e3b5ae1cd9"],"yandex":"https://yandex.ru/maps/org/loona/227167313971/","coords":[37.603564,55.762347],"logo":"4961567/2a00000181c8ec6a2f45d43ed5da0859af26","phones":[{"n":"+7 (495) 146-46-81","v":"+74951464681","i":null},{"n":"+7 (916) 035-58-11","v":"+79160355811","i":"Telegram"}],"booking":"https://yandex.ru/web-maps/webview?booking[permalink]=227167313971&booking[standalone]=true&mode=booking&source=partner-cta","site":"http://loona.rest/","reels":["DVyYLGfDV9h"],"post":null},{"id":"shaurmabasm","name":"Шаурма на Басманной","type":"Шаурмичная","cuisine":["Шаурма и кебаб"],"short":"Душевная шаурмичная без лоска, где почти всегда очередь","description":"Шаурмичная без лоска, куда хочется возвращаться: в меню много необычных сочетаний, цены приятные, поэтому очередь почти всегда. Есть вторая точка на Новой Басманной.","perks":[{"text":"Фирменный бульон на косточке"},{"text":"Халяль"},{"text":"Рейтинг 5,0 на Яндексе"}],"tags":["бульон на косточке","халяль"],"address":"Старая Басманная ул., 20, стр. 1","metro":[{"name":"Курская","colors":["#805139","#0070bf"],"distance":"870 м"},{"name":"Комсомольская","colors":["#f23d30"],"distance":"1,07 км"}],"hours":["11:00-23:00","11:00-23:00","11:00-23:00","11:00-23:00","11:00-23:00","11:00-23:00","11:00-23:00"],"price":"Средний чек 280–600 ₽","rating":5,"ratingCount":1198,"photos":["14235465/2a00000194a1d27dc3578f8719d016c989f5","18114977/2a0000019e75321f9a8937243c90bc8bce51","10232404/2a00000190176d890be69c26c84560b03a88","16299341/2a0000019c4f209d5decaeb83dd5d8d1dce2","11398069/2a0000019050c3a059c68a0654456253499f"],"yandex":"https://yandex.ru/maps/org/shaurma_na_basmannoy/143705429167/","coords":[37.664348,55.766589],"logo":"14730529/2a00000194a1ff98585f888692cdbf48e6d6","phones":[{"n":"+7 (936) 277-07-10","v":"+79362770710","i":null}],"booking":null,"site":null,"reels":["DYMLsHEiFyo"],"post":null},{"id":"plancha","name":"Планча","type":"Стритфуд","cuisine":["Шаурма и кебаб","Кавказ и Восток"],"short":"Арабско-ливанский стритфуд прямо в парке Горького","description":"Ливанский и арабский стритфуд на Пушкинской набережной в парке Горького. Удобно взять с собой на прогулку вдоль реки. Есть вторая точка на Большой Никитской.","perks":[{"text":"Халяль"},{"text":"Летняя веранда в парке"},{"text":"Открытая кухня"}],"tags":["в парке Горького","халяль"],"address":"Пушкинская наб., 37","metro":[{"name":"Парк культуры","colors":["#805139","#f23d30"],"distance":"1,15 км"}],"hours":["12:00-22:00","12:00-22:00","12:00-22:00","12:00-22:00","12:00-22:00","12:00-22:00","12:00-22:00"],"price":"Средний чек 650–2000 ₽","rating":5,"ratingCount":143,"photos":["17700564/2a0000019faca8ab873893f37d71605e4cd6","20105000/2a0000019e93cfd048d1316f1153294f36f5","16416664/2a0000019df4d1fcb91cec98b3fa35a0fd93","19785895/2a0000019e0437dea37841612a3d52221b0a","20420873/2a0000019ea0ed9ae170f59bb581a001998d","18780150/2a0000019e596dcbaaa8d415ec9be5825552"],"yandex":"https://yandex.ru/maps/org/plancha/34279725196/","coords":[37.597315,55.728976],"logo":"20105000/2a0000019fed440e5e3178e0a2137f025522","phones":[{"n":"+7 (919) 801-77-33","v":"+79198017733","i":null}],"booking":null,"site":null,"reels":["DYmh1jFIdE4"],"post":null},{"id":"tatooine","name":"Tatooine","type":"Ресторан","cuisine":["Кавказ и Восток","Мясо и гриль"],"short":"Ресторан с космической подачей, вход со двора на Петровке","description":"Один из самых необычных ресторанов Москвы: подача и интерьер такие, будто телепортировался на другую планету. Кухня кавказская и армянская с авторскими блюдами и мясом.","perks":[{"text":"Вход со двора: Петровка, 23/10с5"},{"text":"Пт и сб до 2 ночи"},{"text":"Халяль"}],"tags":["самый необычный"],"address":"ул. Петровка, 23/10с5","metro":[{"name":"Пушкинская","colors":["#8647b2"],"distance":"570 м"},{"name":"Чеховская","colors":["#999999"],"distance":"600 м"}],"hours":["12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00","12:00-02:00","12:00-02:00","12:00-00:00"],"price":null,"rating":5,"ratingCount":916,"photos":["17783115/2a0000019e6eef6833177caca5cddb0b6915","19902702/2a0000019e6eeb08bcccb3c5875b050c6edb","20840239/2a000001a010cb43f18c8e6dd847ec5a8a23","19871159/2a0000019e6eeaf3f0bdf38909c4071a221c","16465668/2a0000019b9866ed60972ae9a8c392493931","17754824/2a0000019d975e716d33339a93708bf9ad3a"],"yandex":"https://yandex.ru/maps/org/tatooine/193209633114/","coords":[37.615016,55.766081],"logo":"19699569/2a0000019b93251b7d5ed90685bfc40ce614","phones":[{"n":"+7 (495) 981-08-55","v":"+74959810855","i":null},{"n":"+7 (495) 182-30-88","v":"+74951823088","i":null}],"booking":null,"site":"https://tatooine.rest/","reels":["DUV8K1BiDU7"],"post":null},{"id":"nauka","name":"Наука и жизнь","type":"Бар-ресторан","cuisine":["Бары","Европейская"],"short":"Круглосуточный бар у «Кузнецкого Моста» с живой музыкой","description":"Бар-ресторан, который не закрывается никогда, с живой музыкой, DJ, стендапами и настольными играми. Блогеры хвалят креветки в тайском стиле, а в кофейне рядом — хот-доги.","perks":[{"text":"Круглосуточно, кухня тоже"},{"text":"Креветки в тайском стиле"},{"text":"Бизнес-ланч за 470 ₽"}],"tags":["круглосуточно","креветки по-тайски"],"address":"Пушечная ул., 7/5с2","metro":[{"name":"Кузнецкий Мост","colors":["#8647b2"],"distance":"160 м"},{"name":"Лубянка","colors":["#f23d30"],"distance":"271 м"}],"hours":["00:00-00:00","00:00-00:00","00:00-00:00","00:00-00:00","00:00-00:00","00:00-00:00","00:00-00:00"],"price":"Средний чек 1500–2400 ₽","rating":5,"ratingCount":4190,"photos":["10488540/2a0000018c073a7f5282334c3e36d220219e","10488540/2a0000018c0739f4ca8d2e674df1c34e75a3","15401795/2a00000197ae1530b161375b0d4f94f3c4f6","13206104/2a00000194ffa6e3552ac0f7fb11c5e4ef7a","14920258/2a00000197aeaa4550514cefa70bf53b4f51","14093322/2a00000192e441396cc3c14812b4e2f913b3"],"yandex":"https://yandex.ru/maps/org/nauka_i_zhizn/50196935823/","coords":[37.62308,55.76087],"logo":"13220791/2a00000194b03667b126dad86434f85a2f39","phones":[{"n":"+7 (925) 125-77-88","v":"+79251257788","i":null}],"booking":null,"site":"https://naukabar.ru/","reels":["Db0IBuIMLHp"],"post":null},{"id":"lea","name":"Lea","type":"Бистро-бар","cuisine":["Рыба и морепродукты","Европейская","Завтраки"],"short":"Круглосуточное бистро с морепродуктами из аквариума","description":"Бистро-бар на Зубовской площади с южноевропейской кухней. Морепродукты берут прямо из аквариума, а кухня работает круглые сутки.","perks":[{"text":"Круглосуточно"},{"text":"Морепродукты из аквариума"},{"text":"Своя пекарня и завтраки"}],"tags":["круглосуточно","морепродукты"],"address":"Зубовская площадь, 3, стр. 1","metro":[{"name":"Парк культуры","colors":["#f23d30","#805139"],"distance":"620 м"}],"hours":["00:00-00:00","00:00-00:00","00:00-00:00","00:00-00:00","00:00-00:00","00:00-00:00","00:00-00:00"],"price":"Средний чек до 2500 ₽","rating":4.7,"ratingCount":576,"photos":["16478002/2a0000019b2d2c7cf70b2340ec816c307b08","14460764/2a00000193ace3aaee0a7f06e88aa8a64fec","17783115/2a0000019c5a8a3a62e8e8aae37180703032","19647201/2a0000019c5a9414764219e976a86d692bdc","18780150/2a0000019c5a8b02a3a8ed599fe062b85fc7","16329243/2a0000019c5a9f48b3f5870993090ce76c7c"],"yandex":"https://yandex.ru/maps/org/lea/23689815864/","coords":[37.585473,55.737937],"logo":"14079384/2a0000019350878e899d7df951ae18f947d6","phones":[{"n":"+7 (934) 008-16-82","v":"+79340081682","i":null}],"booking":null,"site":"http://lea.rest/","reels":["DbMIAAFvmLv"],"post":null},{"id":"zhiest","name":"Жи Есть","type":"Ресторан","cuisine":["Кавказ и Восток"],"short":"Халяльный кавказский ресторан с верандой, открыт до 5 утра","description":"Халяльный ресторан кавказской кухни с аутентичным интерьером и верандой, недалеко от «Площади Гагарина». Открыт с 10 утра до 5 утра.","perks":[{"text":"Каждый день до 5:00"},{"text":"Халяль"},{"text":"Бесплатная парковка"}],"tags":["до 5 утра","халяль"],"address":"ул. Орджоникидзе, 11, стр. 17","metro":[{"name":"Площадь Гагарина","colors":["#ff4c4c"],"distance":"390 м"},{"name":"Ленинский проспект","colors":["#f28b24"],"distance":"390 м"}],"hours":["10:00-05:00","10:00-05:00","10:00-05:00","10:00-05:00","10:00-05:00","10:00-05:00","10:00-05:00"],"price":"Средний чек 1500–2000 ₽","rating":4.7,"ratingCount":3223,"photos":["19519244/2a0000019bb7ed21a5bb45942794ed255e5f","18152412/2a0000019b666f1ba51999c231d85d0a4bb3","1592431/2a0000016eea0252652d812a126255e2e873","1583511/2a0000016eea020e0520cc6396b1ad16578c","19749282/2a0000019e9cf2f6a896ff9a276a1ce5679e","1975185/2a0000016eea025e44648389caedd56daaa2"],"yandex":"https://yandex.ru/maps/org/zhi_yest/1044919573/","coords":[37.591377,55.708285],"logo":"1045589/2a000001864661bacdad8994e8dad8cbdc83","phones":[{"n":"+7 (916) 625-00-01","v":"+79166250001","i":null}],"booking":"https://www.restoran.ru/booking-widget-form.php?id=387776&name=%D0%96%D0%B8+%D0%95%D1%81%D1%82%D1%8C","site":"http://jiest.ru/","reels":["DbMIAAFvmLv"],"post":null},{"id":"erwin","name":"Erwin. Павильон","type":"Ресторан","cuisine":["Рыба и морепродукты"],"short":"Рыбный ресторан в павильоне прямо на Патриарших прудах","description":"Морской ресторан в павильоне на Патриарших прудах, с верандой у самой воды. Рыба, морепродукты, средиземноморская кухня и джаз.","perks":[{"text":"Веранда прямо у пруда"},{"text":"Можно с собакой"}],"tags":["на Патриарших"],"address":"Большой Патриарший пер., 5","metro":[{"name":"Пушкинская","colors":["#8647b2"],"distance":"860 м"},{"name":"Маяковская","colors":["#3aa63a"],"distance":"880 м"}],"hours":["12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00"],"price":"Средний чек 3000–5000 ₽","rating":4.8,"ratingCount":3777,"photos":["7179902/2a000001843589c119649f171701a74ab22f","4336412/2a00000178a0ef00b7e382cac3afd0023d55","3691419/2a000001787346623b96ca61fb36bbc7654b","4012790/2a00000178a0ee9128bcdd4ba265101cdc6a","4236413/2a00000178a0ee0b3fec523b26c4d54f504d","11244149/2a0000018b7881687ab72c37a461a7d5491d"],"yandex":"https://yandex.ru/maps/org/erwin_pavilion_patriki/185820248177/","coords":[37.592901,55.763429],"logo":"14329771/2a00000194b6c70a01c67c5f58a84d1ef791","phones":[{"n":"+7 (916) 000-50-00","v":"+79160005000","i":null}],"booking":null,"site":"https://erwin-pavilion.rest/","reels":["DbMIAAFvmLv"],"post":null},{"id":"chaihona","name":"Чайхона № 1","type":"Ресторан","cuisine":["Кавказ и Восток","Завтраки"],"short":"Восточный ресторан на Новом Арбате, открыт почти круглые сутки","description":"Ресторан сети «Чайхона № 1» на Новом Арбате: узбекская и кавказская кухня, яркий восточный интерьер, веранда. Открыт с 10 утра до 6 утра.","perks":[{"text":"Работает с 10:00 до 6:00"},{"text":"DJ и настольные игры"},{"text":"Завтраки"}],"tags":["до 6 утра"],"address":"ул. Новый Арбат, 21","metro":[{"name":"Смоленская","colors":["#21abd9","#0070bf"],"distance":"630 м"},{"name":"Арбатская","colors":["#21abd9"],"distance":"1,08 км"}],"hours":["10:00-06:00","10:00-06:00","10:00-06:00","10:00-06:00","10:00-06:00","10:00-06:00","10:00-06:00"],"price":"Средний чек 2199–2200 ₽","rating":4.8,"ratingCount":9296,"photos":["15231053/2a000001976e4a3f1e78dea970c87a7d3fa0","16330083/2a000001976e4a4b43e243cc35d364083573","16161139/2a000001976e4a3f184173877ef23ebf9ef5","16069310/2a000001976e4a48ef4efe7bfe09d9dc376b","15031174/2a000001976e4a4c3e400ec3ad1efadd92ad","15045776/2a000001976e4a3f2b2892e44361171c1c90"],"yandex":"https://yandex.ru/maps/org/chajkhona_1/1254006182/","coords":[37.585799,55.751898],"logo":"11937221/2a0000019023671284e26edc6b0863569fbf","phones":[{"n":"+7 (495) 507-00-21","v":"+74955070021","i":null},{"n":"+7 (495) 927-55-55","v":"+74959275555","i":null}],"booking":"https://yandex.ru/web-maps/webview?booking[permalink]=1254006182&booking[standalone]=true&mode=booking&source=partner-cta","site":"https://chaihona1.ru/","reels":["DbMIAAFvmLv"],"post":null},{"id":"myasoryba","name":"Мясо & Рыба","type":"Ресторан","cuisine":["Мясо и гриль","Рыба и морепродукты"],"short":"Круглосуточный ресторан мяса и рыбы на Тверской","description":"Круглосуточный ресторан с большим меню мяса, рыбы и гриля и живой музыкой. У сети около десяти ресторанов в Москве, этот на Тверской у «Пушкинской».","perks":[{"text":"Круглосуточно"},{"text":"Живая музыка"},{"text":"Бизнес-ланч"}],"tags":["круглосуточно","живая музыка"],"address":"Тверская ул., 23, стр. 1","metro":[{"name":"Пушкинская","colors":["#8647b2"],"distance":"320 м"},{"name":"Тверская","colors":["#3aa63a"],"distance":"360 м"}],"hours":["00:00-00:00","00:00-00:00","00:00-00:00","00:00-00:00","00:00-00:00","00:00-00:00","00:00-00:00"],"price":"Средний чек 2700 ₽","rating":4.9,"ratingCount":8100,"photos":["7668046/2a000001836a4c693cd8311c73d9a984de24","16136409/2a000001997c4cfb5da504d0b24d33bbec27","6145759/2a000001836a4d16e9ed20c0e722b12993f5","6955494/2a000001836a4f49d115177384246b14c39c","6145759/2a000001836a4eef832bc4fe16c064c57fd8","6145759/2a000001836a4c88d3a0213be50e22578742"],"yandex":"https://yandex.ru/maps/org/meat_fish/19395904090/","coords":[37.59991,55.766662],"logo":"16368192/2a0000019ae9bc9cb8a457517c72629e6f00","phones":[{"n":"+7 (495) 734-70-25","v":"+74957347025","i":null},{"n":"+7 (916) 495-25-69","v":"+79164952569","i":null}],"booking":null,"site":"http://meat-and-fish.ru/","reels":["DbMIAAFvmLv"],"post":null},{"id":"penta","name":"Penta","type":"Гастробар","cuisine":["Бары","Европейская"],"short":"Круглосуточный гастробар в отеле на Новом Арбате с бильярдом","description":"Гастробар при отеле Pentahotel на Новом Арбате, открытый круглые сутки. Можно поесть, сыграть в бильярд или настолки и посмотреть футбол.","perks":[{"text":"Круглосуточно"},{"text":"Бильярд, настольные игры и приставки"},{"text":"Трансляции матчей"}],"tags":["круглосуточно","бильярд"],"address":"ул. Новый Арбат, 15","metro":[{"name":"Арбатская","colors":["#21abd9","#0070bf"],"distance":"680 м"},{"name":"Смоленская","colors":["#0070bf"],"distance":"950 м"}],"hours":["00:00-00:00","00:00-00:00","00:00-00:00","00:00-00:00","00:00-00:00","00:00-00:00","00:00-00:00"],"price":"Средний чек 1500–3500 ₽","rating":4.8,"ratingCount":461,"photos":["7383884/2a000001839f9a1a47a55d1bb389f95ae9bf","6236655/2a00000183b8ea5a24908e01437f967b2458","5538812/2a0000018385651c4498919eb1f1212d7951","10830675/2a0000018b610917d553443e898eebaff9a0","6197788/2a000001838081a28bea5170c1152a3c6a6a","6514890/2a00000183845e804f9c7a51da3ee7b2bd2f"],"yandex":"https://yandex.ru/maps/org/gastrobar_penta/132823476316/","coords":[37.592667,55.752175],"logo":"5298780/2a00000183d01b8caa049006225ce9c59159","phones":[{"n":"+7 (495) 287-01-36","v":"+74952870136","i":null},{"n":"+7 (903) 614-15-13","v":"+79036141513","i":null}],"booking":null,"site":"https://www.pentamoscow.ru/eat/","reels":["DbMIAAFvmLv"],"post":null},{"id":"lavirgen","name":"La Virgen","type":"Такерия","cuisine":["Латинская Америка"],"short":"Тайная мексиканская такерия у Лубянки","description":"Небольшая «тайная» мексиканская такерия прямо у Лубянки. За тако, кесадильей и чуррос, или просто если хочется на вечер в Мексику.","perks":[{"text":"Тако, кесадилья и чуррос"},{"text":"Пт и сб до часу ночи"}],"tags":["тако и чуррос"],"address":"Лубянский пр., 5, стр. 1","metro":[{"name":"Лубянка","colors":["#f23d30"],"distance":"160 м"},{"name":"Китай-город","colors":["#f28b24","#8647b2"],"distance":"239 м"}],"hours":["13:00-23:00","13:00-23:00","13:00-23:00","13:00-23:00","13:00-01:00","13:00-01:00","13:00-23:00"],"price":"Средний чек 700–1500 ₽","rating":5,"ratingCount":3082,"photos":["13477341/2a0000018f5e304c73b75e0c1431555b2ee1","18148618/2a0000019b6c8472dcca29a6fabae02b1ab5","11401274/2a0000018d931eb15318445000b945f3c46e","14910910/2a00000197d5e42e74f2f2731caf9aeb6823","11886651/2a0000018dc175e9d2846c8e93b1f67bbf94","10092863/2a0000018da8bb9917bebd553b7346db1a70"],"yandex":"https://yandex.ru/maps/org/la_virgen/240105645545/","coords":[37.629511,55.758605],"logo":"6237886/2a00000180cceba7f5923cd243251fb5e2fa","phones":[{"n":"+7 (985) 420-66-60","v":"+79854206660","i":null}],"booking":null,"site":"https://lavirgen.tilda.ws/","reels":["Da3gN73MAjY"],"post":null},{"id":"bobbyq","name":"Бобби-Кю · Bobby Q","type":"Кебабная","cuisine":["Шаурма и кебаб"],"short":"Кебабы из свежего мяса с мангала у «Марьиной Рощи»","description":"Кебабная, где мясо жарят на мангале прямо при тебе, без заготовок. Обходятся без тяжёлых майонезных соусов: минимум лишнего, только хорошие продукты.","perks":[{"text":"Мясо жарят при тебе"},{"text":"Без майонезных соусов"}],"tags":["мангал при тебе"],"address":"ул. Сущёвский Вал, 53","metro":[{"name":"Марьина Роща","colors":["#9fbf00","#60bfbf"],"distance":"162 м"}],"hours":["12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00"],"price":"Средний чек 300–500 ₽","rating":5,"ratingCount":527,"photos":["16299341/2a0000019aa7920fa480c1155accc6d5d3aa","15388054/2a0000019995eddf11df79f147f686ebc5ab","16136444/2a0000019aa7922613669ecf35a467842365","16888214/2a0000019aa7911f31a8ec2602d971ad7e3f","16338459/2a0000019995ddd2f3c6702cc6f89acf53f9","15682944/2a0000019995ecc0990492a3c0df56bec6f6"],"yandex":"https://yandex.ru/maps/org/bobby_q/111397150761/","coords":[37.613431,55.793511],"logo":"15416268/2a0000019953c003c225f71e8d58452fcfd5","phones":[{"n":"+7 (925) 521-65-47","v":"+79255216547","i":null}],"booking":null,"site":null,"reels":["Daui3VMO4bd"],"post":null},{"id":"lafferia","name":"Лаффериа · Lafferia","type":"Бистро","cuisine":["Шаурма и кебаб"],"short":"44 вида шаурмы, хит — «Биткоин» со вкусом Биг Тейсти","description":"Бистро у «Бауманской» с 44 видами шаурмы: владелец собирал рецепты, объездив полмира. Попробуйте «Биткоин» с говядиной, а для смелых есть шаурма с тунцом.","perks":[{"text":"44 вида шаурмы"},{"text":"Хит — «Биткоин» с говядиной"},{"text":"Можно с небольшой собакой"}],"tags":["44 вида шаурмы"],"address":"Малая Почтовая ул., 8, стр. 2","metro":[{"name":"Бауманская","colors":["#0070bf"],"distance":"520 м"}],"hours":["11:00-23:00","11:00-23:00","11:00-23:00","11:00-23:00","11:00-23:00","11:00-23:00","11:00-23:00"],"price":"Средний чек 300–700 ₽","rating":5,"ratingCount":399,"photos":["19547455/2a0000019e1d84e023edf36ea10bc93bb1e1","19580059/2a0000019e1d852e702f1b7d00cabac2a9e1","13951679/2a00000192b3e60037a6fec419bc3d3603d9","18150755/2a0000019dbef412e804fcffd9d9f3f909aa","18152412/2a0000019bcb96261ccd489acff1d674660e","13229346/2a0000019461b631fac60fc76445a7afec5d"],"yandex":"https://yandex.ru/maps/org/lafferia/227863439698/","coords":[37.686351,55.771569],"logo":"16130837/2a0000019ba3a505be30bc37a1448eb65d64","phones":[{"n":"+7 (939) 888-87-89","v":"+79398888789","i":null}],"booking":null,"site":null,"reels":["DaNxAUvobhW","Db8ix2VREFz"],"post":null},{"id":"shaurmacity","name":"Шаурма Сити","type":"Шаурмичная","cuisine":["Шаурма и кебаб"],"short":"Круглосуточная шаурма из шашлыка на Покровке","description":"Шаурмичная на Покровке, где в лаваш кладут куски шашлыка, а не мясо с вертела. Мясо жарят на электромангале каждые 30 минут. Ещё есть закрытая пицца, гирос, люля-кебаб и вок.","perks":[{"text":"Круглосуточно"},{"text":"Закрытая пицца — совсем не кальцоне"},{"text":"Бизнес-ланч за 399 ₽"}],"tags":["круглосуточно","закрытая пицца"],"address":"ул. Покровка, 4, стр. 1","metro":[{"name":"Китай-город","colors":["#8647b2","#f28b24"],"distance":"640 м"},{"name":"Чистые пруды","colors":["#f23d30"],"distance":"880 м"}],"hours":["00:00-00:00","00:00-00:00","00:00-00:00","00:00-00:00","00:00-00:00","00:00-00:00","00:00-00:00"],"price":null,"rating":5,"ratingCount":210,"photos":["19619196/2a0000019d53d3c7413333dabe6c9ed948a2","15043309/2a0000019b16f99b31ddf7830608647b1155","18148618/2a0000019bf9a65b39baf3a34701cd18e0cf","17737331/2a0000019c7665476b18cca0f020ff168dec","18128678/2a0000019c766563637f414cb8dc2e710347","16480550/2a0000019b31be6c604bfb844d738f2f49da"],"yandex":"https://yandex.ru/maps/org/shaurma_city/57995358768/","coords":[37.641703,55.758684],"logo":"19539707/2a0000019cb885b9ae6512622afeee17b7f3","phones":[{"n":"+7 (996) 976-73-40","v":"+79969767340","i":null}],"booking":null,"site":"https://shaurmacity.ru/","reels":["DadYPU7x6gJ"],"post":null},{"id":"meatcrew","name":"Meat Crew","type":"Мясной бар","cuisine":["Мясо и гриль","Бургеры"],"short":"Мясо из техасского смокера и бургеры у Белорусской","description":"Мясной ресторан-бар с южноамериканским колоритом. Мясо томят в техасском смокере от нескольких часов до суток, поэтому рёбра и брискет получаются очень нежными. Летом открывают террасу с красивым видом.","perks":[{"text":"Мясо из техасского смокера"},{"text":"Сеты на большую компанию"},{"text":"Бизнес-ланчи"}],"tags":["техасский смокер"],"address":"ул. Грузинский Вал, 11, стр. 4","metro":[{"name":"Белорусская","colors":["#805139","#3aa63a"],"distance":"390 м"}],"hours":["12:00-23:00","12:00-23:00","12:00-23:00","12:00-23:00","12:00-23:00","12:00-23:00","12:00-23:00"],"price":"Средний чек 650–1200 ₽","rating":4.8,"ratingCount":1652,"photos":["771751/2a0000018847fa83469a8713bfe665fbfc1c","5234013/2a00000187e8376a63b2c139529839a15d08","9954022/2a00000188d5493f51a752b73116870dd6a6","6674804/2a00000187f6204c89671d95901ab4df56e8","9331640/2a00000187e8401dab7661b0e9339f7dce29"],"yandex":"https://yandex.ru/maps/org/meat_crew/146942630283/","coords":[37.577711,55.773828],"logo":"16494614/2a0000019a8809eb5d98e3a260c07bafb2b2","phones":[{"n":"+7 (926) 680-28-11","v":"+79266802811","i":null}],"booking":"https://yandex.ru/web-maps/webview?booking[permalink]=146942630283&booking[standalone]=true&mode=booking&source=partner-cta","site":"https://meatcrew.ru/belorusskaya","reels":["DYzepUaoGpf"],"post":null},{"id":"burgeravenue","name":"Бургер Авеню","type":"Бургерная","cuisine":["Бургеры"],"short":"Бургеры и пицца на Мосфильмовской до 3 ночи","description":"Бургерная на Мосфильмовской, недалеко от «Раменок». Американский фастфуд и пицца, открыто каждый день до 3 ночи.","perks":[{"text":"Каждый день до 3:00"},{"text":"Летняя веранда"}],"tags":["до 3 ночи"],"address":"Мосфильмовская ул., 55","metro":[{"name":"Раменки","colors":["#ffd000"],"distance":"590 м"}],"hours":["12:00-03:00","12:00-03:00","12:00-03:00","12:00-03:00","12:00-03:00","12:00-03:00","12:00-03:00"],"price":null,"rating":4.8,"ratingCount":63,"photos":["15696528/2a0000019ed0b3e01ac2af9dbc8ff974c527","20427853/2a0000019ed0b3f6b3ffefba6f96f108b59f","15696528/2a0000019ed0b3f6b94f0286002d6b9db406","18105299/2a0000019ed0b390d083170bfbf59eabf928","19303228/2a0000019ed0b4ff686117af066238ef4b34","16329243/2a0000019ed0b4ff9e453651b380289acec9"],"yandex":"https://yandex.ru/maps/org/burger_avenue/145132524930/","coords":[37.495115,55.702831],"logo":"13791177/2a0000019ed0b0a9455c627a886695a0fb22","phones":[{"n":"+7 (963) 199-01-01","v":"+79631990101","i":null}],"booking":null,"site":"https://burger-avenue-mosfilmovskaja-ulitsa.clients.site/","reels":["DbOnGCwtetg"],"post":null},{"id":"rustyrat","name":"Rusty Rat & Pizza","type":"Пиццерия","cuisine":["Пицца"],"short":"Пиццерия у «Китай-города», куда ходят за пиццей и пастой","description":"Пиццерия в Большом Черкасском переулке, у «Китай-города». Блогеры теперь ходят за пиццей и пастой только сюда.","perks":[{"text":"Пицца и паста"},{"text":"В сб и вс открываются в 10:00"},{"text":"Летняя веранда"}],"tags":["пицца и паста"],"address":"Большой Черкасский пер., 13, стр. 4","metro":[{"name":"Китай-город","colors":["#f28b24","#8647b2"],"distance":"215 м"},{"name":"Лубянка","colors":["#f23d30"],"distance":"340 м"}],"hours":["13:00-00:00","13:00-00:00","13:00-00:00","13:00-00:00","13:00-00:00","10:00-00:00","10:00-00:00"],"price":"Средний чек от 2000 ₽","rating":4.8,"ratingCount":778,"photos":["16386092/2a0000019c3db094ba9828218325df2c881c","18384802/2a0000019b2e9d887b12de85dd1ac774fe5b","16472720/2a0000019b526d0ab745b8bda82de8a65c43","18147375/2a0000019e333380d45028fec2fca3a07685","18703564/2a0000019dce5947b8c82cbbc6b5a96bdb8b","18136130/2a0000019e333383e0ae5bc81994f90a2851"],"yandex":"https://yandex.ru/maps/org/rusty_rat_pizza/94015478437/","coords":[37.627666,55.757119],"logo":"21173611/2a000001a0cf035c9fdf4b3628fe21d60096","phones":[{"n":"+7 (968) 890-00-60","v":"+79688900060","i":null}],"booking":null,"site":"https://rustyratpizza.tilda.ws/","reels":["DZUh6eVtqru"],"post":null},{"id":"lars","name":"Ларс · Lars","type":"Закусочная","cuisine":["Латинская Америка"],"short":"Бразильская закусочная с акциями каждый день и латино-вечеринками","description":"Бразильская закусочная у «Дмитровской». Акции здесь каждый день по своему календарю, а по пятницам и субботам устраивают латиноамериканские вечеринки с живой музыкой.","perks":[{"text":"Акции каждый день по календарю"},{"text":"Латино-вечеринки с живой музыкой по пт и сб"},{"text":"Со среды по воскресенье до 6 утра"}],"tags":["латино-вечеринки"],"address":"Новодмитровская ул., 1, стр. 23","metro":[{"name":"Дмитровская","colors":["#999999"],"distance":"410 м"}],"hours":["11:00-23:00","11:00-03:00","11:00-06:00","11:00-06:00","11:00-06:00","11:00-06:00","11:00-06:00"],"price":"Средний чек 700–1400 ₽","rating":5,"ratingCount":5917,"photos":["14246212/2a00000199cd953a21b45ae787f4997a75d2","15416336/2a00000199cd954ffbc69d41be260d74a055","15682944/2a00000199cd95456b9f03e4ac00cc62a696","15712112/2a00000199cd95427134af5b42a3a1bba73e","10768168/2a000001905e1ef67f057862fa09c046a9ad","15608211/2a000001987a373a1c4137ca2008935635d8"],"yandex":"https://yandex.ru/maps/org/lars/86560638264/","coords":[37.584887,55.806361],"logo":"1546430/2a0000016ca91710ae1ebc5a59a12044c7a6","phones":[{"n":"+7 (495) 001-46-85","v":"+74950014685","i":null}],"booking":null,"site":"https://larsvegans.ru/","reels":["DbFtSDaofNS"],"post":null},{"id":"uhvat","name":"Ухват","type":"Ресторан","cuisine":["Русская кухня"],"short":"Русская кухня из печи на Трёхгорной мануфактуре","description":"Ресторан русской кухни, где многое готовят в настоящей печи и подают в чугунках: кедровую кашу с полбой, борщ, который томится 12 часов, пожарскую котлету. Блогер называет её одной из лучших в Москве.","perks":[{"text":"Комплимент: корзина из 4 видов хлеба и топлёное масло-свеча"},{"text":"Кедровая каша и борщ из печи"},{"text":"Своя пекарня"}],"tags":["русская печь","хлеб в комплимент"],"address":"Рочдельская ул., 15, стр. 41","metro":[{"name":"Улица 1905 года","colors":["#8647b2"],"distance":"1,08 км"}],"hours":["12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00"],"price":"Средний чек 3000–5000 ₽","rating":4.9,"ratingCount":6438,"photos":["15294573/2a0000019764895d3574d083256e96a604b5","1886165/2a0000016cb4f7bde3922d5bd32b0f6c8821","14907426/2a000001987f986e24128f96d545e080e5f9","1651981/2a0000016ec6876d081613bd2ceab4a907a8","1583613/2a0000016ec6877742f3da81040762db9439","2006845/2a0000016ec6877418e54e60fa88369d5d4b"],"yandex":"https://yandex.ru/maps/org/uhvat/129106521343/","coords":[37.561909,55.755983],"logo":"2366463/2a000001738185d9abf22d3e08aae66604a0","phones":[{"n":"+7 (939) 320-78-99","v":"+79393207899","i":null}],"booking":null,"site":"http://uhvat.restaurant/","reels":["DaCy7cotz2q"],"post":null},{"id":"tyomajo","name":"Тёмаджо","type":"Ламаджо","cuisine":["Кавказ и Восток","Стритфуд"],"short":"Ламаджо и выпечка из печи у «Менделеевской»","description":"Стритфуд у «Менделеевской», где главное блюдо — ламаджо: тонкая лепёшка с мясной начинкой. Напротив Искенди, можно устроить сравнение, как в рилсе.","perks":[{"text":"Ламаджо"},{"text":"Напротив Искенди"}],"tags":["ламаджо"],"address":"Новослободская ул., 20","metro":[{"name":"Менделеевская","colors":["#999999"],"distance":"130 м"},{"name":"Новослободская","colors":["#805139"],"distance":"430 м"}],"hours":["11:00-22:00","11:00-22:00","11:00-22:00","11:00-22:00","11:00-22:00","11:00-22:00","11:00-22:00"],"price":"Средний чек 350–500 ₽","rating":5,"ratingCount":235,"photos":["17637863/2a0000019bf67d3004b8808bbbc6941086cc","18005133/2a0000019bc95f67fa091901f9a781df6794","16157592/2a0000019bff8355170fb8fb5ba740a96a84","17753003/2a0000019c0bf32b7813ac1bdbe7ed1fa309","19720204/2a0000019bc95f6c30201b2ca4d85a2e224f","19619196/2a0000019c12a1495635e1624cd5e956f72c"],"yandex":"https://yandex.ru/maps/org/tyomadzho/29858634500/","coords":[37.598621,55.782253],"logo":"18111128/2a0000019c2e5081cdaa04d1248ef290be64","phones":[{"n":"+7 (910) 005-53-06","v":"+79100055306","i":null}],"booking":null,"site":null,"reels":["DcN3pE8qENw","DYuOuafs-7b","Ddl8pSqgBzn"],"post":null},{"id":"iskendi","name":"Искенди","type":"Турецкий стритфуд","cuisine":["Шаурма и кебаб"],"short":"Турецкие дюрюмы напротив Тёмаджо","description":"Турецкий стритфуд с открытой кухней на Новослободской, прямо напротив Тёмаджо. Блогеры отдельно сравнивали их балык-дюрюм с рыбой.","perks":[{"text":"Балык-дюрюм с рыбой"},{"text":"Открытая кухня"},{"text":"Можно с собакой"}],"tags":["балык-дюрюм"],"address":"Новослободская ул., 19, стр. 1","metro":[{"name":"Менделеевская","colors":["#999999"],"distance":"94 м"},{"name":"Новослободская","colors":["#805139"],"distance":"209 м"}],"hours":["11:30-22:00","11:30-22:00","11:30-22:00","11:30-22:00","11:30-23:00","12:00-23:00","12:00-23:00"],"price":null,"rating":4.7,"ratingCount":296,"photos":["17843434/2a0000019d49f5f8acc2fb49263263488145","17679358/2a0000019b65e3a3a1c4f18e004ec9f3d3fe","17785064/2a0000019eeba67f0b94c92ceeaa9a714461","19553098/2a0000019cde2ee242c14b332ee2b0d7231e","19883212/2a0000019bd2328667cc71a75a953419ed79","4200646/2a0000019cdcfd19ad763ad0b0f6eaf102ca"],"yandex":"https://yandex.ru/maps/org/iskendy/52119597703/","coords":[37.599319,55.780828],"logo":"16454077/2a0000019a351ef95926e5250675884993b4","phones":[{"n":"+7 (993) 629-71-19","v":"+79936297119","i":null}],"booking":null,"site":null,"reels":["Ddl8pSqgBzn"],"post":null},{"id":"beeffish","name":"Биф & Фиш","type":"Бистро","cuisine":["Шаурма и кебаб","Рыба и морепродукты"],"short":"Турецкое бистро с рыбой и мясом у выхода из «Крылатского»","description":"Турецкое бистро с рыбой и мясом в формате быстрой еды, буквально в 15 метрах от метро «Крылатское».","perks":[{"text":"15 метров от метро"}],"tags":["у метро Крылатское"],"address":"Осенний бул., 10","metro":[{"name":"Крылатское","colors":["#0070bf"],"distance":"15 м"}],"hours":["11:00-00:00","11:00-00:00","11:00-00:00","11:00-00:00","11:00-00:00","11:00-00:00","11:00-00:00"],"price":"Средний чек 400–600 ₽","rating":4.2,"ratingCount":50,"photos":["20879831/2a000001a0dda08f738e9c30e5877560c7db","21535825/2a000001a0e739db51b27b8805ceb01c647a","17787346/2a000001a05e65bb9d4603881a22726d6a88","20192526/2a000001a0afeb84134b84a33cbcc03a87a7","19809277/2a000001a0c16e372e7a7bd61a1207f360fa"],"yandex":"https://yandex.ru/maps/org/bif_fish/194390663541/","coords":[37.40884,55.757653],"logo":"20192526/2a000001a033fbbb4a914226431a17518bec","phones":[{"n":"+7 (991) 161-66-33","v":"+79911616633","i":null}],"booking":null,"site":null,"reels":["DdjW_IStAAs"],"post":null},{"id":"bijou","name":"Bijou","type":"Бистро","cuisine":["Европейская"],"short":"Французское бистро для свидания с сетом на двоих","description":"Камерное французское бистро у Белорусской, хорошее место для романтического ужина. Есть готовый сет на двоих, где в каждом из трёх курсов можно выбрать блюдо, и за одним столом получаются два разных ужина.","perks":[{"text":"Французский сет на двоих: 6 блюд за 3800 ₽"},{"text":"Устрицы и коктейли"},{"text":"Бизнес-ланч"}],"tags":["сет 6 блюд за 3800 ₽"],"address":"2-я Брестская ул., 39, стр. 3","metro":[{"name":"Белорусская","colors":["#805139","#3aa63a"],"distance":"217 м"},{"name":"Маяковская","colors":["#3aa63a"],"distance":"940 м"}],"hours":["12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00","12:00-02:00","14:00-02:00","14:00-00:00"],"price":"Средний чек 1500–2500 ₽","rating":4.8,"ratingCount":1230,"photos":["19593321/2a0000019cd6c4b7cd51ad1672a2cae5fd7e","17651669/2a0000019cd6c4df21fa713f47d585107953","18108291/2a0000019cd6c50f488e68068df8f4b20477","17843434/2a0000019cd6c4a16d8b96bc4e1fb7d0376d","1920875/2a0000017f27cc64f6cb216d2a24d6473b3b","6145759/2a0000018348418956e5b3a863470c0887aa"],"yandex":"https://yandex.ru/maps/org/bijou/130868248749/","coords":[37.584602,55.773978],"logo":"19619196/2a0000019cd6bfd02cd861fa33abbd39a8a8","phones":[{"n":"+7 (495) 130-02-95","v":"+74951300295","i":null}],"booking":null,"site":"https://bijoubar.ru/","reels":["DdtFn2uuCFF"],"post":null},{"id":"savoy","name":"Савой","type":"Ресторан","cuisine":["Русская кухня","Завтраки"],"short":"Исторический ресторан с «царским» завтраком на полтора килограмма","description":"Исторический ресторан отеля «Савой» с русской и французской кухней и джазом. Здесь подают «царский» завтрак: полтора килограмма блюд по мотивам завтраков Николая II.","perks":[{"text":"Царский завтрак на 1,5 кг"},{"text":"Завтраки с 8 утра"},{"text":"Джаз"}],"tags":["царский завтрак"],"address":"Пушечная ул., 6","metro":[{"name":"Кузнецкий Мост","colors":["#8647b2"],"distance":"167 м"},{"name":"Лубянка","colors":["#f23d30"],"distance":"248 м"}],"hours":["08:00-23:00","08:00-23:00","08:00-23:00","08:00-23:00","08:00-23:00","08:00-23:00","08:00-23:00"],"price":"Средний чек от 5000 ₽","rating":4.8,"ratingCount":2071,"photos":["17773264/2a0000019d0a57eb2f02a1c06d21497170c5","11356085/2a000001912130c2bfc373a3140418632b93","18173477/2a0000019df35d0383c2f055c204bb86aba2","20431688/2a0000019df3675cded3a310ff636c45cb45","16874425/2a0000019df35abfc8a5418070720385a795","17754824/2a0000019df372651dc566fef5e374a81490"],"yandex":"https://yandex.ru/maps/org/savoy/1121853221/","coords":[37.62318,55.760634],"logo":"1546430/2a0000016d4986d2cb754e514d2faf76ff24","phones":[{"n":"+7 (985) 310-72-03","v":"+79853107203","i":null},{"n":"+7 (985) 850-96-78","v":"+79858509678","i":"Хостес"}],"booking":"https://www.restoran.ru/booking-widget-form.php?id=386937&name=%D0%A1%D0%B0%D0%B2%D0%BE%D0%B9","site":"https://savoy.rest/","reels":["DbBssBINwvT"],"post":null},{"id":"bereg","name":"Берег","type":"Ресторан","cuisine":["Европейская"],"short":"Ресторан у воды в Строгино с верандой и кино под открытым небом","description":"Ресторан на берегу в Строгино: веранда у воды, DJ и танцпол, летом кино под открытым небом. Меню большое, от пасты до шашлыка.","perks":[{"text":"Кино под открытым небом летом"},{"text":"Завтраки с 11 до 16"},{"text":"Бесплатная парковка"}],"tags":["у воды","кино летом"],"address":"ул. Исаковского, 37, корп. 2, стр. 1","metro":[{"name":"Строгино","colors":["#0070bf"],"distance":"1,62 км"}],"hours":["12:00-23:00","12:00-23:00","12:00-23:00","12:00-23:00","12:00-00:00","12:00-00:00","12:00-23:00"],"price":"Средний чек 2500–3500 ₽","rating":4.7,"ratingCount":5184,"photos":["16823151/2a000001987ef5597a7f307be23e56760d44","14763372/2a0000019407fd9acc4fec9487f99e4c5d5d","13083354/2a0000019054c101b191ae249e453a594c5c","14005436/2a00000193bea2dd5b7b0259669ae9b100ed","14238289/2a0000019407fd9a76ae106fe783ee554bd8","11408080/2a00000193bea066d7ad3aa22ee65307f6ee"],"yandex":"https://yandex.ru/maps/org/bereg/110523496108/","coords":[37.426565,55.804567],"logo":"18132699/2a0000019caf2d56096df800c07c2fe64b74","phones":[{"n":"+7 (495) 929-70-40","v":"+74959297040","i":null}],"booking":null,"site":"https://bereg.moscow/","reels":["DbNbP5qOACy"],"post":null},{"id":"munch","name":"Манч · Munch","type":"Бургерная","cuisine":["Бургеры"],"short":"Бургерная у «Раменок», открыта до 2 ночи","description":"Бургерная у «Раменок», которая в рилсах разбирает, каким должен быть хороший бургер. Халяльно, открыто каждый день до 2 ночи.","perks":[{"text":"Каждый день до 2:00"},{"text":"Халяль"}],"tags":["до 2 ночи","халяль"],"address":"Мичуринский просп., 26","metro":[{"name":"Раменки","colors":["#ffd000"],"distance":"178 м"},{"name":"Ломоносовский проспект","colors":["#ffd000"],"distance":"960 м"}],"hours":["12:00-02:00","12:00-02:00","12:00-02:00","12:00-02:00","12:00-02:00","12:00-02:00","12:00-02:00"],"price":"Средний чек 700–1210 ₽","rating":5,"ratingCount":111,"photos":["16309447/2a0000019cbcb4f08331210b359dcc926d16","15394162/2a0000019d0798462c3486f8252f1ec92722","20179596/2a0000019e83e5ffd9c9075641922d00cbc4","18777611/2a0000019e83ea89e727c1407ab2f62bcaf5","19807214/2a0000019e83e463cfc545f8b7c326a91e30"],"yandex":"https://yandex.ru/maps/org/manch/6172733110/","coords":[37.501797,55.699973],"logo":"20105000/2a0000019e83e27178c042ab37098e42c618","phones":[{"n":"+7 (967) 077-99-95","v":"+79670779995","i":null}],"booking":null,"site":null,"reels":["Dd8ps_txQfA"],"post":null},{"id":"vanlav","name":"Ванлав","type":"Кондитерская","cuisine":["Кофе и десерты"],"short":"Круглосуточная кондитерская и кофейня у «Маяковской»","description":"Кондитерская-кофейня, которая работает круглые сутки: можно зайти за десертом и кофе хоть ночью. В рилсе шеф показывает свои любимые позиции.","perks":[{"text":"Круглосуточно"},{"text":"Халяль"},{"text":"У сети есть и другие точки"}],"tags":["круглосуточно","десерты"],"address":"1-я Тверская-Ямская ул., 11","metro":[{"name":"Маяковская","colors":["#3aa63a"],"distance":"400 м"},{"name":"Белорусская","colors":["#805139","#3aa63a"],"distance":"680 м"}],"hours":["00:00-00:00","00:00-00:00","00:00-00:00","00:00-00:00","00:00-00:00","00:00-00:00","00:00-00:00"],"price":null,"rating":5,"ratingCount":1462,"photos":["15157522/2a00000195d7281e25f9b45634f68b36d509","14460769/2a00000195d7281e08dbb3191a18c6a9fc84","14885978/2a00000195d7282e632a12eb0015cb4108b4","15074774/2a00000195d728279a8a3bd6e1c02bc82f79","14234746/2a00000195d728296787078de4811a898ab9","15502563/2a00000195d7281d778e037f6a5b46860400"],"yandex":"https://yandex.ru/maps/org/vanlav/241760750343/","coords":[37.590426,55.772843],"logo":"20967380/2a000001a0c58358ce53ac99d95c84c5ce5c","phones":[{"n":"+7 (989) 156-61-18","v":"+79891566118","i":null}],"booking":null,"site":"https://msk.vanlav.ru/","reels":["DYrVNmGyUCX"],"post":null},{"id":"kiez","name":"Киц · Kiez","type":"Коктейльный бар","cuisine":["Бары"],"short":"Коктейльный бар с кухней и танцами, на выходных до утра","description":"Коктейльный бар с европейской кухней у «Улицы 1905 года»: DJ, живая музыка и танцы. В пятницу и субботу работает до 6 утра, в понедельник выходной.","perks":[{"text":"Пт и сб до 6:00"},{"text":"DJ и живая музыка"},{"text":"Понедельник выходной"}],"tags":["пт и сб до 6 утра","DJ"],"address":"Столярный пер., 3, корп. 12","metro":[{"name":"Улица 1905 года","colors":["#8647b2"],"distance":"600 м"},{"name":"Краснопресненская","colors":["#805139"],"distance":"940 м"}],"hours":[null,"18:00-00:00","18:00-00:00","18:00-00:00","18:00-06:00","18:00-06:00","14:00-00:00"],"price":"Средний чек от 1800 ₽","rating":5,"ratingCount":68,"photos":["19541413/2a0000019d6da8945ac5599609d628745659","18150755/2a0000019d6da8908f0e0d5a625596f21ae3","18148618/2a0000019d6da5f701435a4d4b6b5c4b179c","19648454/2a0000019d6dabdf6e13a319f2d84c02ccd3","19871159/2a0000019d6da5f27daea305941a950b2dc6","19392709/2a0000019d6dabdc5e5574b85895a8d40d01"],"yandex":"https://yandex.ru/maps/org/kiez/69022450761/","coords":[37.56903,55.764342],"logo":"20089935/2a0000019d199ab8d722a3cceab372613c85","phones":[{"n":"+7 (993) 590-97-17","v":"+79935909717","i":null}],"booking":null,"site":null,"reels":["DZF7FrIjAeT"],"post":null},{"id":"chapa","name":"Чапа","type":"Кофейня","cuisine":["Кофе и десерты"],"short":"Кофейное окно у «Чистых прудов» для прогулки","description":"Кофейня у «Чистых прудов», удобная точка, чтобы взять кофе и перекус на прогулку по центру.","perks":[{"text":"Кофе с собой"},{"text":"Можно с собакой"}],"tags":["кофе с собой"],"address":"ул. Жуковского, 1/2/10с2","metro":[{"name":"Чистые пруды","colors":["#f23d30"],"distance":"560 м"},{"name":"Тургеневская","colors":["#f28b24"],"distance":"620 м"}],"hours":["10:00-20:00","10:00-20:00","10:00-20:00","10:00-20:00","10:00-20:00","10:00-20:00","10:00-20:00"],"price":null,"rating":4.2,"ratingCount":373,"photos":["18098886/2a0000019f100e72fe44c43dfcc3c331abc0","15413593/2a00000199a998483846df310e946a805cac","16325379/2a00000198c230597551e399e9cec19db5f2","18785127/2a0000019df99509a7508e0542fbcf17d8c2","19862889/2a0000019e992d095b387e3929208b1c40cd","14910910/2a00000198a98ac8872277cf29d579142ec3"],"yandex":"https://yandex.ru/maps/org/chapa/207980869972/","coords":[37.645096,55.764249],"logo":null,"phones":[],"booking":null,"site":null,"reels":["DZF7FrIjAeT"],"post":null},{"id":"ozkebab","name":"Öz kebab","type":"Бистро","cuisine":["Шаурма и кебаб"],"short":"Турецкое бистро с авторскими кебабами на Покровке","description":"Турецкое бистро на Покровке с авторским взглядом на кебабы и стритфуд. Днём бизнес-ланч, на выходных бранчи.","perks":[{"text":"Бизнес-ланч за 1000 ₽"},{"text":"Бранчи"},{"text":"Пт и сб до полуночи"}],"tags":["авторские кебабы"],"address":"ул. Покровка, 33","metro":[{"name":"Курская","colors":["#0070bf","#805139"],"distance":"860 м"},{"name":"Чистые пруды","colors":["#f23d30"],"distance":"1,04 км"}],"hours":["12:00-23:00","12:00-23:00","12:00-23:00","12:00-23:00","12:00-00:00","12:00-00:00","12:00-23:00"],"price":"Средний чек 750–2500 ₽","rating":4.9,"ratingCount":1646,"photos":["18132699/2a0000019c35bb0c83d6e112adb847f61019","14907397/2a0000019ad5c7590dca64880f8ac746e6ce","18780150/2a0000019d49882c9abca0f639d1b946ca36","15629777/2a0000019adfb0486eafc370fb61594d8952","16398472/2a0000019adfae08d3098326877242c7541d","18114977/2a0000019bc9659f583365aba4e37d0b75f2"],"yandex":"https://yandex.ru/maps/org/z_kebab/119919342995/","coords":[37.650316,55.761084],"logo":"16411237/2a0000019adfac6167781a00dae9260df47b","phones":[{"n":"+7 (916) 679-74-29","v":"+79166797429","i":null}],"booking":null,"site":null,"reels":["DZF7FrIjAeT"],"post":null},{"id":"lovin","name":"Lovin","type":"Бургерная","cuisine":["Бургеры"],"short":"Бургерная в Кривоколенном переулке с рейтингом 5,0","description":"Бургерная в Кривоколенном переулке, между «Лубянкой» и «Чистыми прудами». Халяльные бургеры, есть вегетарианские.","perks":[{"text":"Халяль"},{"text":"Есть вегетарианские бургеры"},{"text":"Летняя веранда"}],"tags":["халяль","есть вегетарианские"],"address":"Кривоколенный пер., 3","metro":[{"name":"Лубянка","colors":["#f23d30"],"distance":"330 м"},{"name":"Китай-город","colors":["#f28b24","#8647b2"],"distance":"530 м"}],"hours":["12:00-23:00","12:00-23:00","12:00-23:00","12:00-23:00","12:00-23:00","12:00-23:00","12:00-23:00"],"price":"Средний чек 1500–1700 ₽","rating":5,"ratingCount":1498,"photos":["17712904/2a0000019db98f87e65b1077ceae65865542","19708557/2a0000019ef5484ac591a8419086809cd8b5","19785895/2a0000019ea784fe61c8638f095b4831de7c","18806283/2a0000019dfcd029e8641be92e8672202739","17750410/2a0000019eadce168b2bbf0bbfcd1b410548"],"yandex":"https://yandex.ru/maps/org/lovin/128203840323/","coords":[37.632943,55.760732],"logo":"18128678/2a0000019d6cea1fcecc1b94fe355ee52f04","phones":[{"n":"+7 (991) 253-03-33","v":"+79912530333","i":null}],"booking":null,"site":"https://lovin-burgers.ru/","reels":["DZF7FrIjAeT"],"post":null},{"id":"crabcaviar","name":"Crab and caviar","type":"Рыбное бистро","cuisine":["Рыба и морепродукты"],"short":"Краб, икра и морепродукты недорого у «Трубной»","description":"Морепродукты недорого на Рождественском бульваре у «Трубной»: краб, икра и рыба. Удобно перекусить во время прогулки по бульварам.","perks":[{"text":"Сб и вс до полуночи"}],"tags":["краб и икра"],"address":"Рождественский бул., 1","metro":[{"name":"Трубная","colors":["#9fbf00"],"distance":"248 м"},{"name":"Кузнецкий Мост","colors":["#8647b2"],"distance":"660 м"}],"hours":["10:00-23:00","10:00-23:00","10:00-23:00","10:00-23:00","10:00-23:00","10:00-00:00","10:00-00:00"],"price":"Средний чек 700–1300 ₽","rating":4.1,"ratingCount":115,"photos":["19646909/2a0000019d1ee3851b96f690d8884dd98c7a","13229524/2a0000018fe7e88666c91a8c21482f389e9f","13267750/2a0000018ff22b9032af2d6bc7e0b1fecd1b","10804279/2a0000018ff22bb19303db779453d79f134e","10095165/2a0000018fe7e8364c6b39d20744770cdae0","5534836/2a000001846c51b146fbfca3c728f41bfd5a"],"yandex":"https://yandex.ru/maps/org/crab_and_caviar/124983353621/","coords":[37.623898,55.766766],"logo":"367090/2a0000018fe7e1973d2e79f420338ebdc475","phones":[{"n":"+7 (968) 820-82-82","v":"+79688208282","i":null}],"booking":null,"site":null,"reels":["DZF7FrIjAeT"],"post":null},{"id":"underdog","name":"Underdog","type":"Хот-доги и бар","cuisine":["Стритфуд","Бары"],"short":"Хот-доги, американский стритфуд и бар на Маросейке","description":"Бар с хот-догами и другим американским стритфудом на Маросейке, у «Китай-города». Летом работает веранда.","perks":[{"text":"Летняя веранда"},{"text":"Пт и сб до часу ночи"},{"text":"Можно с собакой"}],"tags":["хот-доги","летняя веранда"],"address":"ул. Маросейка, 6-8с1","metro":[{"name":"Китай-город","colors":["#8647b2","#f28b24"],"distance":"281 м"},{"name":"Лубянка","colors":["#f23d30"],"distance":"630 м"}],"hours":["13:00-00:00","13:00-00:00","13:00-00:00","13:00-00:00","13:00-01:00","13:00-01:00","13:00-00:00"],"price":"Средний чек 500–1500 ₽","rating":4.7,"ratingCount":3593,"photos":["10878699/2a00000193493c11e6350ce1c175718283f8","19519244/2a0000019dd38c6e0c4541777a2666d3bb65","20245311/2a0000019dd396fbfb04db91eb8dedf98c4e","15696528/2a0000019dd389b9077023a5e80157f8d466","4465274/2a00000178dba88df65cd91bb5aae0b072fc","18105464/2a0000019dd38ba113605f25ff04cda6ee6d"],"yandex":"https://yandex.ru/maps/org/underdog/181544007639/","coords":[37.635571,55.757402],"logo":"20784471/2a000001a0fda3fd3c0433a595a577fd187e","phones":[{"n":"+7 (985) 420-02-28","v":"+79854200228","i":null}],"booking":null,"site":"http://underdog-moscow.ru/","reels":["DZF7FrIjAeT"],"post":null},{"id":"dreamfish","name":"Рыба Мечты · Dream Fish","type":"Ресторан","cuisine":["Рыба и морепродукты"],"short":"Премиальный рыбный ресторан с большим сетом икры и блинов","description":"Премиальный рыбный ресторан на Садовнической улице: морепродукты, устрицы, живая музыка. Блогер советует его сет с 600 граммами икры, блинами, оладьями и топпингами вместо модных дорогих завтраков.","perks":[{"text":"Сет: 600 г икры с блинами и оладьями, к нему бокал креман или шот водки"},{"text":"Живая музыка"}],"tags":["икра с блинами"],"address":"Садовническая ул., 57, стр. 1","metro":[{"name":"Павелецкая","colors":["#3aa63a"],"distance":"1,25 км"}],"hours":["12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00","12:00-00:00"],"price":"Средний чек 5000–10000 ₽","rating":4.9,"ratingCount":2956,"photos":["15131175/2a0000019532cc9acc31ae83ca596650f334","13754922/2a00000191a3fce57eede6118ff97c32a83a","14402904/2a000001938d4e86c3e46409bf4485984b05","897342/2a0000018b1e1ab4ed817f432f2dfa291800","4001569/2a000001763cae35c077734167f5f408e790","3966989/2a000001763caf01358a4c7e9edbc4b0893b"],"yandex":"https://yandex.ru/maps/org/dream_fish/190919154252/","coords":[37.640876,55.740294],"logo":"6141684/2a00000182eb9f1d9d7100a0989d49753183","phones":[{"n":"+7 (915) 377-73-77","v":"+79153777377","i":"для бронирования столов"},{"n":"+7 (495) 127-08-88","v":"+74951270888","i":"для бронирования столов"}],"booking":"https://www.restoran.ru/booking-widget-form.php?id=2768299&name=%D0%A0%D1%8B%D0%B1%D0%B0+%D0%9C%D0%B5%D1%87%D1%82%D1%8B+","site":"http://dreamfish.moscow/","reels":["DbtbeOQNd9n"],"post":null}];window.__META__={"users": 11, "channel": ""};</script>
 <script>
 /* Расписание и «открыто ли сейчас» по московскому времени (UTC+3, без перехода на летнее время).
    Часы в данных: массив из 7 строк, Пн..Вс. Строка: "12:00-23:00", несколько интервалов через запятую,
@@ -1059,6 +1224,14 @@ html[data-tg] .hero { --hh: var(--tg-viewport-stable-height, 100svh); }
     play: '<svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path fill="currentColor" d="M10 8.4v7.2l6-3.6z"/></svg>',
     people: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.6-3.6 3.3-5.5 6.5-5.5s5.9 1.9 6.5 5.5"/><path d="M16 4.6a3.5 3.5 0 0 1 0 6.8M18.5 14.8c1.7.7 2.8 2.5 3.1 5.2"/></svg>',
     chat: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12a8 8 0 0 1-11.6 7.1L4 20l1-4.2A8 8 0 1 1 20 12z"/></svg>',
+    nav: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 10.5 20 4l-6.5 16.5-2.4-7.2z"/></svg>',
+    navSm: '<svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3.5 10.5 20 4l-6.5 16.5-2.4-7.2z"/></svg>',
+    target: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2.2" fill="currentColor" stroke="none"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>',
+    phone: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6.6 3.5h3l1.6 4.2-2.1 1.4a11.5 11.5 0 0 0 5.8 5.8l1.4-2.1 4.2 1.6v3a2 2 0 0 1-2.2 2A16.8 16.8 0 0 1 4.6 5.7a2 2 0 0 1 2-2.2z"/></svg>',
+    copy: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2.5"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg>',
+    calendar: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="3"/><path d="M8 3v4M16 3v4M3.5 10h17"/></svg>',
+    globe: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z"/></svg>',
+    route: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="18" r="2.5"/><circle cx="18" cy="6" r="2.5"/><path d="M8.5 18H15a3 3 0 0 0 0-6H9a3 3 0 0 1 0-6h6.5"/></svg>',
     dice: '<svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="2"/><g fill="currentColor"><circle cx="8.5" cy="8.5" r="1.6"/><circle cx="15.5" cy="15.5" r="1.6"/><circle cx="12" cy="12" r="1.6"/></g></svg>'
   };
 
@@ -1086,10 +1259,178 @@ html[data-tg] .hero { --hh: var(--tg-viewport-stable-height, 100svh); }
     return cuisineCount[b] - cuisineCount[a] || a.localeCompare(b, 'ru');
   });
 
-  var state = { cuisines: {}, when: 'any', q: '' };
+  var state = { cuisines: {}, when: 'any', q: '', dist: 0 };
   var lastPick = null;
   var sheetPlace = null;
   var spinTimers = [];
+
+  /* ---------- Где я: геопозиция и расстояния ----------
+     Геопозиция нужна только чтобы посчитать расстояния: остаётся на телефоне и нигде не сохраняется.
+     Сначала спрашиваем через Telegram (LocationManager, Bot API 8.0+), иначе через браузер.
+     Если доступа нет, точку можно выбрать на карте. */
+  var LOC = { pos: null, src: '', acc: 0, busy: false, err: '', picking: false };
+  var DIST_STEPS = [1, 2, 5, 10];
+
+  function haversineKm(a, b) {
+    var toR = Math.PI / 180;
+    var dLat = (b[0] - a[0]) * toR, dLon = (b[1] - a[1]) * toR;
+    var h = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(a[0] * toR) * Math.cos(b[0] * toR) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    return 2 * 6371 * Math.asin(Math.min(1, Math.sqrt(h)));
+  }
+  function hasCoords(p) { return !!(p.coords && p.coords.length === 2); }
+  function distOf(p) { return LOC.pos && hasCoords(p) ? haversineKm(LOC.pos, [p.coords[1], p.coords[0]]) : null; }
+  function distOn() { return !!(state.dist && LOC.pos); }
+  function distOk(p) {
+    if (!distOn()) return true;
+    var d = distOf(p);
+    return d !== null && d <= state.dist;
+  }
+  function byDist(a, b) {
+    if (!LOC.pos) return 0;
+    var da = distOf(a), db = distOf(b);
+    return (da === null ? 1e9 : da) - (db === null ? 1e9 : db);
+  }
+  function fmtKm(km) {
+    if (km < 1) return Math.max(10, Math.round(km * 100) * 10) + ' м';
+    if (km < 10) return km.toFixed(1).replace('.', ',') + ' км';
+    return Math.round(km) + ' км';
+  }
+  // Пешком: расстояние по прямой × 1,3 на изгибы улиц, скорость 4,8 км/ч; дальше 2,5 км пешком не считаем
+  function walkText(km) {
+    if (km > 2.5) return '';
+    var m = Math.max(1, Math.round(km * 1.3 / 4.8 * 60));
+    if (m >= 20) m = Math.round(m / 5) * 5;
+    return '≈ ' + m + ' мин пешком';
+  }
+  function fromWhom() { return LOC.src === 'map' ? 'от точки на карте' : 'от вас'; }
+  // Маршрут в Яндекс Картах. Своё местоположение в ссылку не кладём: Яндекс возьмёт его с телефона сам.
+  // Точку, выбранную на карте, передаём, иначе маршрут построится не оттуда.
+  function routeUrl(p, mode) {
+    var to = p.coords[1].toFixed(6) + ',' + p.coords[0].toFixed(6);
+    var from = LOC.pos && LOC.src === 'map' ? LOC.pos[0].toFixed(6) + ',' + LOC.pos[1].toFixed(6) : '';
+    return 'https://yandex.ru/maps/?rtext=' + from + '~' + to + '&rtt=' + mode;
+  }
+
+  function tgLocationManager() {
+    return inTG && tg.LocationManager && tg.isVersionAtLeast && tg.isVersionAtLeast('8.0') ? tg.LocationManager : null;
+  }
+
+  function locate(silent) {
+    if (LOC.busy) return;
+    if (!silent) LOC.err = '';
+    var lm = tgLocationManager();
+    if (!lm) { browserLocate(silent); return; }
+    var go = function () {
+      if (!lm.isLocationAvailable) { browserLocate(silent); return; }
+      if (!lm.isAccessGranted && (silent || lm.isAccessRequested)) {
+        if (!silent) { LOC.err = 'tg-denied'; renderDist(); }
+        return;
+      }
+      LOC.busy = true;
+      renderDist();
+      lm.getLocation(function (d) {
+        LOC.busy = false;
+        if (d && typeof d.latitude === 'number') setLoc([d.latitude, d.longitude], 'gps', d.horizontal_accuracy);
+        else { LOC.err = 'tg-denied'; renderDist(); }
+      });
+    };
+    try { if (lm.isInited) go(); else lm.init(go); } catch (e) { browserLocate(silent); }
+  }
+
+  function browserLocate(silent) {
+    var geo = navigator.geolocation;
+    if (!geo) { if (!silent) { LOC.err = 'unsupported'; renderDist(); } return; }
+    var run = function () {
+      LOC.busy = true;
+      renderDist();
+      geo.getCurrentPosition(function (pos) {
+        LOC.busy = false;
+        setLoc([pos.coords.latitude, pos.coords.longitude], 'gps', pos.coords.accuracy);
+      }, function (err) {
+        LOC.busy = false;
+        if (!silent) LOC.err = err && err.code === 1 ? 'denied' : 'failed';
+        renderDist();
+      }, { enableHighAccuracy: true, timeout: 15000, maximumAge: 60000 });
+    };
+    if (!silent) { run(); return; }
+    // При запуске спрашиваем молча, только если доступ уже дали раньше
+    try {
+      navigator.permissions.query({ name: 'geolocation' }).then(function (r) { if (r.state === 'granted') run(); }, function () {});
+    } catch (e) { /* нет Permissions API */ }
+  }
+
+  function setLoc(pos, src, acc) {
+    LOC.pos = [pos[0], pos[1]];
+    LOC.src = src;
+    LOC.acc = acc || 0;
+    LOC.err = '';
+    haptic('notificationOccurred', 'success');
+    lastListKey = '';
+    render();
+    syncUserOnMap(true);
+    refreshSheetDistance();
+  }
+
+  function renderDist() {
+    var chips = $('#distChips'), label = $('#distLabel'), msg = $('#locMsg');
+    if (!chips) return;
+    var html;
+    if (!LOC.pos) {
+      label.innerHTML = 'Расстояние';
+      html = '<button class="chip chip-loc" type="button" data-action="locate"' + (LOC.busy ? ' aria-busy="true" disabled' : '') + '>' +
+          ICON.nav + (LOC.busy ? 'Определяю, где вы…' : 'Показать, сколько до мест') + '</button>' +
+        '<button class="chip" type="button" data-action="pick-on-map">' + ICON.target + 'Точка на карте</button>';
+    } else {
+      label.innerHTML = 'Расстояние <span class="filter-sub">' + esc(fromWhom()) + '</span>';
+      html = '<button class="chip" type="button" data-dist="0" aria-pressed="' + (!state.dist) + '">Любое</button>';
+      DIST_STEPS.forEach(function (km) {
+        var n = places.filter(function (p) { var d = distOf(p); return d !== null && d <= km; }).length;
+        html += '<button class="chip" type="button" data-dist="' + km + '" aria-pressed="' + (state.dist === km) + '">до ' + km + ' км<span class="n">' + n + '</span></button>';
+      });
+      html += '<button class="chip chip-ghost" type="button" data-action="locate"' + (LOC.busy ? ' aria-busy="true" disabled' : '') + '>' +
+          ICON.nav + (LOC.busy ? 'Обновляю…' : (LOC.src === 'map' ? 'Где я' : 'Обновить')) + '</button>' +
+        '<button class="chip chip-ghost" type="button" data-action="pick-on-map">' + ICON.target + (LOC.src === 'map' ? 'Другая точка' : 'Точка на карте') + '</button>';
+    }
+    chips.innerHTML = html;
+    var text = '';
+    if (LOC.err === 'tg-denied') text = 'Telegram не дал доступ к геопозиции. Разрешите его в настройках бота или выберите точку на карте.';
+    else if (LOC.err === 'denied') text = 'Доступ к геопозиции запрещён. Разрешите его в настройках браузера или выберите точку на карте.';
+    else if (LOC.err === 'failed') text = 'Не получилось определить, где вы. Попробуйте ещё раз или выберите точку на карте.';
+    else if (LOC.err === 'unsupported') text = 'Здесь геопозиция недоступна. Выберите точку на карте.';
+    else if (!LOC.pos) text = 'Геопозиция нужна только чтобы посчитать расстояния: она остаётся на телефоне и нигде не сохраняется.';
+    msg.innerHTML = esc(text) + (LOC.err === 'tg-denied' && tgLocationManager() ? ' <button class="link-btn" type="button" data-action="loc-settings">Открыть настройки</button>' : '');
+    msg.hidden = !text;
+  }
+
+  var toastTimer = 0;
+  function toast(text) {
+    var el = $('#toast');
+    if (!el) return;
+    el.textContent = text;
+    el.hidden = false;
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { el.hidden = true; }, 2600);
+  }
+
+  function copyText(text) {
+    var done = function () { toast('Номер скопирован'); haptic('notificationOccurred', 'success'); };
+    var fallback = function () {
+      var ta = document.createElement('textarea');
+      ta.value = text;
+      ta.setAttribute('readonly', '');
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      var ok = false;
+      try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+      ta.remove();
+      if (ok) done(); else toast('Не получилось скопировать: ' + text);
+    };
+    try { navigator.clipboard.writeText(text).then(done, fallback); } catch (e) { fallback(); }
+  }
+
 
   function selectedCuisines() { return Object.keys(state.cuisines); }
   function cuisineOk(p) {
@@ -1134,9 +1475,10 @@ html[data-tg] .hero { --hh: var(--tg-viewport-stable-height, 100svh); }
       (n ? '<span class="users-line">' + ICON.people + esc(plural(n, 'Пользуется ', 'Пользуются ', 'Пользуются ') + n + ' ' + plural(n, 'человек', 'человека', 'человек')) + '</span>' : '');
   }
 
-  function spinPool(tNow, ignoreCuisine) {
+  function spinPool(tNow, opts) {
+    opts = opts || {};
     var pool = places.filter(function (p) {
-      return (ignoreCuisine || cuisineOk(p)) && T.statusAtAbs(p._s, tNow).open;
+      return (opts.anyCuisine || cuisineOk(p)) && (opts.anyDist || distOk(p)) && T.statusAtAbs(p._s, tNow).open;
     });
     var comfy = pool.filter(function (p) {
       var st = T.statusAtAbs(p._s, tNow);
@@ -1148,9 +1490,12 @@ html[data-tg] .hero { --hh: var(--tg-viewport-stable-height, 100svh); }
   function renderSpinSub(tNow) {
     var n = spinPool(tNow).length;
     var sel = selectedCuisines();
+    var parts = [];
+    if (distOn()) parts.push('до ' + state.dist + ' км');
+    if (sel.length) parts.push(sel.join(', ').toLowerCase());
     var txt;
-    if (!n) txt = sel.length ? 'Из выбранной кухни сейчас ничего не открыто' : 'Сейчас всё закрыто, покажу, что откроется раньше';
-    else txt = 'Выберу из ' + n + ' ' + plural(n, 'открытого', 'открытых', 'открытых') + (sel.length ? ' · ' + sel.join(', ').toLowerCase() : '');
+    if (!n) txt = distOn() ? 'Рядом сейчас всё закрыто' : (sel.length ? 'Из выбранной кухни сейчас ничего не открыто' : 'Сейчас всё закрыто, покажу, что откроется раньше');
+    else txt = 'Выберу из ' + n + ' ' + plural(n, 'открытого', 'открытых', 'открытых') + (parts.length ? ' · ' + parts.join(' · ') : '');
     $('#spinSub').textContent = txt;
   }
 
@@ -1189,6 +1534,7 @@ html[data-tg] .hero { --hh: var(--tg-viewport-stable-height, 100svh); }
   /* ---------- Список ---------- */
   function matches(p, tNow) {
     if (!cuisineOk(p)) return false;
+    if (!distOk(p)) return false;
     if (state.q && p._q.indexOf(norm(state.q).trim()) === -1) return false;
     if (state.when === 'now') return T.statusAtAbs(p._s, tNow).open;
     if (typeof state.when === 'number') return T.isOpenAtAbs(p._s, state.when);
@@ -1217,6 +1563,8 @@ html[data-tg] .hero { --hh: var(--tg-viewport-stable-height, 100svh); }
     var img = photo ? '<img src="' + esc(photoUrl(photo, 'XL')) + '" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer">' : '';
     var tags = (p.tags || []).slice(0, 2).map(function (t) { return '<span class="tag">' + esc(t) + '</span>'; }).join('');
     var meta = [];
+    var d = distOf(p);
+    if (d !== null) meta.push('<span class="dist">' + ICON.navSm + esc(fmtKm(d)) + '</span>');
     if (p.cuisine && p.cuisine.length) meta.push('<span>' + esc(p.cuisine.join(', ')) + '</span>');
     if (p.metro && p.metro[0]) meta.push(metroHTML(p.metro[0]));
     return '<button class="card' + (st.open ? '' : ' is-closed') + '" type="button" data-id="' + esc(p.id) + '">' +
@@ -1245,11 +1593,11 @@ html[data-tg] .hero { --hh: var(--tg-viewport-stable-height, 100svh); }
       open.sort(function (a, b) {
         var la = T.statusAtAbs(a._s, tNow), lb = T.statusAtAbs(b._s, tNow);
         var sa = !la.always && la.left < 60 ? 1 : 0, sb = !lb.always && lb.left < 60 ? 1 : 0;
-        return sa - sb || a.name.localeCompare(b.name, 'ru');
+        return sa - sb || byDist(a, b) || a.name.localeCompare(b.name, 'ru');
       });
       closed.sort(function (a, b) {
         var sa = T.statusAtAbs(a._s, tNow), sb = T.statusAtAbs(b._s, tNow);
-        return (sa.until || 1e9) - (sb.until || 1e9);
+        return byDist(a, b) || (sa.until || 1e9) - (sb.until || 1e9);
       });
       groups = [];
       if (open.length) groups.push({ title: 'Открыто сейчас · ' + open.length, items: open });
@@ -1257,15 +1605,16 @@ html[data-tg] .hero { --hh: var(--tg-viewport-stable-height, 100svh); }
     } else {
       var title = state.when === 'now' ? 'Открыто сейчас · ' + list.length
         : 'Открыто в ' + T.hm(state.when) + (Math.floor(state.when / T.DAY) > Math.floor(tNow / T.DAY) ? ' завтра' : '') + ' · ' + list.length;
-      groups = list.length ? [{ title: title, items: list }] : [];
+      groups = list.length ? [{ title: title, items: LOC.pos ? list.slice().sort(byDist) : list }] : [];
     }
 
     var key = JSON.stringify(groups.map(function (g) { return [g.title, g.items.map(function (p) { return p.id; })]; }));
-    var filtered = selectedCuisines().length || state.q || state.when !== 'any';
+    var filtered = selectedCuisines().length || state.q || state.when !== 'any' || distOn();
     $('#reset').hidden = !filtered;
-    $('#count').textContent = filtered
+    $('#count').textContent = (filtered
       ? 'Нашлось ' + list.length + ' из ' + places.length
-      : places.length + ' ' + plural(places.length, 'место', 'места', 'мест');
+      : places.length + ' ' + plural(places.length, 'место', 'места', 'мест')) +
+      (distOn() ? ' · до ' + state.dist + ' км ' + fromWhom() : (LOC.pos ? ' · ближние выше' : ''));
     syncMap(list, tNow);
 
     if (key === lastListKey) {
@@ -1276,7 +1625,7 @@ html[data-tg] .hero { --hh: var(--tg-viewport-stable-height, 100svh); }
 
     if (!groups.length) {
       $('#list').innerHTML = '<div class="empty"><b>Под эти фильтры ничего нет</b>' +
-        '<span>Попробуйте другое время или другую кухню.</span>' +
+        '<span>' + (distOn() ? 'Попробуйте радиус побольше, другое время или другую кухню.' : 'Попробуйте другое время или другую кухню.') + '</span>' +
         '<button class="btn btn-secondary" type="button" data-action="reset">Сбросить фильтры</button></div>';
       return;
     }
@@ -1306,6 +1655,7 @@ html[data-tg] .hero { --hh: var(--tg-viewport-stable-height, 100svh); }
     renderSpinSub(tNow);
     renderCuisineChips();
     renderTimeChips(now);
+    renderDist();
     renderList(now);
   }
 
@@ -1337,6 +1687,8 @@ html[data-tg] .hero { --hh: var(--tg-viewport-stable-height, 100svh); }
       (p.metro && p.metro.length ? '<div class="meta" style="margin-top:4px">' + p.metro.slice(0, 2).map(function (m) {
         return metroHTML(m) + (m.distance ? '<span class="muted">' + esc(m.distance) + '</span>' : '');
       }).join('') + '</div>' : '') + '</div></div>');
+    if (hasCoords(p)) facts.push(distFactHTML(p));
+    if ((p.phones && p.phones.length) || p.booking || p.site) facts.push(phoneFactHTML(p));
     if (p.price) facts.push('<div class="fact">' + ICON.wallet + '<div>' + esc(p.price) + '</div></div>');
     var perks = (p.perks || []).map(function (t) { return '<li>' + ICON.spark + '<span>' + esc(t.text) + '</span></li>'; }).join('');
     return (opts.withTitle ? '<h2 class="title" id="sheetTitle">' + esc(p.name) + '</h2>' : '') +
@@ -1356,6 +1708,38 @@ html[data-tg] .hero { --hh: var(--tg-viewport-stable-height, 100svh); }
             ICON.play + (p.reels.length > 1 ? 'Рилс ' + (i + 1) : 'Смотреть рилс') + '</a>';
         }).join('') + '</div><p class="note">Рилсы из чата «Места Москва», откроются в Instagram.</p></section>' : '');
   }
+
+  /* ---------- Карточка места: расстояние, маршрут, телефон для брони ---------- */
+  function distFactHTML(p) {
+    var d = distOf(p);
+    var line = d === null
+      ? '<span>Сколько ехать?</span><button class="link-btn" type="button" data-action="locate">Показать расстояние</button>'
+      : '<b>' + esc(fmtKm(d)) + '</b><span class="muted">' + esc(fromWhom()) + (walkText(d) ? ' · ' + esc(walkText(d)) : '') + '</span>';
+    var modes = [['pd', 'Пешком'], ['mt', 'Транспорт'], ['taxi', 'Такси'], ['auto', 'Авто']];
+    return '<div class="fact" id="sheetDist">' + ICON.route + '<div><div class="dist-line">' + line + '</div>' +
+      '<div class="route-btns modes">' + modes.map(function (m) {
+        return '<a class="route-btn" href="' + esc(routeUrl(p, m[0])) + '" target="_blank" rel="noopener" data-external>' + m[1] + '</a>';
+      }).join('') + '</div><p class="hint">Маршрут и точное время в пути откроются в Яндекс Картах.</p></div></div>';
+  }
+
+  function refreshSheetDistance() {
+    var el = document.getElementById('sheetDist');
+    if (el && sheetPlace) el.outerHTML = distFactHTML(sheetPlace);
+  }
+
+  function phoneFactHTML(p) {
+    var rows = (p.phones || []).slice(0, 2).map(function (ph) {
+      return '<div class="phone-row"><a class="phone-num" href="tel:' + esc(ph.v || ph.n) + '">' + esc(ph.n) + '</a>' +
+        '<button class="icon-btn" type="button" data-action="copy-phone" data-phone="' + esc(ph.n) + '" aria-label="Скопировать номер ' + esc(ph.n) + '">' + ICON.copy + '</button>' +
+        (ph.i ? '<span class="phone-info">' + esc(ph.i) + '</span>' : '') + '</div>';
+    }).join('');
+    var links = '';
+    if (p.booking) links += '<a class="route-btn route-btn-strong" href="' + esc(p.booking) + '" target="_blank" rel="noopener" data-external>' + ICON.calendar + 'Онлайн-бронь</a>';
+    if (p.site) links += '<a class="route-btn" href="' + esc(p.site) + '" target="_blank" rel="noopener" data-external>' + ICON.globe + 'Сайт</a>';
+    return '<div class="fact">' + ICON.phone + '<div><div class="fact-h">' + (rows ? 'Забронировать столик' : 'Бронь и сайт') + '</div>' + rows +
+      (links ? '<div class="route-btns">' + links + '</div>' : '') + '</div></div>';
+  }
+
 
   /* ---------- Комментарии: пост о месте в Telegram-канале, комментарии под ним ---------- */
   function postUrl(p) { return 'https://t.me/' + META.channel + '/' + p.post; }
@@ -1388,10 +1772,13 @@ html[data-tg] .hero { --hh: var(--tg-viewport-stable-height, 100svh); }
 
   function actionsHTML(p, mode) {
     var maps = '<a class="btn btn-primary" href="' + esc(p.yandex) + '" target="_blank" rel="noopener" data-external>' + ICON.map + 'Яндекс Карты</a>';
+    var ph = (p.phones || [])[0];
+    var call = ph ? '<a class="btn btn-secondary' + (mode === 'random' ? ' btn-icon' : '') + '" href="tel:' + esc(ph.v || ph.n) + '" aria-label="Позвонить ' + esc(ph.n) + '">' +
+      ICON.phone + (mode === 'random' ? '' : 'Позвонить') + '</a>' : '';
     if (mode === 'random') {
-      return '<div class="actions"><button class="btn btn-secondary" type="button" data-action="respin">' + ICON.dice + 'Ещё</button>' + maps + '</div>';
+      return '<div class="actions"><button class="btn btn-secondary" type="button" data-action="respin">' + ICON.dice + 'Ещё</button>' + call + maps + '</div>';
     }
-    return '<div class="actions">' + maps + '</div>';
+    return '<div class="actions">' + call + maps + '</div>';
   }
 
   function openSheet(html) {
@@ -1429,6 +1816,7 @@ html[data-tg] .hero { --hh: var(--tg-viewport-stable-height, 100svh); }
   function onBack() {
     if (sheetIsOpen()) closeSheet();
     else if (mapIsFull()) setMapFull(false);
+    else if (LOC.picking) stopPick();
   }
 
   function bindGallery() {
@@ -1455,10 +1843,13 @@ html[data-tg] .hero { --hh: var(--tg-viewport-stable-height, 100svh); }
   }
 
   /* ---------- Рандомайзер ---------- */
-  function spin(ignoreCuisine) {
+  var lastSpin = {};
+  function spin(opts) {
+    opts = opts || {};
+    lastSpin = opts;
     var now = T.mskNow();
     var tNow = T.absNow(now);
-    var pool = spinPool(tNow, ignoreCuisine);
+    var pool = spinPool(tNow, opts);
     var btn = $('#spin');
     btn.classList.remove('is-rolling');
     void btn.offsetWidth;
@@ -1466,7 +1857,10 @@ html[data-tg] .hero { --hh: var(--tg-viewport-stable-height, 100svh); }
     haptic('impactOccurred', 'medium');
 
     if (!pool.length) {
-      showNothingOpen(now, tNow, !ignoreCuisine && selectedCuisines().length > 0 && spinPool(tNow, true).length > 0);
+      var why = 'all';
+      if (!opts.anyDist && distOn() && spinPool(tNow, { anyCuisine: opts.anyCuisine, anyDist: true }).length) why = 'dist';
+      else if (!opts.anyCuisine && selectedCuisines().length && spinPool(tNow, { anyCuisine: true, anyDist: opts.anyDist }).length) why = 'cuisine';
+      showNothingOpen(now, tNow, why, opts);
       return;
     }
     var choices = pool.length > 1 && lastPick ? pool.filter(function (p) { return p.id !== lastPick; }) : pool;
@@ -1490,7 +1884,9 @@ html[data-tg] .hero { --hh: var(--tg-viewport-stable-height, 100svh); }
     var finish = function () {
       nameEl.textContent = pick.name;
       $('#reveal').classList.remove('is-spinning');
-      $('#revealSub').textContent = [pick.cuisine && pick.cuisine.join(', '), pick.metro && pick.metro[0] && ('м. ' + pick.metro[0].name)].filter(Boolean).join(' · ');
+      var pd = distOf(pick);
+      $('#revealSub').textContent = [pd !== null ? fmtKm(pd) + ' ' + fromWhom() : '', pick.cuisine && pick.cuisine.join(', '),
+        pick.metro && pick.metro[0] && ('м. ' + pick.metro[0].name)].filter(Boolean).join(' · ');
       $('#randomSheet').classList.add('is-revealed');
       haptic('notificationOccurred', 'success');
     };
@@ -1512,26 +1908,37 @@ html[data-tg] .hero { --hh: var(--tg-viewport-stable-height, 100svh); }
     spinTimers.push(setTimeout(finish, acc + 380));
   }
 
-  function showNothingOpen(now, tNow, cuisineOnly) {
-    var soon = places.filter(function (p) { return cuisineOnly ? cuisineOk(p) : true; })
-      .map(function (p) { return { p: p, st: T.statusAtAbs(p._s, tNow) }; })
-      .filter(function (x) { return !x.st.open && !x.st.never; })
-      .sort(function (a, b) { return a.st.until - b.st.until; })
-      .slice(0, 4);
+  function showNothingOpen(now, tNow, why, opts) {
+    opts = opts || {};
+    var soonest = function (filterFn) {
+      return places.filter(filterFn)
+        .map(function (p) { return { p: p, st: T.statusAtAbs(p._s, tNow) }; })
+        .filter(function (x) { return !x.st.open && !x.st.never; })
+        .sort(function (a, b) { return a.st.until - b.st.until; })
+        .slice(0, 4);
+    };
+    var soon = soonest(function (p) { return (opts.anyCuisine || cuisineOk(p)) && (opts.anyDist || distOk(p)); });
+    if (!soon.length) soon = soonest(function () { return true; });
     var list = soon.map(function (x) {
       var photo = (x.p.photos || [])[0];
       return '<button class="mini" type="button" data-id="' + esc(x.p.id) + '"><span class="thumb">' + placeholderHTML(x.p) +
         (photo ? '<img src="' + esc(photoUrl(photo, 'M')) + '" alt="" loading="lazy" referrerpolicy="no-referrer">' : '') + '</span>' +
-        '<span><b>' + esc(x.p.name) + '</b><span>' + esc(T.statusLabel(x.st).text) + '</span></span></button>';
+        '<span><b>' + esc(x.p.name) + '</b><span>' + esc(T.statusLabel(x.st).text) +
+        (distOf(x.p) !== null ? ' · ' + esc(fmtKm(distOf(x.p))) : '') + '</span></span></button>';
     }).join('');
+    var head = {
+      dist: ['Рядом всё спит', 'В радиусе ' + state.dist + ' км сейчас всё закрыто'],
+      cuisine: ['Эта кухня спит', 'Из выбранного сейчас всё закрыто'],
+      all: ['Москва спит', 'Сейчас всё закрыто']
+    }[why] || ['Москва спит', 'Сейчас всё закрыто'];
+    var more = why === 'dist' ? '<button class="btn btn-primary" type="button" data-action="spin-anydist">' + ICON.dice + 'Крутить по всей Москве</button>'
+      : why === 'cuisine' ? '<button class="btn btn-primary" type="button" data-action="spin-all">' + ICON.dice + 'Крутить среди всех</button>' : '';
     openSheet('<div class="sheet-inner is-revealed">' +
       '<div class="reveal"><button class="close" type="button" data-action="close" aria-label="Закрыть">' + ICON.close + '</button>' +
-        '<div class="reveal-eyebrow">' + (cuisineOnly ? 'Эта кухня спит' : 'Москва спит') + '</div>' +
-        '<div class="reveal-name" id="sheetTitle">' + (cuisineOnly ? 'Из выбранного сейчас всё закрыто' : 'Сейчас всё закрыто') + '</div>' +
+        '<div class="reveal-eyebrow">' + head[0] + '</div>' +
+        '<div class="reveal-name" id="sheetTitle">' + esc(head[1]) + '</div>' +
         '<div class="reveal-sub">Раньше всех откроются эти места</div></div>' +
-      '<div class="sheet-body"><div class="soonest">' + list + '</div>' +
-        (cuisineOnly ? '<button class="btn btn-primary" type="button" data-action="spin-all">' + ICON.dice + 'Крутить среди всех</button>' : '') +
-      '</div></div>');
+      '<div class="sheet-body"><div class="soonest">' + list + '</div>' + more + '</div></div>');
   }
 
   /* ---------- События ---------- */
@@ -1553,11 +1960,19 @@ html[data-tg] .hero { --hh: var(--tg-viewport-stable-height, 100svh); }
     if (act) {
       var a = act.getAttribute('data-action');
       if (a === 'close') closeSheet();
-      else if (a === 'respin') spin();
-      else if (a === 'spin-all') spin(true);
+      else if (a === 'respin') spin(lastSpin);
+      else if (a === 'spin-all') spin({ anyCuisine: true, anyDist: lastSpin.anyDist });
+      else if (a === 'spin-anydist') spin({ anyDist: true, anyCuisine: lastSpin.anyCuisine });
       else if (a === 'reset') resetFilters();
       else if (a === 'map-full') setMapFull(!mapIsFull());
       else if (a === 'peek-close') closePeek();
+      else if (a === 'locate') locate(false);
+      else if (a === 'pick-on-map') startPick();
+      else if (a === 'pick-cancel') { stopPick(); if (mapIsFull()) setMapFull(false); }
+      else if (a === 'map-me') mapMe();
+      else if (a === 'loc-settings') { try { tg.LocationManager.openSettings(); } catch (err) { /* ок */ } }
+      else if (a === 'copy-phone') copyText(act.getAttribute('data-phone'));
+      else if (a === 'map-retry') { MAP.attempt = 0; MAP.failed = false; loadYmaps(); }
       return;
     }
     var card = t.closest && t.closest('[data-id]');
@@ -1573,6 +1988,8 @@ html[data-tg] .hero { --hh: var(--tg-viewport-stable-height, 100svh); }
       } else if (chip.hasAttribute('data-when')) {
         var w = chip.getAttribute('data-when');
         state.when = (w === 'any' || w === 'now') ? w : Number(w);
+      } else if (chip.hasAttribute('data-dist')) {
+        state.dist = Number(chip.getAttribute('data-dist')) || 0;
       }
       render();
     }
@@ -1590,6 +2007,7 @@ html[data-tg] .hero { --hh: var(--tg-viewport-stable-height, 100svh); }
     state.cuisines = {};
     state.when = 'any';
     state.q = '';
+    state.dist = 0;
     $('#q').value = '';
     render();
   }
@@ -1680,14 +2098,18 @@ html[data-tg] .hero { --hh: var(--tg-viewport-stable-height, 100svh); }
      с описанием и кнопкой в Яндекс Карты. В обычном виде на телефоне карта не
      перехватывает прокрутку страницы: двигать её можно после «Развернуть». */
   var YMAPS_KEY = '';  // бесплатный ключ с developer.tech.yandex.ru, необязательно
-  var MAP = { map: null, clusterer: null, marks: {}, key: '', list: [], active: null, margin: null, failed: false, loading: false };
+  var MAP = { map: null, clusterer: null, marks: {}, key: '', list: [], active: null, margin: null, failed: false, loading: false, me: null, circle: null };
   var mapCard = $('#mapCard');
   var mapPeek = $('#mapPeek');
 
   function mapIsFull() { return !!(mapCard && mapCard.classList.contains('is-full')); }
 
+  // Карта без ключа API иногда не грузится с первого раза: одна тихая повторная попытка,
+  // потом кнопка «Попробовать ещё раз»
   function mapFail() {
     if (MAP.map || MAP.failed) return;
+    MAP.loading = false;
+    if ((MAP.attempt || 0) < 2) { setTimeout(loadYmaps, 1200); return; }
     MAP.failed = true;
     var fb = $('#mapFallback');
     if (fb) fb.hidden = false;
@@ -1698,16 +2120,27 @@ html[data-tg] .hero { --hh: var(--tg-viewport-stable-height, 100svh); }
   function loadYmaps() {
     if (MAP.loading || MAP.map || !mapCard) return;
     MAP.loading = true;
+    MAP.failed = false;
+    var attempt = (MAP.attempt || 0) + 1;
+    MAP.attempt = attempt;
+    var ld = $('#mapLoading'), fb = $('#mapFallback');
+    if (ld) ld.hidden = false;
+    if (fb) fb.hidden = true;
+    if (MAP.script) { MAP.script.remove(); MAP.script = null; }
+    if (attempt > 1) { try { delete window.ymaps; } catch (e) { window.ymaps = undefined; } }
+    var fail = function () { if (MAP.attempt === attempt) mapFail(); };
     var s = document.createElement('script');
-    s.src = 'https://api-maps.yandex.ru/2.1/?lang=ru_RU' + (YMAPS_KEY ? '&apikey=' + encodeURIComponent(YMAPS_KEY) : '');
+    s.src = 'https://api-maps.yandex.ru/2.1/?lang=ru_RU' + (YMAPS_KEY ? '&apikey=' + encodeURIComponent(YMAPS_KEY) : '') +
+      (attempt > 1 ? '&retry=' + Date.now() : '');
     s.async = true;
     s.onload = function () {
-      if (!window.ymaps) { mapFail(); return; }
-      window.ymaps.ready(initMap, mapFail);
+      if (!window.ymaps) { fail(); return; }
+      window.ymaps.ready(function () { if (MAP.attempt === attempt && !MAP.map) initMap(); }, fail);
     };
-    s.onerror = mapFail;
+    s.onerror = fail;
+    MAP.script = s;
     document.head.appendChild(s);
-    setTimeout(function () { if (!MAP.map) mapFail(); }, 20000);
+    setTimeout(function () { if (!MAP.map) fail(); }, 20000);
   }
 
   function initMap() {
@@ -1752,7 +2185,10 @@ html[data-tg] .hero { --hh: var(--tg-viewport-stable-height, 100svh); }
       zoomMargin: 70
     });
     MAP.map.geoObjects.add(MAP.clusterer);
-    MAP.map.events.add('click', function () { closePeek(); });
+    MAP.map.events.add('click', function (e) {
+      if (LOC.picking) { finishPick(e.get('coords')); return; }
+      closePeek();
+    });
     var ld = $('#mapLoading');
     if (ld) ld.hidden = true;
     applyMapBehaviors();
@@ -1802,8 +2238,8 @@ html[data-tg] .hero { --hh: var(--tg-viewport-stable-height, 100svh); }
     var cnt = $('#mapCount');
     if (cnt) cnt.textContent = list.length + ' ' + plural(list.length, 'место', 'места', 'мест');
     if (!MAP.map) return;
-    var withCoords = list.filter(function (p) { return p.coords && p.coords.length === 2; });
-    var key = withCoords.map(function (p) { return p.id; }).join(',');
+    var withCoords = list.filter(hasCoords);
+    var key = withCoords.map(function (p) { return p.id; }).join(',') + '|' + state.dist + '|' + (LOC.pos ? LOC.pos.join(',') : '');
     if (key !== MAP.key) {
       MAP.key = key;
       MAP.clusterer.removeAll();
@@ -1811,17 +2247,117 @@ html[data-tg] .hero { --hh: var(--tg-viewport-stable-height, 100svh); }
       var marks = withCoords.map(function (p) { var m = makeMark(p, tNow); MAP.marks[p.id] = m; return m; });
       MAP.clusterer.add(marks);
       if (MAP.active && !MAP.marks[MAP.active]) closePeek();
-      if (marks.length > 1) {
-        try { MAP.map.setBounds(coreBounds(withCoords), { checkZoomRange: true, zoomMargin: [64, 30, 30, 30] }); } catch (e) { /* ок */ }
-      } else if (marks.length === 1) {
-        MAP.map.setCenter(marks[0].geometry.getCoordinates(), 15);
-      }
+      syncUserOnMap(false);
+      frameMap(withCoords);
     } else {
       withCoords.forEach(function (p) {
         var m = MAP.marks[p.id];
         if (m) m.properties.set('tone', toneOf(p, tNow));
       });
     }
+  }
+
+  function boundsOf(points) {
+    var la = points.map(function (q) { return q[0]; }), lo = points.map(function (q) { return q[1]; });
+    var b = [[Math.min.apply(null, la), Math.min.apply(null, lo)], [Math.max.apply(null, la), Math.max.apply(null, lo)]];
+    if (b[1][0] - b[0][0] < 0.004) { b[0][0] -= 0.004; b[1][0] += 0.004; }
+    if (b[1][1] - b[0][1] < 0.007) { b[0][1] -= 0.007; b[1][1] += 0.007; }
+    return b;
+  }
+  function radiusBounds(pos, km) {
+    var dLat = km / 110.57, dLon = km / (111.32 * Math.cos(pos[0] * Math.PI / 180));
+    return [[pos[0] - dLat, pos[1] - dLon], [pos[0] + dLat, pos[1] + dLon]];
+  }
+  // Кадр карты: круг радиуса, если он выбран; иначе «я» и шесть ближайших мест; иначе центр, где больше всего мест
+  function frameMap(ps) {
+    if (!MAP.map) return;
+    var opt = { checkZoomRange: true, zoomMargin: [64, 30, 30, 30] };
+    try {
+      if (distOn()) { MAP.map.setBounds(radiusBounds(LOC.pos, state.dist), opt); return; }
+      if (LOC.pos) {
+        var near = ps.filter(function (p) { var d = distOf(p); return d !== null && d <= 30; }).sort(byDist).slice(0, 6);
+        if (near.length) {
+          MAP.map.setBounds(boundsOf(near.map(function (p) { return [p.coords[1], p.coords[0]]; }).concat([LOC.pos])), opt);
+          return;
+        }
+      }
+      if (ps.length > 1) MAP.map.setBounds(coreBounds(ps), opt);
+      else if (ps.length === 1) MAP.map.setCenter([ps[0].coords[1], ps[0].coords[0]], 15);
+    } catch (e) { /* ок */ }
+  }
+
+  function cssVar(name, fallback) {
+    var v = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+    return v || fallback;
+  }
+
+  // «Я» на карте: синяя точка (или красная, если точку выбрали на карте) и круг выбранного радиуса
+  function syncUserOnMap(recenter) {
+    if (!MAP.map || !window.ymaps || !LOC.pos) return;
+    var ym = window.ymaps;
+    var me = cssVar('--me', '#2F7BF5');
+    if (!MAP.MeLayout) MAP.MeLayout = ym.templateLayoutFactory.createClass('<div class="me-dot{% if properties.manual %} is-manual{% endif %}"></div>');
+    if (!MAP.me) {
+      MAP.me = new ym.Placemark(LOC.pos, { manual: LOC.src === 'map' }, {
+        iconLayout: MAP.MeLayout,
+        iconShape: { type: 'Circle', coordinates: [0, 0], radius: 14 },
+        zIndex: 1200,
+        hasBalloon: false,
+        hasHint: false
+      });
+      MAP.map.geoObjects.add(MAP.me);
+    } else {
+      MAP.me.geometry.setCoordinates(LOC.pos);
+      MAP.me.properties.set('manual', LOC.src === 'map');
+    }
+    if (state.dist) {
+      if (!MAP.circle) {
+        MAP.circle = new ym.Circle([LOC.pos, state.dist * 1000], {}, {
+          fillColor: me + '1F', strokeColor: me, strokeOpacity: 0.8, strokeWidth: 2, interactivityModel: 'default#transparent'
+        });
+        MAP.map.geoObjects.add(MAP.circle);
+      } else {
+        MAP.circle.geometry.setCoordinates(LOC.pos);
+        MAP.circle.geometry.setRadius(state.dist * 1000);
+      }
+    } else if (MAP.circle) {
+      MAP.map.geoObjects.remove(MAP.circle);
+      MAP.circle = null;
+    }
+    if (recenter) frameMap(MAP.list.filter(hasCoords));
+  }
+
+  function mapMe() {
+    if (LOC.pos && MAP.map) {
+      try { MAP.map.setCenter(LOC.pos, Math.max(MAP.map.getZoom(), 14), { duration: 300 }); } catch (e) { /* ок */ }
+    } else {
+      locate(false);
+    }
+  }
+
+  // Точка на карте: карта раскрывается на весь экран, следующее нажатие на неё ставит точку
+  function startPick() {
+    if (MAP.failed) { toast('Карта не загрузилась, выбрать точку не получится'); return; }
+    if (sheetIsOpen()) closeSheet();
+    closePeek();
+    LOC.picking = true;
+    loadYmaps();
+    var b = $('#pickBanner');
+    if (b) b.hidden = false;
+    if (mapCard) mapCard.classList.add('is-picking');
+    if (!mapIsFull()) setMapFull(true);
+  }
+  function stopPick() {
+    LOC.picking = false;
+    var b = $('#pickBanner');
+    if (b) b.hidden = true;
+    if (mapCard) mapCard.classList.remove('is-picking');
+  }
+  function finishPick(coords) {
+    stopPick();
+    setLoc([coords[0], coords[1]], 'map', 0);
+    if (mapIsFull()) setMapFull(false);
+    toast('Считаю расстояния от выбранной точки');
   }
 
   /* Стартовый кадр: если мест много, показываем центр, где их большинство, а не всю Москву
@@ -1860,6 +2396,8 @@ html[data-tg] .hero { --hh: var(--tg-viewport-stable-height, 100svh); }
     var logo = p.logo ? '<img src="' + esc(photoUrl(p.logo, 'S')) + '" alt="" referrerpolicy="no-referrer">'
       : ((p.photos || [])[0] ? '<img src="' + esc(photoUrl(p.photos[0], 'M')) + '" alt="" referrerpolicy="no-referrer">' : placeholderHTML(p));
     var meta = [];
+    var d = distOf(p);
+    if (d !== null) meta.push(esc(fmtKm(d)));
     if (p.cuisine && p.cuisine.length) meta.push(esc(p.cuisine.join(', ')));
     if (p.metro && p.metro[0]) meta.push('м. ' + esc(p.metro[0].name));
     return '<div class="peek-head">' +
@@ -1902,6 +2440,7 @@ html[data-tg] .hero { --hh: var(--tg-viewport-stable-height, 100svh); }
 
   function setMapFull(on) {
     if (!mapCard) return;
+    if (!on) stopPick();
     mapCard.classList.toggle('is-full', on);
     var btn = $('#mapFullBtn');
     if (btn) {
@@ -1932,6 +2471,7 @@ html[data-tg] .hero { --hh: var(--tg-viewport-stable-height, 100svh); }
 
   renderTagline();
   render();
+  locate(true);
   setInterval(function () {
     render();
     if (sheetPlace && $('#sheet').classList.contains('is-open') && !$('#reveal')) {

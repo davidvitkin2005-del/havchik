@@ -43,6 +43,14 @@
     play: '<svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path fill="currentColor" d="M10 8.4v7.2l6-3.6z"/></svg>',
     people: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.6-3.6 3.3-5.5 6.5-5.5s5.9 1.9 6.5 5.5"/><path d="M16 4.6a3.5 3.5 0 0 1 0 6.8M18.5 14.8c1.7.7 2.8 2.5 3.1 5.2"/></svg>',
     chat: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12a8 8 0 0 1-11.6 7.1L4 20l1-4.2A8 8 0 1 1 20 12z"/></svg>',
+    nav: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 10.5 20 4l-6.5 16.5-2.4-7.2z"/></svg>',
+    navSm: '<svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3.5 10.5 20 4l-6.5 16.5-2.4-7.2z"/></svg>',
+    target: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2.2" fill="currentColor" stroke="none"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>',
+    phone: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6.6 3.5h3l1.6 4.2-2.1 1.4a11.5 11.5 0 0 0 5.8 5.8l1.4-2.1 4.2 1.6v3a2 2 0 0 1-2.2 2A16.8 16.8 0 0 1 4.6 5.7a2 2 0 0 1 2-2.2z"/></svg>',
+    copy: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2.5"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg>',
+    calendar: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="3"/><path d="M8 3v4M16 3v4M3.5 10h17"/></svg>',
+    globe: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z"/></svg>',
+    route: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="18" r="2.5"/><circle cx="18" cy="6" r="2.5"/><path d="M8.5 18H15a3 3 0 0 0 0-6H9a3 3 0 0 1 0-6h6.5"/></svg>',
     dice: '<svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="2"/><g fill="currentColor"><circle cx="8.5" cy="8.5" r="1.6"/><circle cx="15.5" cy="15.5" r="1.6"/><circle cx="12" cy="12" r="1.6"/></g></svg>'
   };
 
@@ -70,10 +78,178 @@
     return cuisineCount[b] - cuisineCount[a] || a.localeCompare(b, 'ru');
   });
 
-  var state = { cuisines: {}, when: 'any', q: '' };
+  var state = { cuisines: {}, when: 'any', q: '', dist: 0 };
   var lastPick = null;
   var sheetPlace = null;
   var spinTimers = [];
+
+  /* ---------- Где я: геопозиция и расстояния ----------
+     Геопозиция нужна только чтобы посчитать расстояния: остаётся на телефоне и нигде не сохраняется.
+     Сначала спрашиваем через Telegram (LocationManager, Bot API 8.0+), иначе через браузер.
+     Если доступа нет, точку можно выбрать на карте. */
+  var LOC = { pos: null, src: '', acc: 0, busy: false, err: '', picking: false };
+  var DIST_STEPS = [1, 2, 5, 10];
+
+  function haversineKm(a, b) {
+    var toR = Math.PI / 180;
+    var dLat = (b[0] - a[0]) * toR, dLon = (b[1] - a[1]) * toR;
+    var h = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(a[0] * toR) * Math.cos(b[0] * toR) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    return 2 * 6371 * Math.asin(Math.min(1, Math.sqrt(h)));
+  }
+  function hasCoords(p) { return !!(p.coords && p.coords.length === 2); }
+  function distOf(p) { return LOC.pos && hasCoords(p) ? haversineKm(LOC.pos, [p.coords[1], p.coords[0]]) : null; }
+  function distOn() { return !!(state.dist && LOC.pos); }
+  function distOk(p) {
+    if (!distOn()) return true;
+    var d = distOf(p);
+    return d !== null && d <= state.dist;
+  }
+  function byDist(a, b) {
+    if (!LOC.pos) return 0;
+    var da = distOf(a), db = distOf(b);
+    return (da === null ? 1e9 : da) - (db === null ? 1e9 : db);
+  }
+  function fmtKm(km) {
+    if (km < 1) return Math.max(10, Math.round(km * 100) * 10) + ' м';
+    if (km < 10) return km.toFixed(1).replace('.', ',') + ' км';
+    return Math.round(km) + ' км';
+  }
+  // Пешком: расстояние по прямой × 1,3 на изгибы улиц, скорость 4,8 км/ч; дальше 2,5 км пешком не считаем
+  function walkText(km) {
+    if (km > 2.5) return '';
+    var m = Math.max(1, Math.round(km * 1.3 / 4.8 * 60));
+    if (m >= 20) m = Math.round(m / 5) * 5;
+    return '≈ ' + m + ' мин пешком';
+  }
+  function fromWhom() { return LOC.src === 'map' ? 'от точки на карте' : 'от вас'; }
+  // Маршрут в Яндекс Картах. Своё местоположение в ссылку не кладём: Яндекс возьмёт его с телефона сам.
+  // Точку, выбранную на карте, передаём, иначе маршрут построится не оттуда.
+  function routeUrl(p, mode) {
+    var to = p.coords[1].toFixed(6) + ',' + p.coords[0].toFixed(6);
+    var from = LOC.pos && LOC.src === 'map' ? LOC.pos[0].toFixed(6) + ',' + LOC.pos[1].toFixed(6) : '';
+    return 'https://yandex.ru/maps/?rtext=' + from + '~' + to + '&rtt=' + mode;
+  }
+
+  function tgLocationManager() {
+    return inTG && tg.LocationManager && tg.isVersionAtLeast && tg.isVersionAtLeast('8.0') ? tg.LocationManager : null;
+  }
+
+  function locate(silent) {
+    if (LOC.busy) return;
+    if (!silent) LOC.err = '';
+    var lm = tgLocationManager();
+    if (!lm) { browserLocate(silent); return; }
+    var go = function () {
+      if (!lm.isLocationAvailable) { browserLocate(silent); return; }
+      if (!lm.isAccessGranted && (silent || lm.isAccessRequested)) {
+        if (!silent) { LOC.err = 'tg-denied'; renderDist(); }
+        return;
+      }
+      LOC.busy = true;
+      renderDist();
+      lm.getLocation(function (d) {
+        LOC.busy = false;
+        if (d && typeof d.latitude === 'number') setLoc([d.latitude, d.longitude], 'gps', d.horizontal_accuracy);
+        else { LOC.err = 'tg-denied'; renderDist(); }
+      });
+    };
+    try { if (lm.isInited) go(); else lm.init(go); } catch (e) { browserLocate(silent); }
+  }
+
+  function browserLocate(silent) {
+    var geo = navigator.geolocation;
+    if (!geo) { if (!silent) { LOC.err = 'unsupported'; renderDist(); } return; }
+    var run = function () {
+      LOC.busy = true;
+      renderDist();
+      geo.getCurrentPosition(function (pos) {
+        LOC.busy = false;
+        setLoc([pos.coords.latitude, pos.coords.longitude], 'gps', pos.coords.accuracy);
+      }, function (err) {
+        LOC.busy = false;
+        if (!silent) LOC.err = err && err.code === 1 ? 'denied' : 'failed';
+        renderDist();
+      }, { enableHighAccuracy: true, timeout: 15000, maximumAge: 60000 });
+    };
+    if (!silent) { run(); return; }
+    // При запуске спрашиваем молча, только если доступ уже дали раньше
+    try {
+      navigator.permissions.query({ name: 'geolocation' }).then(function (r) { if (r.state === 'granted') run(); }, function () {});
+    } catch (e) { /* нет Permissions API */ }
+  }
+
+  function setLoc(pos, src, acc) {
+    LOC.pos = [pos[0], pos[1]];
+    LOC.src = src;
+    LOC.acc = acc || 0;
+    LOC.err = '';
+    haptic('notificationOccurred', 'success');
+    lastListKey = '';
+    render();
+    syncUserOnMap(true);
+    refreshSheetDistance();
+  }
+
+  function renderDist() {
+    var chips = $('#distChips'), label = $('#distLabel'), msg = $('#locMsg');
+    if (!chips) return;
+    var html;
+    if (!LOC.pos) {
+      label.innerHTML = 'Расстояние';
+      html = '<button class="chip chip-loc" type="button" data-action="locate"' + (LOC.busy ? ' aria-busy="true" disabled' : '') + '>' +
+          ICON.nav + (LOC.busy ? 'Определяю, где вы…' : 'Показать, сколько до мест') + '</button>' +
+        '<button class="chip" type="button" data-action="pick-on-map">' + ICON.target + 'Точка на карте</button>';
+    } else {
+      label.innerHTML = 'Расстояние <span class="filter-sub">' + esc(fromWhom()) + '</span>';
+      html = '<button class="chip" type="button" data-dist="0" aria-pressed="' + (!state.dist) + '">Любое</button>';
+      DIST_STEPS.forEach(function (km) {
+        var n = places.filter(function (p) { var d = distOf(p); return d !== null && d <= km; }).length;
+        html += '<button class="chip" type="button" data-dist="' + km + '" aria-pressed="' + (state.dist === km) + '">до ' + km + ' км<span class="n">' + n + '</span></button>';
+      });
+      html += '<button class="chip chip-ghost" type="button" data-action="locate"' + (LOC.busy ? ' aria-busy="true" disabled' : '') + '>' +
+          ICON.nav + (LOC.busy ? 'Обновляю…' : (LOC.src === 'map' ? 'Где я' : 'Обновить')) + '</button>' +
+        '<button class="chip chip-ghost" type="button" data-action="pick-on-map">' + ICON.target + (LOC.src === 'map' ? 'Другая точка' : 'Точка на карте') + '</button>';
+    }
+    chips.innerHTML = html;
+    var text = '';
+    if (LOC.err === 'tg-denied') text = 'Telegram не дал доступ к геопозиции. Разрешите его в настройках бота или выберите точку на карте.';
+    else if (LOC.err === 'denied') text = 'Доступ к геопозиции запрещён. Разрешите его в настройках браузера или выберите точку на карте.';
+    else if (LOC.err === 'failed') text = 'Не получилось определить, где вы. Попробуйте ещё раз или выберите точку на карте.';
+    else if (LOC.err === 'unsupported') text = 'Здесь геопозиция недоступна. Выберите точку на карте.';
+    else if (!LOC.pos) text = 'Геопозиция нужна только чтобы посчитать расстояния: она остаётся на телефоне и нигде не сохраняется.';
+    msg.innerHTML = esc(text) + (LOC.err === 'tg-denied' && tgLocationManager() ? ' <button class="link-btn" type="button" data-action="loc-settings">Открыть настройки</button>' : '');
+    msg.hidden = !text;
+  }
+
+  var toastTimer = 0;
+  function toast(text) {
+    var el = $('#toast');
+    if (!el) return;
+    el.textContent = text;
+    el.hidden = false;
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { el.hidden = true; }, 2600);
+  }
+
+  function copyText(text) {
+    var done = function () { toast('Номер скопирован'); haptic('notificationOccurred', 'success'); };
+    var fallback = function () {
+      var ta = document.createElement('textarea');
+      ta.value = text;
+      ta.setAttribute('readonly', '');
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      var ok = false;
+      try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+      ta.remove();
+      if (ok) done(); else toast('Не получилось скопировать: ' + text);
+    };
+    try { navigator.clipboard.writeText(text).then(done, fallback); } catch (e) { fallback(); }
+  }
+
 
   function selectedCuisines() { return Object.keys(state.cuisines); }
   function cuisineOk(p) {
@@ -118,9 +294,10 @@
       (n ? '<span class="users-line">' + ICON.people + esc(plural(n, 'Пользуется ', 'Пользуются ', 'Пользуются ') + n + ' ' + plural(n, 'человек', 'человека', 'человек')) + '</span>' : '');
   }
 
-  function spinPool(tNow, ignoreCuisine) {
+  function spinPool(tNow, opts) {
+    opts = opts || {};
     var pool = places.filter(function (p) {
-      return (ignoreCuisine || cuisineOk(p)) && T.statusAtAbs(p._s, tNow).open;
+      return (opts.anyCuisine || cuisineOk(p)) && (opts.anyDist || distOk(p)) && T.statusAtAbs(p._s, tNow).open;
     });
     var comfy = pool.filter(function (p) {
       var st = T.statusAtAbs(p._s, tNow);
@@ -132,9 +309,12 @@
   function renderSpinSub(tNow) {
     var n = spinPool(tNow).length;
     var sel = selectedCuisines();
+    var parts = [];
+    if (distOn()) parts.push('до ' + state.dist + ' км');
+    if (sel.length) parts.push(sel.join(', ').toLowerCase());
     var txt;
-    if (!n) txt = sel.length ? 'Из выбранной кухни сейчас ничего не открыто' : 'Сейчас всё закрыто, покажу, что откроется раньше';
-    else txt = 'Выберу из ' + n + ' ' + plural(n, 'открытого', 'открытых', 'открытых') + (sel.length ? ' · ' + sel.join(', ').toLowerCase() : '');
+    if (!n) txt = distOn() ? 'Рядом сейчас всё закрыто' : (sel.length ? 'Из выбранной кухни сейчас ничего не открыто' : 'Сейчас всё закрыто, покажу, что откроется раньше');
+    else txt = 'Выберу из ' + n + ' ' + plural(n, 'открытого', 'открытых', 'открытых') + (parts.length ? ' · ' + parts.join(' · ') : '');
     $('#spinSub').textContent = txt;
   }
 
@@ -173,6 +353,7 @@
   /* ---------- Список ---------- */
   function matches(p, tNow) {
     if (!cuisineOk(p)) return false;
+    if (!distOk(p)) return false;
     if (state.q && p._q.indexOf(norm(state.q).trim()) === -1) return false;
     if (state.when === 'now') return T.statusAtAbs(p._s, tNow).open;
     if (typeof state.when === 'number') return T.isOpenAtAbs(p._s, state.when);
@@ -201,6 +382,8 @@
     var img = photo ? '<img src="' + esc(photoUrl(photo, 'XL')) + '" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer">' : '';
     var tags = (p.tags || []).slice(0, 2).map(function (t) { return '<span class="tag">' + esc(t) + '</span>'; }).join('');
     var meta = [];
+    var d = distOf(p);
+    if (d !== null) meta.push('<span class="dist">' + ICON.navSm + esc(fmtKm(d)) + '</span>');
     if (p.cuisine && p.cuisine.length) meta.push('<span>' + esc(p.cuisine.join(', ')) + '</span>');
     if (p.metro && p.metro[0]) meta.push(metroHTML(p.metro[0]));
     return '<button class="card' + (st.open ? '' : ' is-closed') + '" type="button" data-id="' + esc(p.id) + '">' +
@@ -229,11 +412,11 @@
       open.sort(function (a, b) {
         var la = T.statusAtAbs(a._s, tNow), lb = T.statusAtAbs(b._s, tNow);
         var sa = !la.always && la.left < 60 ? 1 : 0, sb = !lb.always && lb.left < 60 ? 1 : 0;
-        return sa - sb || a.name.localeCompare(b.name, 'ru');
+        return sa - sb || byDist(a, b) || a.name.localeCompare(b.name, 'ru');
       });
       closed.sort(function (a, b) {
         var sa = T.statusAtAbs(a._s, tNow), sb = T.statusAtAbs(b._s, tNow);
-        return (sa.until || 1e9) - (sb.until || 1e9);
+        return byDist(a, b) || (sa.until || 1e9) - (sb.until || 1e9);
       });
       groups = [];
       if (open.length) groups.push({ title: 'Открыто сейчас · ' + open.length, items: open });
@@ -241,15 +424,16 @@
     } else {
       var title = state.when === 'now' ? 'Открыто сейчас · ' + list.length
         : 'Открыто в ' + T.hm(state.when) + (Math.floor(state.when / T.DAY) > Math.floor(tNow / T.DAY) ? ' завтра' : '') + ' · ' + list.length;
-      groups = list.length ? [{ title: title, items: list }] : [];
+      groups = list.length ? [{ title: title, items: LOC.pos ? list.slice().sort(byDist) : list }] : [];
     }
 
     var key = JSON.stringify(groups.map(function (g) { return [g.title, g.items.map(function (p) { return p.id; })]; }));
-    var filtered = selectedCuisines().length || state.q || state.when !== 'any';
+    var filtered = selectedCuisines().length || state.q || state.when !== 'any' || distOn();
     $('#reset').hidden = !filtered;
-    $('#count').textContent = filtered
+    $('#count').textContent = (filtered
       ? 'Нашлось ' + list.length + ' из ' + places.length
-      : places.length + ' ' + plural(places.length, 'место', 'места', 'мест');
+      : places.length + ' ' + plural(places.length, 'место', 'места', 'мест')) +
+      (distOn() ? ' · до ' + state.dist + ' км ' + fromWhom() : (LOC.pos ? ' · ближние выше' : ''));
     syncMap(list, tNow);
 
     if (key === lastListKey) {
@@ -260,7 +444,7 @@
 
     if (!groups.length) {
       $('#list').innerHTML = '<div class="empty"><b>Под эти фильтры ничего нет</b>' +
-        '<span>Попробуйте другое время или другую кухню.</span>' +
+        '<span>' + (distOn() ? 'Попробуйте радиус побольше, другое время или другую кухню.' : 'Попробуйте другое время или другую кухню.') + '</span>' +
         '<button class="btn btn-secondary" type="button" data-action="reset">Сбросить фильтры</button></div>';
       return;
     }
@@ -290,6 +474,7 @@
     renderSpinSub(tNow);
     renderCuisineChips();
     renderTimeChips(now);
+    renderDist();
     renderList(now);
   }
 
@@ -321,6 +506,8 @@
       (p.metro && p.metro.length ? '<div class="meta" style="margin-top:4px">' + p.metro.slice(0, 2).map(function (m) {
         return metroHTML(m) + (m.distance ? '<span class="muted">' + esc(m.distance) + '</span>' : '');
       }).join('') + '</div>' : '') + '</div></div>');
+    if (hasCoords(p)) facts.push(distFactHTML(p));
+    if ((p.phones && p.phones.length) || p.booking || p.site) facts.push(phoneFactHTML(p));
     if (p.price) facts.push('<div class="fact">' + ICON.wallet + '<div>' + esc(p.price) + '</div></div>');
     var perks = (p.perks || []).map(function (t) { return '<li>' + ICON.spark + '<span>' + esc(t.text) + '</span></li>'; }).join('');
     return (opts.withTitle ? '<h2 class="title" id="sheetTitle">' + esc(p.name) + '</h2>' : '') +
@@ -340,6 +527,38 @@
             ICON.play + (p.reels.length > 1 ? 'Рилс ' + (i + 1) : 'Смотреть рилс') + '</a>';
         }).join('') + '</div><p class="note">Рилсы из чата «Места Москва», откроются в Instagram.</p></section>' : '');
   }
+
+  /* ---------- Карточка места: расстояние, маршрут, телефон для брони ---------- */
+  function distFactHTML(p) {
+    var d = distOf(p);
+    var line = d === null
+      ? '<span>Сколько ехать?</span><button class="link-btn" type="button" data-action="locate">Показать расстояние</button>'
+      : '<b>' + esc(fmtKm(d)) + '</b><span class="muted">' + esc(fromWhom()) + (walkText(d) ? ' · ' + esc(walkText(d)) : '') + '</span>';
+    var modes = [['pd', 'Пешком'], ['mt', 'Транспорт'], ['taxi', 'Такси'], ['auto', 'Авто']];
+    return '<div class="fact" id="sheetDist">' + ICON.route + '<div><div class="dist-line">' + line + '</div>' +
+      '<div class="route-btns modes">' + modes.map(function (m) {
+        return '<a class="route-btn" href="' + esc(routeUrl(p, m[0])) + '" target="_blank" rel="noopener" data-external>' + m[1] + '</a>';
+      }).join('') + '</div><p class="hint">Маршрут и точное время в пути откроются в Яндекс Картах.</p></div></div>';
+  }
+
+  function refreshSheetDistance() {
+    var el = document.getElementById('sheetDist');
+    if (el && sheetPlace) el.outerHTML = distFactHTML(sheetPlace);
+  }
+
+  function phoneFactHTML(p) {
+    var rows = (p.phones || []).slice(0, 2).map(function (ph) {
+      return '<div class="phone-row"><a class="phone-num" href="tel:' + esc(ph.v || ph.n) + '">' + esc(ph.n) + '</a>' +
+        '<button class="icon-btn" type="button" data-action="copy-phone" data-phone="' + esc(ph.n) + '" aria-label="Скопировать номер ' + esc(ph.n) + '">' + ICON.copy + '</button>' +
+        (ph.i ? '<span class="phone-info">' + esc(ph.i) + '</span>' : '') + '</div>';
+    }).join('');
+    var links = '';
+    if (p.booking) links += '<a class="route-btn route-btn-strong" href="' + esc(p.booking) + '" target="_blank" rel="noopener" data-external>' + ICON.calendar + 'Онлайн-бронь</a>';
+    if (p.site) links += '<a class="route-btn" href="' + esc(p.site) + '" target="_blank" rel="noopener" data-external>' + ICON.globe + 'Сайт</a>';
+    return '<div class="fact">' + ICON.phone + '<div><div class="fact-h">' + (rows ? 'Забронировать столик' : 'Бронь и сайт') + '</div>' + rows +
+      (links ? '<div class="route-btns">' + links + '</div>' : '') + '</div></div>';
+  }
+
 
   /* ---------- Комментарии: пост о месте в Telegram-канале, комментарии под ним ---------- */
   function postUrl(p) { return 'https://t.me/' + META.channel + '/' + p.post; }
@@ -372,10 +591,13 @@
 
   function actionsHTML(p, mode) {
     var maps = '<a class="btn btn-primary" href="' + esc(p.yandex) + '" target="_blank" rel="noopener" data-external>' + ICON.map + 'Яндекс Карты</a>';
+    var ph = (p.phones || [])[0];
+    var call = ph ? '<a class="btn btn-secondary' + (mode === 'random' ? ' btn-icon' : '') + '" href="tel:' + esc(ph.v || ph.n) + '" aria-label="Позвонить ' + esc(ph.n) + '">' +
+      ICON.phone + (mode === 'random' ? '' : 'Позвонить') + '</a>' : '';
     if (mode === 'random') {
-      return '<div class="actions"><button class="btn btn-secondary" type="button" data-action="respin">' + ICON.dice + 'Ещё</button>' + maps + '</div>';
+      return '<div class="actions"><button class="btn btn-secondary" type="button" data-action="respin">' + ICON.dice + 'Ещё</button>' + call + maps + '</div>';
     }
-    return '<div class="actions">' + maps + '</div>';
+    return '<div class="actions">' + call + maps + '</div>';
   }
 
   function openSheet(html) {
@@ -413,6 +635,7 @@
   function onBack() {
     if (sheetIsOpen()) closeSheet();
     else if (mapIsFull()) setMapFull(false);
+    else if (LOC.picking) stopPick();
   }
 
   function bindGallery() {
@@ -439,10 +662,13 @@
   }
 
   /* ---------- Рандомайзер ---------- */
-  function spin(ignoreCuisine) {
+  var lastSpin = {};
+  function spin(opts) {
+    opts = opts || {};
+    lastSpin = opts;
     var now = T.mskNow();
     var tNow = T.absNow(now);
-    var pool = spinPool(tNow, ignoreCuisine);
+    var pool = spinPool(tNow, opts);
     var btn = $('#spin');
     btn.classList.remove('is-rolling');
     void btn.offsetWidth;
@@ -450,7 +676,10 @@
     haptic('impactOccurred', 'medium');
 
     if (!pool.length) {
-      showNothingOpen(now, tNow, !ignoreCuisine && selectedCuisines().length > 0 && spinPool(tNow, true).length > 0);
+      var why = 'all';
+      if (!opts.anyDist && distOn() && spinPool(tNow, { anyCuisine: opts.anyCuisine, anyDist: true }).length) why = 'dist';
+      else if (!opts.anyCuisine && selectedCuisines().length && spinPool(tNow, { anyCuisine: true, anyDist: opts.anyDist }).length) why = 'cuisine';
+      showNothingOpen(now, tNow, why, opts);
       return;
     }
     var choices = pool.length > 1 && lastPick ? pool.filter(function (p) { return p.id !== lastPick; }) : pool;
@@ -474,7 +703,9 @@
     var finish = function () {
       nameEl.textContent = pick.name;
       $('#reveal').classList.remove('is-spinning');
-      $('#revealSub').textContent = [pick.cuisine && pick.cuisine.join(', '), pick.metro && pick.metro[0] && ('м. ' + pick.metro[0].name)].filter(Boolean).join(' · ');
+      var pd = distOf(pick);
+      $('#revealSub').textContent = [pd !== null ? fmtKm(pd) + ' ' + fromWhom() : '', pick.cuisine && pick.cuisine.join(', '),
+        pick.metro && pick.metro[0] && ('м. ' + pick.metro[0].name)].filter(Boolean).join(' · ');
       $('#randomSheet').classList.add('is-revealed');
       haptic('notificationOccurred', 'success');
     };
@@ -496,26 +727,37 @@
     spinTimers.push(setTimeout(finish, acc + 380));
   }
 
-  function showNothingOpen(now, tNow, cuisineOnly) {
-    var soon = places.filter(function (p) { return cuisineOnly ? cuisineOk(p) : true; })
-      .map(function (p) { return { p: p, st: T.statusAtAbs(p._s, tNow) }; })
-      .filter(function (x) { return !x.st.open && !x.st.never; })
-      .sort(function (a, b) { return a.st.until - b.st.until; })
-      .slice(0, 4);
+  function showNothingOpen(now, tNow, why, opts) {
+    opts = opts || {};
+    var soonest = function (filterFn) {
+      return places.filter(filterFn)
+        .map(function (p) { return { p: p, st: T.statusAtAbs(p._s, tNow) }; })
+        .filter(function (x) { return !x.st.open && !x.st.never; })
+        .sort(function (a, b) { return a.st.until - b.st.until; })
+        .slice(0, 4);
+    };
+    var soon = soonest(function (p) { return (opts.anyCuisine || cuisineOk(p)) && (opts.anyDist || distOk(p)); });
+    if (!soon.length) soon = soonest(function () { return true; });
     var list = soon.map(function (x) {
       var photo = (x.p.photos || [])[0];
       return '<button class="mini" type="button" data-id="' + esc(x.p.id) + '"><span class="thumb">' + placeholderHTML(x.p) +
         (photo ? '<img src="' + esc(photoUrl(photo, 'M')) + '" alt="" loading="lazy" referrerpolicy="no-referrer">' : '') + '</span>' +
-        '<span><b>' + esc(x.p.name) + '</b><span>' + esc(T.statusLabel(x.st).text) + '</span></span></button>';
+        '<span><b>' + esc(x.p.name) + '</b><span>' + esc(T.statusLabel(x.st).text) +
+        (distOf(x.p) !== null ? ' · ' + esc(fmtKm(distOf(x.p))) : '') + '</span></span></button>';
     }).join('');
+    var head = {
+      dist: ['Рядом всё спит', 'В радиусе ' + state.dist + ' км сейчас всё закрыто'],
+      cuisine: ['Эта кухня спит', 'Из выбранного сейчас всё закрыто'],
+      all: ['Москва спит', 'Сейчас всё закрыто']
+    }[why] || ['Москва спит', 'Сейчас всё закрыто'];
+    var more = why === 'dist' ? '<button class="btn btn-primary" type="button" data-action="spin-anydist">' + ICON.dice + 'Крутить по всей Москве</button>'
+      : why === 'cuisine' ? '<button class="btn btn-primary" type="button" data-action="spin-all">' + ICON.dice + 'Крутить среди всех</button>' : '';
     openSheet('<div class="sheet-inner is-revealed">' +
       '<div class="reveal"><button class="close" type="button" data-action="close" aria-label="Закрыть">' + ICON.close + '</button>' +
-        '<div class="reveal-eyebrow">' + (cuisineOnly ? 'Эта кухня спит' : 'Москва спит') + '</div>' +
-        '<div class="reveal-name" id="sheetTitle">' + (cuisineOnly ? 'Из выбранного сейчас всё закрыто' : 'Сейчас всё закрыто') + '</div>' +
+        '<div class="reveal-eyebrow">' + head[0] + '</div>' +
+        '<div class="reveal-name" id="sheetTitle">' + esc(head[1]) + '</div>' +
         '<div class="reveal-sub">Раньше всех откроются эти места</div></div>' +
-      '<div class="sheet-body"><div class="soonest">' + list + '</div>' +
-        (cuisineOnly ? '<button class="btn btn-primary" type="button" data-action="spin-all">' + ICON.dice + 'Крутить среди всех</button>' : '') +
-      '</div></div>');
+      '<div class="sheet-body"><div class="soonest">' + list + '</div>' + more + '</div></div>');
   }
 
   /* ---------- События ---------- */
@@ -537,11 +779,19 @@
     if (act) {
       var a = act.getAttribute('data-action');
       if (a === 'close') closeSheet();
-      else if (a === 'respin') spin();
-      else if (a === 'spin-all') spin(true);
+      else if (a === 'respin') spin(lastSpin);
+      else if (a === 'spin-all') spin({ anyCuisine: true, anyDist: lastSpin.anyDist });
+      else if (a === 'spin-anydist') spin({ anyDist: true, anyCuisine: lastSpin.anyCuisine });
       else if (a === 'reset') resetFilters();
       else if (a === 'map-full') setMapFull(!mapIsFull());
       else if (a === 'peek-close') closePeek();
+      else if (a === 'locate') locate(false);
+      else if (a === 'pick-on-map') startPick();
+      else if (a === 'pick-cancel') { stopPick(); if (mapIsFull()) setMapFull(false); }
+      else if (a === 'map-me') mapMe();
+      else if (a === 'loc-settings') { try { tg.LocationManager.openSettings(); } catch (err) { /* ок */ } }
+      else if (a === 'copy-phone') copyText(act.getAttribute('data-phone'));
+      else if (a === 'map-retry') { MAP.attempt = 0; MAP.failed = false; loadYmaps(); }
       return;
     }
     var card = t.closest && t.closest('[data-id]');
@@ -557,6 +807,8 @@
       } else if (chip.hasAttribute('data-when')) {
         var w = chip.getAttribute('data-when');
         state.when = (w === 'any' || w === 'now') ? w : Number(w);
+      } else if (chip.hasAttribute('data-dist')) {
+        state.dist = Number(chip.getAttribute('data-dist')) || 0;
       }
       render();
     }
@@ -574,6 +826,7 @@
     state.cuisines = {};
     state.when = 'any';
     state.q = '';
+    state.dist = 0;
     $('#q').value = '';
     render();
   }
@@ -664,14 +917,18 @@
      с описанием и кнопкой в Яндекс Карты. В обычном виде на телефоне карта не
      перехватывает прокрутку страницы: двигать её можно после «Развернуть». */
   var YMAPS_KEY = '';  // бесплатный ключ с developer.tech.yandex.ru, необязательно
-  var MAP = { map: null, clusterer: null, marks: {}, key: '', list: [], active: null, margin: null, failed: false, loading: false };
+  var MAP = { map: null, clusterer: null, marks: {}, key: '', list: [], active: null, margin: null, failed: false, loading: false, me: null, circle: null };
   var mapCard = $('#mapCard');
   var mapPeek = $('#mapPeek');
 
   function mapIsFull() { return !!(mapCard && mapCard.classList.contains('is-full')); }
 
+  // Карта без ключа API иногда не грузится с первого раза: одна тихая повторная попытка,
+  // потом кнопка «Попробовать ещё раз»
   function mapFail() {
     if (MAP.map || MAP.failed) return;
+    MAP.loading = false;
+    if ((MAP.attempt || 0) < 2) { setTimeout(loadYmaps, 1200); return; }
     MAP.failed = true;
     var fb = $('#mapFallback');
     if (fb) fb.hidden = false;
@@ -682,16 +939,27 @@
   function loadYmaps() {
     if (MAP.loading || MAP.map || !mapCard) return;
     MAP.loading = true;
+    MAP.failed = false;
+    var attempt = (MAP.attempt || 0) + 1;
+    MAP.attempt = attempt;
+    var ld = $('#mapLoading'), fb = $('#mapFallback');
+    if (ld) ld.hidden = false;
+    if (fb) fb.hidden = true;
+    if (MAP.script) { MAP.script.remove(); MAP.script = null; }
+    if (attempt > 1) { try { delete window.ymaps; } catch (e) { window.ymaps = undefined; } }
+    var fail = function () { if (MAP.attempt === attempt) mapFail(); };
     var s = document.createElement('script');
-    s.src = 'https://api-maps.yandex.ru/2.1/?lang=ru_RU' + (YMAPS_KEY ? '&apikey=' + encodeURIComponent(YMAPS_KEY) : '');
+    s.src = 'https://api-maps.yandex.ru/2.1/?lang=ru_RU' + (YMAPS_KEY ? '&apikey=' + encodeURIComponent(YMAPS_KEY) : '') +
+      (attempt > 1 ? '&retry=' + Date.now() : '');
     s.async = true;
     s.onload = function () {
-      if (!window.ymaps) { mapFail(); return; }
-      window.ymaps.ready(initMap, mapFail);
+      if (!window.ymaps) { fail(); return; }
+      window.ymaps.ready(function () { if (MAP.attempt === attempt && !MAP.map) initMap(); }, fail);
     };
-    s.onerror = mapFail;
+    s.onerror = fail;
+    MAP.script = s;
     document.head.appendChild(s);
-    setTimeout(function () { if (!MAP.map) mapFail(); }, 20000);
+    setTimeout(function () { if (!MAP.map) fail(); }, 20000);
   }
 
   function initMap() {
@@ -736,7 +1004,10 @@
       zoomMargin: 70
     });
     MAP.map.geoObjects.add(MAP.clusterer);
-    MAP.map.events.add('click', function () { closePeek(); });
+    MAP.map.events.add('click', function (e) {
+      if (LOC.picking) { finishPick(e.get('coords')); return; }
+      closePeek();
+    });
     var ld = $('#mapLoading');
     if (ld) ld.hidden = true;
     applyMapBehaviors();
@@ -786,8 +1057,8 @@
     var cnt = $('#mapCount');
     if (cnt) cnt.textContent = list.length + ' ' + plural(list.length, 'место', 'места', 'мест');
     if (!MAP.map) return;
-    var withCoords = list.filter(function (p) { return p.coords && p.coords.length === 2; });
-    var key = withCoords.map(function (p) { return p.id; }).join(',');
+    var withCoords = list.filter(hasCoords);
+    var key = withCoords.map(function (p) { return p.id; }).join(',') + '|' + state.dist + '|' + (LOC.pos ? LOC.pos.join(',') : '');
     if (key !== MAP.key) {
       MAP.key = key;
       MAP.clusterer.removeAll();
@@ -795,17 +1066,117 @@
       var marks = withCoords.map(function (p) { var m = makeMark(p, tNow); MAP.marks[p.id] = m; return m; });
       MAP.clusterer.add(marks);
       if (MAP.active && !MAP.marks[MAP.active]) closePeek();
-      if (marks.length > 1) {
-        try { MAP.map.setBounds(coreBounds(withCoords), { checkZoomRange: true, zoomMargin: [64, 30, 30, 30] }); } catch (e) { /* ок */ }
-      } else if (marks.length === 1) {
-        MAP.map.setCenter(marks[0].geometry.getCoordinates(), 15);
-      }
+      syncUserOnMap(false);
+      frameMap(withCoords);
     } else {
       withCoords.forEach(function (p) {
         var m = MAP.marks[p.id];
         if (m) m.properties.set('tone', toneOf(p, tNow));
       });
     }
+  }
+
+  function boundsOf(points) {
+    var la = points.map(function (q) { return q[0]; }), lo = points.map(function (q) { return q[1]; });
+    var b = [[Math.min.apply(null, la), Math.min.apply(null, lo)], [Math.max.apply(null, la), Math.max.apply(null, lo)]];
+    if (b[1][0] - b[0][0] < 0.004) { b[0][0] -= 0.004; b[1][0] += 0.004; }
+    if (b[1][1] - b[0][1] < 0.007) { b[0][1] -= 0.007; b[1][1] += 0.007; }
+    return b;
+  }
+  function radiusBounds(pos, km) {
+    var dLat = km / 110.57, dLon = km / (111.32 * Math.cos(pos[0] * Math.PI / 180));
+    return [[pos[0] - dLat, pos[1] - dLon], [pos[0] + dLat, pos[1] + dLon]];
+  }
+  // Кадр карты: круг радиуса, если он выбран; иначе «я» и шесть ближайших мест; иначе центр, где больше всего мест
+  function frameMap(ps) {
+    if (!MAP.map) return;
+    var opt = { checkZoomRange: true, zoomMargin: [64, 30, 30, 30] };
+    try {
+      if (distOn()) { MAP.map.setBounds(radiusBounds(LOC.pos, state.dist), opt); return; }
+      if (LOC.pos) {
+        var near = ps.filter(function (p) { var d = distOf(p); return d !== null && d <= 30; }).sort(byDist).slice(0, 6);
+        if (near.length) {
+          MAP.map.setBounds(boundsOf(near.map(function (p) { return [p.coords[1], p.coords[0]]; }).concat([LOC.pos])), opt);
+          return;
+        }
+      }
+      if (ps.length > 1) MAP.map.setBounds(coreBounds(ps), opt);
+      else if (ps.length === 1) MAP.map.setCenter([ps[0].coords[1], ps[0].coords[0]], 15);
+    } catch (e) { /* ок */ }
+  }
+
+  function cssVar(name, fallback) {
+    var v = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+    return v || fallback;
+  }
+
+  // «Я» на карте: синяя точка (или красная, если точку выбрали на карте) и круг выбранного радиуса
+  function syncUserOnMap(recenter) {
+    if (!MAP.map || !window.ymaps || !LOC.pos) return;
+    var ym = window.ymaps;
+    var me = cssVar('--me', '#2F7BF5');
+    if (!MAP.MeLayout) MAP.MeLayout = ym.templateLayoutFactory.createClass('<div class="me-dot{% if properties.manual %} is-manual{% endif %}"></div>');
+    if (!MAP.me) {
+      MAP.me = new ym.Placemark(LOC.pos, { manual: LOC.src === 'map' }, {
+        iconLayout: MAP.MeLayout,
+        iconShape: { type: 'Circle', coordinates: [0, 0], radius: 14 },
+        zIndex: 1200,
+        hasBalloon: false,
+        hasHint: false
+      });
+      MAP.map.geoObjects.add(MAP.me);
+    } else {
+      MAP.me.geometry.setCoordinates(LOC.pos);
+      MAP.me.properties.set('manual', LOC.src === 'map');
+    }
+    if (state.dist) {
+      if (!MAP.circle) {
+        MAP.circle = new ym.Circle([LOC.pos, state.dist * 1000], {}, {
+          fillColor: me + '1F', strokeColor: me, strokeOpacity: 0.8, strokeWidth: 2, interactivityModel: 'default#transparent'
+        });
+        MAP.map.geoObjects.add(MAP.circle);
+      } else {
+        MAP.circle.geometry.setCoordinates(LOC.pos);
+        MAP.circle.geometry.setRadius(state.dist * 1000);
+      }
+    } else if (MAP.circle) {
+      MAP.map.geoObjects.remove(MAP.circle);
+      MAP.circle = null;
+    }
+    if (recenter) frameMap(MAP.list.filter(hasCoords));
+  }
+
+  function mapMe() {
+    if (LOC.pos && MAP.map) {
+      try { MAP.map.setCenter(LOC.pos, Math.max(MAP.map.getZoom(), 14), { duration: 300 }); } catch (e) { /* ок */ }
+    } else {
+      locate(false);
+    }
+  }
+
+  // Точка на карте: карта раскрывается на весь экран, следующее нажатие на неё ставит точку
+  function startPick() {
+    if (MAP.failed) { toast('Карта не загрузилась, выбрать точку не получится'); return; }
+    if (sheetIsOpen()) closeSheet();
+    closePeek();
+    LOC.picking = true;
+    loadYmaps();
+    var b = $('#pickBanner');
+    if (b) b.hidden = false;
+    if (mapCard) mapCard.classList.add('is-picking');
+    if (!mapIsFull()) setMapFull(true);
+  }
+  function stopPick() {
+    LOC.picking = false;
+    var b = $('#pickBanner');
+    if (b) b.hidden = true;
+    if (mapCard) mapCard.classList.remove('is-picking');
+  }
+  function finishPick(coords) {
+    stopPick();
+    setLoc([coords[0], coords[1]], 'map', 0);
+    if (mapIsFull()) setMapFull(false);
+    toast('Считаю расстояния от выбранной точки');
   }
 
   /* Стартовый кадр: если мест много, показываем центр, где их большинство, а не всю Москву
@@ -844,6 +1215,8 @@
     var logo = p.logo ? '<img src="' + esc(photoUrl(p.logo, 'S')) + '" alt="" referrerpolicy="no-referrer">'
       : ((p.photos || [])[0] ? '<img src="' + esc(photoUrl(p.photos[0], 'M')) + '" alt="" referrerpolicy="no-referrer">' : placeholderHTML(p));
     var meta = [];
+    var d = distOf(p);
+    if (d !== null) meta.push(esc(fmtKm(d)));
     if (p.cuisine && p.cuisine.length) meta.push(esc(p.cuisine.join(', ')));
     if (p.metro && p.metro[0]) meta.push('м. ' + esc(p.metro[0].name));
     return '<div class="peek-head">' +
@@ -886,6 +1259,7 @@
 
   function setMapFull(on) {
     if (!mapCard) return;
+    if (!on) stopPick();
     mapCard.classList.toggle('is-full', on);
     var btn = $('#mapFullBtn');
     if (btn) {
@@ -916,6 +1290,7 @@
 
   renderTagline();
   render();
+  locate(true);
   setInterval(function () {
     render();
     if (sheetPlace && $('#sheet').classList.contains('is-open') && !$('#reveal')) {
