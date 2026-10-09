@@ -116,7 +116,11 @@ def main():
             html = get(url)
             m = STATE_RE.search(html)
             if not m:
-                out[key] = {"id": str(oid), "error": "captcha" if "captcha" in html.lower()[:5000] else "no state"}
+                err = "captcha" if "captcha" in html.lower()[:5000] else "no state"
+                if update:
+                    print("  НЕ ОБНОВИЛОСЬ", key, ":", err, flush=True)
+                else:
+                    out[key] = {"id": str(oid), "error": err}
             else:
                 org = find_org(json.loads(m.group(1)), oid)
                 if not org:
@@ -132,8 +136,11 @@ def main():
                 else:
                     out[key] = compact(org)
         except Exception as e:  # noqa: BLE001
-            out[key] = {"id": str(oid), "error": str(e)}
-        print(key, "->", out[key].get("title") or out[key].get("error"), flush=True)
+            if update:
+                print("  НЕ ОБНОВИЛОСЬ", key, ":", e, flush=True)
+            else:
+                out[key] = {"id": str(oid), "error": str(e)}
+        print(key, "->", (out.get(key) or {}).get("title") or (out.get(key) or {}).get("error"), flush=True)
         json.dump(out, open(out_path, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
         time.sleep(1.5)
 

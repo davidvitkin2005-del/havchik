@@ -49,6 +49,10 @@
    "12:00-22:00"
   ],
   "price": "Средний чек от 800 ₽",
+  "priceB": "mid",
+  "feat": [
+   "dogs"
+  ],
   "rating": 4.9,
   "ratingCount": 88,
   "photos": [
@@ -133,6 +137,12 @@
    "12:00-00:00"
   ],
   "price": "Средний чек от 3000 ₽",
+  "priceB": "hi",
+  "feat": [
+   "music",
+   "kids",
+   "view"
+  ],
   "rating": 4.9,
   "ratingCount": 12928,
   "photos": [
@@ -212,6 +222,10 @@
    "11:00-23:00"
   ],
   "price": "Средний чек 150–300 ₽",
+  "priceB": "lo",
+  "feat": [
+   "dogs"
+  ],
   "rating": 4.4,
   "ratingCount": 2505,
   "photos": [
@@ -294,6 +308,13 @@
    "12:00-00:00"
   ],
   "price": "Средний чек 2400 ₽",
+  "priceB": "mid",
+  "feat": [
+   "dogs",
+   "hookah",
+   "sport",
+   "laptop"
+  ],
   "rating": 4.9,
   "ratingCount": 768,
   "photos": [
@@ -330,8 +351,7 @@
   "name": "Клич",
   "type": "Ресторан",
   "cuisine": [
-   "Европейская",
-   "Завтраки"
+   "Европейская"
   ],
   "short": "Большой красивый ресторан у воды с итальянской и французской кухней",
   "description": "Просторный ресторан на набережной Марка Шагала с итальянской, французской и средиземноморской кухней. Есть устричный бар, открытая кухня, по утрам завтраки, для детей анимация.",
@@ -370,6 +390,14 @@
    "10:00-23:00"
   ],
   "price": "Средний чек 4200 ₽",
+  "priceB": "hi",
+  "feat": [
+   "veranda",
+   "breakfast",
+   "dogs",
+   "kids",
+   "laptop"
+  ],
   "rating": 5,
   "ratingCount": 439,
   "photos": [
@@ -449,6 +477,10 @@
    "08:00-06:00"
   ],
   "price": "Средний чек до 500 ₽",
+  "priceB": "lo",
+  "feat": [
+   "halal"
+  ],
   "rating": 4.9,
   "ratingCount": 319,
   "photos": [
@@ -530,6 +562,11 @@
    "12:00-00:00"
   ],
   "price": "Средний чек 3500–4500 ₽",
+  "priceB": "hi",
+  "feat": [
+   "veranda",
+   "view"
+  ],
   "rating": 4.7,
   "ratingCount": 869,
   "photos": [
@@ -609,6 +646,14 @@
    "12:00-00:00"
   ],
   "price": "Средний чек 500–1500 ₽",
+  "priceB": "mid",
+  "feat": [
+   "veranda",
+   "lunch",
+   "dogs",
+   "music",
+   "laptop"
+  ],
   "rating": 5,
   "ratingCount": 5938,
   "photos": [
@@ -649,8 +694,7 @@
   "name": "Arrurru",
   "type": "Ресторан",
   "cuisine": [
-   "Латинская Америка",
-   "Завтраки"
+   "Латинская Америка"
   ],
   "short": "Мексиканская и авторская кухня на Остоженке, ла ротина в начале недели",
   "description": "Ресторан на Остоженке с мексиканскими и авторскими блюдами, завтраками и диджеями по вечерам. Блогеры советуют ла ротину, которую готовят только в начале недели.",
@@ -696,6 +740,13 @@
    "11:00-00:00"
   ],
   "price": "Средний чек до 2500 ₽",
+  "priceB": "mid",
+  "feat": [
+   "breakfast",
+   "dogs",
+   "dance",
+   "laptop"
+  ],
   "rating": 5,
   "ratingCount": 746,
   "photos": [
@@ -776,6 +827,13 @@
    "12:00-00:00"
   ],
   "price": "Средний чек 1500–3000 ₽",
+  "priceB": "mid",
+  "feat": [
+   "veranda",
+   "lunch",
+   "dogs",
+   "kids"
+  ],
   "rating": 5,
   "ratingCount": 773,
   "photos": [
@@ -849,6 +907,13 @@
    "10:00-00:00"
   ],
   "price": "Средний чек от 1200 ₽",
+  "priceB": "mid",
+  "feat": [
+   "veranda",
+   "lunch",
+   "kids",
+   "laptop"
+  ],
   "rating": 4.8,
   "ratingCount": 5426,
   "photos": [
@@ -928,6 +993,10 @@
    "07:00-20:30,21:00-00:00"
   ],
   "price": "Средний чек 190–350 ₽",
+  "priceB": "lo",
+  "feat": [
+   "veranda"
+  ],
   "rating": 4.9,
   "ratingCount": 2941,
   "photos": [
@@ -1010,6 +1079,14 @@
    "12:00-00:00"
   ],
   "price": "Средний чек 2000–2500 ₽",
+  "priceB": "mid",
+  "feat": [
+   "veranda",
+   "dogs",
+   "kids",
+   "dance",
+   "laptop"
+  ],
   "rating": 4.9,
   "ratingCount": 6240,
   "photos": [
@@ -1086,6 +1163,10 @@
    "14:00-00:00"
   ],
   "price": "Средний чек 500–1500 ₽",
+  "priceB": "mid",
+  "feat": [
+   "dogs"
+  ],
   "rating": 4.9,
   "ratingCount": 1093,
   "photos": [
@@ -1121,8 +1202,7 @@
   "name": "Loona",
   "type": "Ресторан",
   "cuisine": [
-   "Европейская",
-   "Завтраки"
+   "Европейская"
   ],
   "short": "Ресторан на Тверском бульваре, где «очень вкусно»",
   "description": "Ресторан на Тверском бульваре с европейской и итальянской кухней, открытой кухней и завтраками с утра. Блогер ходит сюда за тем, что «очень вкусно», а не просто вкусно.",
@@ -1167,6 +1247,14 @@
    "09:00-00:00"
   ],
   "price": "Средний чек 3500 ₽",
+  "priceB": "hi",
+  "feat": [
+   "veranda",
+   "breakfast",
+   "dogs",
+   "kids",
+   "laptop"
+  ],
   "rating": 4.9,
   "ratingCount": 8887,
   "photos": [
@@ -1254,6 +1342,14 @@
    "11:00-23:00"
   ],
   "price": "Средний чек 280–600 ₽",
+  "priceB": "lo",
+  "feat": [
+   "veranda",
+   "breakfast",
+   "dogs",
+   "halal",
+   "laptop"
+  ],
   "rating": 5,
   "ratingCount": 1198,
   "photos": [
@@ -1329,6 +1425,13 @@
    "12:00-22:00"
   ],
   "price": "Средний чек 650–2000 ₽",
+  "priceB": "mid",
+  "feat": [
+   "veranda",
+   "dogs",
+   "halal",
+   "laptop"
+  ],
   "rating": 5,
   "ratingCount": 143,
   "photos": [
@@ -1410,6 +1513,13 @@
    "12:00-00:00"
   ],
   "price": null,
+  "priceB": null,
+  "feat": [
+   "veranda",
+   "dogs",
+   "halal",
+   "hookah"
+  ],
   "rating": 5,
   "ratingCount": 916,
   "photos": [
@@ -1497,6 +1607,17 @@
    "00:00-00:00"
   ],
   "price": "Средний чек 1500–2400 ₽",
+  "priceB": "mid",
+  "feat": [
+   "veranda",
+   "breakfast",
+   "lunch",
+   "dogs",
+   "music",
+   "dance",
+   "laptop",
+   "h24"
+  ],
   "rating": 5,
   "ratingCount": 4190,
   "photos": [
@@ -1533,8 +1654,7 @@
   "type": "Бистро-бар",
   "cuisine": [
    "Рыба и морепродукты",
-   "Европейская",
-   "Завтраки"
+   "Европейская"
   ],
   "short": "Круглосуточное бистро с морепродуктами из аквариума",
   "description": "Бистро-бар на Зубовской площади с южноевропейской кухней. Морепродукты берут прямо из аквариума, а кухня работает круглые сутки.",
@@ -1574,6 +1694,14 @@
    "00:00-00:00"
   ],
   "price": "Средний чек до 2500 ₽",
+  "priceB": "mid",
+  "feat": [
+   "breakfast",
+   "dogs",
+   "music",
+   "kids",
+   "h24"
+  ],
   "rating": 4.7,
   "ratingCount": 576,
   "photos": [
@@ -1655,6 +1783,12 @@
    "10:00-05:00"
   ],
   "price": "Средний чек 1500–2000 ₽",
+  "priceB": "mid",
+  "feat": [
+   "veranda",
+   "breakfast",
+   "halal"
+  ],
   "rating": 4.7,
   "ratingCount": 3223,
   "photos": [
@@ -1732,6 +1866,12 @@
    "12:00-00:00"
   ],
   "price": "Средний чек 3000–5000 ₽",
+  "priceB": "hi",
+  "feat": [
+   "veranda",
+   "dogs",
+   "view"
+  ],
   "rating": 4.8,
   "ratingCount": 3777,
   "photos": [
@@ -1767,8 +1907,7 @@
   "name": "Чайхона № 1",
   "type": "Ресторан",
   "cuisine": [
-   "Кавказ и Восток",
-   "Завтраки"
+   "Кавказ и Восток"
   ],
   "short": "Восточный ресторан на Новом Арбате, открыт почти круглые сутки",
   "description": "Ресторан сети «Чайхона № 1» на Новом Арбате: узбекская и кавказская кухня, яркий восточный интерьер, веранда. Открыт с 10 утра до 6 утра.",
@@ -1814,6 +1953,15 @@
    "10:00-06:00"
   ],
   "price": "Средний чек 2199–2200 ₽",
+  "priceB": "mid",
+  "feat": [
+   "veranda",
+   "breakfast",
+   "kids",
+   "dance",
+   "sport",
+   "laptop"
+  ],
   "rating": 4.8,
   "ratingCount": 9296,
   "photos": [
@@ -1901,6 +2049,13 @@
    "00:00-00:00"
   ],
   "price": "Средний чек 2700 ₽",
+  "priceB": "hi",
+  "feat": [
+   "veranda",
+   "lunch",
+   "music",
+   "h24"
+  ],
   "rating": 4.9,
   "ratingCount": 8100,
   "photos": [
@@ -1989,6 +2144,15 @@
    "00:00-00:00"
   ],
   "price": "Средний чек 1500–3500 ₽",
+  "priceB": "mid",
+  "feat": [
+   "breakfast",
+   "dogs",
+   "halal",
+   "sport",
+   "laptop",
+   "h24"
+  ],
   "rating": 4.8,
   "ratingCount": 461,
   "photos": [
@@ -2072,6 +2236,8 @@
    "13:00-23:00"
   ],
   "price": "Средний чек 700–1500 ₽",
+  "priceB": "mid",
+  "feat": [],
   "rating": 5,
   "ratingCount": 3082,
   "photos": [
@@ -2143,6 +2309,10 @@
    "12:00-00:00"
   ],
   "price": "Средний чек 300–500 ₽",
+  "priceB": "lo",
+  "feat": [
+   "lunch"
+  ],
   "rating": 5,
   "ratingCount": 527,
   "photos": [
@@ -2216,6 +2386,14 @@
    "11:00-23:00"
   ],
   "price": "Средний чек 300–700 ₽",
+  "priceB": "lo",
+  "feat": [
+   "veranda",
+   "breakfast",
+   "dogs",
+   "sport",
+   "laptop"
+  ],
   "rating": 5,
   "ratingCount": 399,
   "photos": [
@@ -2299,6 +2477,12 @@
    "00:00-00:00"
   ],
   "price": null,
+  "priceB": null,
+  "feat": [
+   "lunch",
+   "dogs",
+   "h24"
+  ],
   "rating": 5,
   "ratingCount": 210,
   "photos": [
@@ -2374,6 +2558,14 @@
    "12:00-23:00"
   ],
   "price": "Средний чек 650–1200 ₽",
+  "priceB": "lo",
+  "feat": [
+   "veranda",
+   "lunch",
+   "dogs",
+   "music",
+   "laptop"
+  ],
   "rating": 4.8,
   "ratingCount": 1652,
   "photos": [
@@ -2443,6 +2635,12 @@
    "12:00-03:00"
   ],
   "price": null,
+  "priceB": null,
+  "feat": [
+   "veranda",
+   "kids",
+   "sport"
+  ],
   "rating": 4.8,
   "ratingCount": 63,
   "photos": [
@@ -2524,6 +2722,11 @@
    "10:00-00:00"
   ],
   "price": "Средний чек от 2000 ₽",
+  "priceB": "mid",
+  "feat": [
+   "veranda",
+   "dogs"
+  ],
   "rating": 4.8,
   "ratingCount": 778,
   "photos": [
@@ -2597,6 +2800,16 @@
    "11:00-06:00"
   ],
   "price": "Средний чек 700–1400 ₽",
+  "priceB": "mid",
+  "feat": [
+   "veranda",
+   "breakfast",
+   "lunch",
+   "dogs",
+   "music",
+   "kids",
+   "laptop"
+  ],
   "rating": 5,
   "ratingCount": 5917,
   "photos": [
@@ -2671,6 +2884,13 @@
    "12:00-00:00"
   ],
   "price": "Средний чек 3000–5000 ₽",
+  "priceB": "hi",
+  "feat": [
+   "veranda",
+   "music",
+   "kids",
+   "dance"
+  ],
   "rating": 4.9,
   "ratingCount": 6438,
   "photos": [
@@ -2749,6 +2969,10 @@
    "11:00-22:00"
   ],
   "price": "Средний чек 350–500 ₽",
+  "priceB": "lo",
+  "feat": [
+   "dogs"
+  ],
   "rating": 5,
   "ratingCount": 235,
   "photos": [
@@ -2831,6 +3055,10 @@
    "12:00-23:00"
   ],
   "price": null,
+  "priceB": null,
+  "feat": [
+   "dogs"
+  ],
   "rating": 4.7,
   "ratingCount": 296,
   "photos": [
@@ -2899,6 +3127,11 @@
    "11:00-00:00"
   ],
   "price": "Средний чек 400–600 ₽",
+  "priceB": "lo",
+  "feat": [
+   "dogs",
+   "kids"
+  ],
   "rating": 4.2,
   "ratingCount": 50,
   "photos": [
@@ -2979,6 +3212,12 @@
    "14:00-00:00"
   ],
   "price": "Средний чек 1500–2500 ₽",
+  "priceB": "mid",
+  "feat": [
+   "lunch",
+   "dogs",
+   "music"
+  ],
   "rating": 4.8,
   "ratingCount": 1230,
   "photos": [
@@ -3014,8 +3253,7 @@
   "name": "Савой",
   "type": "Ресторан",
   "cuisine": [
-   "Русская кухня",
-   "Завтраки"
+   "Русская кухня"
   ],
   "short": "Исторический ресторан с «царским» завтраком на полтора килограмма",
   "description": "Исторический ресторан отеля «Савой» с русской и французской кухней и джазом. Здесь подают «царский» завтрак: полтора килограмма блюд по мотивам завтраков Николая II.",
@@ -3060,6 +3298,15 @@
    "08:00-23:00"
   ],
   "price": "Средний чек от 5000 ₽",
+  "priceB": "hi",
+  "feat": [
+   "veranda",
+   "breakfast",
+   "dogs",
+   "music",
+   "kids",
+   "laptop"
+  ],
   "rating": 4.8,
   "ratingCount": 2071,
   "photos": [
@@ -3139,6 +3386,16 @@
    "12:00-23:00"
   ],
   "price": "Средний чек 2500–3500 ₽",
+  "priceB": "hi",
+  "feat": [
+   "veranda",
+   "dogs",
+   "kids",
+   "view",
+   "dance",
+   "sport",
+   "laptop"
+  ],
   "rating": 4.7,
   "ratingCount": 5184,
   "photos": [
@@ -3217,6 +3474,11 @@
    "12:00-02:00"
   ],
   "price": "Средний чек 700–1210 ₽",
+  "priceB": "lo",
+  "feat": [
+   "halal",
+   "laptop"
+  ],
   "rating": 5,
   "ratingCount": 111,
   "photos": [
@@ -3298,6 +3560,11 @@
    "00:00-00:00"
   ],
   "price": null,
+  "priceB": null,
+  "feat": [
+   "halal",
+   "h24"
+  ],
   "rating": 5,
   "ratingCount": 1462,
   "photos": [
@@ -3379,6 +3646,14 @@
    "14:00-00:00"
   ],
   "price": "Средний чек от 1800 ₽",
+  "priceB": "mid",
+  "feat": [
+   "veranda",
+   "dogs",
+   "music",
+   "dance",
+   "laptop"
+  ],
   "rating": 5,
   "ratingCount": 68,
   "photos": [
@@ -3456,6 +3731,10 @@
    "10:00-20:00"
   ],
   "price": null,
+  "priceB": null,
+  "feat": [
+   "dogs"
+  ],
   "rating": 4.2,
   "ratingCount": 373,
   "photos": [
@@ -3531,6 +3810,11 @@
    "12:00-23:00"
   ],
   "price": "Средний чек 750–2500 ₽",
+  "priceB": "mid",
+  "feat": [
+   "lunch",
+   "dogs"
+  ],
   "rating": 4.9,
   "ratingCount": 1646,
   "photos": [
@@ -3613,6 +3897,12 @@
    "12:00-23:00"
   ],
   "price": "Средний чек 1500–1700 ₽",
+  "priceB": "mid",
+  "feat": [
+   "veranda",
+   "dogs",
+   "halal"
+  ],
   "rating": 5,
   "ratingCount": 1498,
   "photos": [
@@ -3686,6 +3976,8 @@
    "10:00-00:00"
   ],
   "price": "Средний чек 700–1300 ₽",
+  "priceB": "mid",
+  "feat": [],
   "rating": 4.1,
   "ratingCount": 115,
   "photos": [
@@ -3769,6 +4061,12 @@
    "13:00-00:00"
   ],
   "price": "Средний чек 500–1500 ₽",
+  "priceB": "mid",
+  "feat": [
+   "veranda",
+   "dogs",
+   "laptop"
+  ],
   "rating": 4.7,
   "ratingCount": 3593,
   "photos": [
@@ -3839,6 +4137,15 @@
    "12:00-00:00"
   ],
   "price": "Средний чек 5000–10000 ₽",
+  "priceB": "hi",
+  "feat": [
+   "veranda",
+   "dogs",
+   "music",
+   "kids",
+   "dance",
+   "laptop"
+  ],
   "rating": 4.9,
   "ratingCount": 2956,
   "photos": [

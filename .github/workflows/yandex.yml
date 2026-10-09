@@ -1,0 +1,44 @@
+# Раз в неделю на серверах GitHub, без Claude и без компьютера: обновляет у мест часы работы,
+# телефоны, статус и рейтинг из Яндекс Карт (фото не трогает) и схему метро, затем пересобирает сайт.
+# Закрывшиеся места пропадают из приложения сами.
+name: Хавчик — сверка с Яндекс Картами
+
+on:
+  schedule:
+    - cron: '17 3 * * 1'   # понедельник, 06:17 по Москве
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: bot-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Карточки мест из Яндекс Карт
+        run: python3 source/tools/yafetch.py source/data/yandex_ids.json source/data/yandex_raw.json --update | tee /tmp/ya.log
+
+      - name: Схема метро
+        run: python3 source/tools/make_metro.py || echo "схема метро не обновилась, оставляю прежнюю"
+
+      - name: Пересобрать сайт и опубликовать
+        run: |
+          python3 source/tools/make_places.py | tee /tmp/places.log
+          python3 source/tools/build.py
+          git config user.name "havchik-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then echo "изменений нет"; exit 0; fi
+          git commit -m "Сверка с Яндекс Картами [skip ci]" -m "$(grep -hE 'ИЗМЕНИЛОСЬ|НЕ ОБНОВИЛОСЬ|  !' /tmp/ya.log /tmp/places.log | head -40)"
+          for i in 1 2 3; do
+            git pull --rebase origin main && git push origin HEAD:main && exit 0
+            sleep 5
+          done
+          exit 1

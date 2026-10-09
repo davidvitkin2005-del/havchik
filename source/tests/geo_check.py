@@ -81,7 +81,7 @@ try:
         pg.locator('#spin').click()
         pg.wait_for_timeout(2600)
         sub = pg.inner_text('#revealSub')
-        check('от вас' in sub, f'рандомайзер: «{pg.inner_text("#reveal .reveal-name")}», {sub}')
+        check(' мин ' in sub, f'рандомайзер: «{pg.inner_text("#reveal .reveal-name")}», {sub}')
         pg.locator('#sheet [data-action="close"]').first.click()
         pg.wait_for_timeout(500)
 

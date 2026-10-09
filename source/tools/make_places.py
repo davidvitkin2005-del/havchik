@@ -63,6 +63,83 @@ def photo_key(tpl):
     return tpl
 
 
+# Особенности для фильтра: id → как узнать по карточке Яндекса (флаги, «особенности заведения», тип, рубрики)
+FEATURE_RULES = {
+    'veranda': ('летняя веранда', 'зимняя веранда', 'ресторан с летней верандой'),
+    'breakfast': ('завтрак', 'кофейня с завтраками'),
+    'lunch': ('бизнес-ланч',),
+    'dogs': ('можно с собакой', 'можно с животными', 'разрешено со всеми животными'),
+    'halal': ('халяль', 'халяльный ресторан'),
+    'music': ('живая музыка', 'ресторан с живой музыкой'),
+    'hookah': ('аренда кальяна', 'кальян-бар'),
+    'kids': ('детская комната', 'для детей', 'детское меню', 'детская анимация', 'ресторан с детской комнатой', 'семейный ресторан'),
+    'view': ('ресторан с панорамным видом', 'местоположение у воды', 'ресторан на воде'),
+    'dance': ('танцпол', 'dj', 'диджей', 'танцевальный бар'),
+    'sport': ('спортивные трансляции',),
+    'laptop': ('можно с ноутбуком',),
+}
+
+
+def feature_words(y):
+    words = set()
+    for f in y.get('features') or []:
+        if not f:
+            continue
+        for part in re.split(r':\s*|,\s*', f):
+            if part:
+                words.add(part.strip().lower())
+    for c in y.get('categories') or []:
+        words.add(c.lower())
+    return words
+
+
+def earliest_open(hours):
+    starts = []
+    for day in hours:
+        if not day:
+            continue
+        first = day.split(',')[0].split('-')[0]
+        h, mnt = map(int, first.split(':'))
+        starts.append(h * 60 + mnt)
+    return min(starts) if starts else 24 * 60
+
+
+def features_of(y, cur, hours):
+    words = feature_words(y)
+    out = [fid for fid, keys in FEATURE_RULES.items() if any(k in words for k in keys)]
+    if 'Завтраки' in (cur.get('cuisine') or []) and 'breakfast' not in out:
+        out.append('breakfast')
+    # «Завтраки» — только если место открывается до 11:00 хотя бы в один день
+    if 'breakfast' in out and earliest_open(hours) > 11 * 60:
+        out.remove('breakfast')
+    if hours and all(d == '00:00-00:00' for d in hours):
+        out.append('h24')
+    return out
+
+
+def price_value(features):
+    """Средний чек одним числом: середина диапазона; «от N» — чуть выше N; «до N» — ниже N."""
+    for f in features:
+        if f and f.startswith('средний счёт:'):
+            v = f.split(':', 1)[1].replace(' ', '').replace('₽', '')
+            m = re.match(r'^(\d+)[–-](\d+)$', v)
+            if m:
+                return (int(m.group(1)) + int(m.group(2))) / 2
+            m = re.match(r'^от(\d+)$', v)
+            if m:
+                return int(m.group(1)) * 1.25
+            m = re.match(r'^до(\d+)$', v)
+            if m:
+                return int(m.group(1)) * 0.7
+    return None
+
+
+def price_bucket(v):
+    if v is None:
+        return None
+    return 'lo' if v < 1000 else ('mid' if v <= 2500 else 'hi')
+
+
 def main():
     out = []
     problems = []
@@ -88,7 +165,7 @@ def main():
             'id': key,
             'name': c.get('name') or NAMES.get(key, y['title']),
             'type': c.get('type'),
-            'cuisine': c['cuisine'],
+            'cuisine': [x for x in c['cuisine'] if x != 'Завтраки'] or c['cuisine'],
             'short': c['short'],
             'description': c['description'],
             'perks': [{'text': t} for t in c['perks'] if not t.startswith('Средний чек')],
@@ -97,6 +174,8 @@ def main():
             'metro': metro_of(y['metro']),
             'hours': hours,
             'price': price_of(y['features']),
+            'priceB': price_bucket(price_value(y['features'])),
+            'feat': features_of(y, c, hours),
             'rating': y['rating'],
             'ratingCount': y['ratingCount'],
             'photos': [photo_key(y['photos'][i]) for i in PICKS.get(key, range(6)) if i < len(y['photos'])],

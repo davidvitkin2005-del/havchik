@@ -22,7 +22,13 @@ def main():
     data_js = 'window.__PLACES__=' + json.dumps(places, ensure_ascii=False, separators=(',', ':')).replace('</', '<\\/') + ';'
     users = json.loads((ROOT / 'data' / 'users.json').read_text(encoding='utf-8')) if (ROOT / 'data' / 'users.json').exists() else {}
     tg = json.loads((ROOT / 'data' / 'telegram.json').read_text(encoding='utf-8')) if (ROOT / 'data' / 'telegram.json').exists() else {}
-    meta = {'users': users.get('count', 0), 'channel': (tg.get('channel') or '').lstrip('@')}
+    meta = {'users': users.get('count', 0), 'channel': (tg.get('channel') or '').lstrip('@'),
+            'bot': tg.get('bot') or 'Havchik_MSK_bot', 'startapp': bool(tg.get('startapp'))}
+    metro_path = ROOT / 'data' / 'metro.json'
+    if metro_path.exists():
+        metro = json.loads(metro_path.read_text(encoding='utf-8'))
+        slim = {'wait': metro['wait'], 'lines': metro['lines'], 'stations': metro['stations'], 'edges': metro['edges']}
+        data_js += 'window.__METRO__=' + json.dumps(slim, ensure_ascii=False, separators=(',', ':')) + ';'
     data_js += 'window.__META__=' + json.dumps(meta, ensure_ascii=False) + ';'
     html = f"""<!doctype html>
 <html lang="ru">

@@ -51,6 +51,11 @@
     calendar: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="3"/><path d="M8 3v4M16 3v4M3.5 10h17"/></svg>',
     globe: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z"/></svg>',
     route: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="18" r="2.5"/><circle cx="18" cy="6" r="2.5"/><path d="M8.5 18H15a3 3 0 0 0 0-6H9a3 3 0 0 1 0-6h6.5"/></svg>',
+    bookmark: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M6.5 3.5h11v17L12 16.6l-5.5 3.9z"/></svg>',
+    share: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3.5M7.5 8 12 3.5 16.5 8"/><path d="M5 12.5v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"/></svg>',
+    car: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 16.5h14v-4l-1.8-5a2 2 0 0 0-1.9-1.3H7.7a2 2 0 0 0-1.9 1.3L4 12.5v4z"/><path d="M4 12.5h16"/><circle cx="7.5" cy="16.5" r="1.8"/><circle cx="16.5" cy="16.5" r="1.8"/></svg>',
+    walk: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="13" cy="4.5" r="2"/><path d="M9 21l2.5-6.5L14 17v4M8 12l2-4.5 3.5 1 2 3.5 2.5 1"/></svg>',
+    metroM: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 19h18M5 19 9 6l3 7 3-7 4 13"/></svg>',
     dice: '<svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="2"/><g fill="currentColor"><circle cx="8.5" cy="8.5" r="1.6"/><circle cx="15.5" cy="15.5" r="1.6"/><circle cx="12" cy="12" r="1.6"/></g></svg>'
   };
 
@@ -78,7 +83,7 @@
     return cuisineCount[b] - cuisineCount[a] || a.localeCompare(b, 'ru');
   });
 
-  var state = { cuisines: {}, when: 'any', q: '', dist: 0 };
+  var state = { cuisines: {}, when: 'any', q: '', dist: 0, feats: {}, price: '', mine: '' };
   var lastPick = null;
   var sheetPlace = null;
   var spinTimers = [];
@@ -105,10 +110,15 @@
     var d = distOf(p);
     return d !== null && d <= state.dist;
   }
+  // Ближе — значит быстрее добраться: пешком или на метро; без схемы метро — по прямой
+  function etaSortKey(p) {
+    var e = etaOf(p);
+    if (!e) return 1e9;
+    return e.best !== null ? e.best : 60 + e.d * 4;
+  }
   function byDist(a, b) {
     if (!LOC.pos) return 0;
-    var da = distOf(a), db = distOf(b);
-    return (da === null ? 1e9 : da) - (db === null ? 1e9 : db);
+    return etaSortKey(a) - etaSortKey(b);
   }
   function fmtKm(km) {
     if (km < 1) return Math.max(10, Math.round(km * 100) * 10) + ' м';
@@ -232,8 +242,8 @@
     toastTimer = setTimeout(function () { el.hidden = true; }, 2600);
   }
 
-  function copyText(text) {
-    var done = function () { toast('Номер скопирован'); haptic('notificationOccurred', 'success'); };
+  function copyText(text, msg) {
+    var done = function () { toast(msg || 'Номер скопирован'); haptic('notificationOccurred', 'success'); };
     var fallback = function () {
       var ta = document.createElement('textarea');
       ta.value = text;
@@ -257,6 +267,266 @@
     if (!sel.length) return true;
     return (p.cuisine || []).some(function (c) { return state.cuisines[c]; });
   }
+
+  /* ---------- Особенности, чек, мои места ---------- */
+  var FEATURES = [
+    ['veranda', 'Веранда'], ['breakfast', 'Завтраки'], ['lunch', 'Бизнес-ланч'], ['h24', 'Круглосуточно'],
+    ['dogs', 'С собакой'], ['halal', 'Халяль'], ['music', 'Живая музыка'], ['hookah', 'Кальян'],
+    ['kids', 'С детьми'], ['view', 'С видом'], ['dance', 'Танцы'], ['sport', 'Спорт на экране'], ['laptop', 'С ноутбуком']
+  ];
+  var PRICES = [['lo', 'до 1000 ₽'], ['mid', '1000–2500 ₽'], ['hi', 'от 2500 ₽']];
+  function featOk(p) {
+    var sel = Object.keys(state.feats);
+    if (!sel.length) return true;
+    var f = p.feat || [];
+    return sel.every(function (k) { return f.indexOf(k) !== -1; });
+  }
+  function priceOk(p) { return !state.price || p.priceB === state.price; }
+  function mineOk(p) { return !state.mine || !!MARKS[state.mine][p.id]; }
+
+  /* Избранное и «Хочу сходить»: в Telegram хранятся в облаке Telegram (видно на всех ваших устройствах),
+     в браузере — на этом устройстве */
+  var MARKS = { fav: {}, want: {} };
+  var cloud = inTG && tg.CloudStorage && tg.isVersionAtLeast && tg.isVersionAtLeast('6.9') ? tg.CloudStorage : null;
+  function localGet(k) { try { return window.localStorage.getItem(k); } catch (e) { return null; } }
+  function localSet(k, v) { try { window.localStorage.setItem(k, v); } catch (e) { /* хранилище недоступно */ } }
+  function applyMarks(raw) {
+    try {
+      var o = JSON.parse(raw || '{}');
+      MARKS.fav = {}; MARKS.want = {};
+      (o.fav || []).forEach(function (id) { if (byId[id]) MARKS.fav[id] = 1; });
+      (o.want || []).forEach(function (id) { if (byId[id]) MARKS.want[id] = 1; });
+    } catch (e) { /* испорченная запись: начинаем с пустых списков */ }
+    var row = document.getElementById('marksRow');
+    if (row && sheetPlace) row.outerHTML = marksRowHTML(sheetPlace);
+    lastListKey = '';
+    render();
+  }
+  function loadMarks() {
+    var local = localGet('havchik-marks');
+    if (local) applyMarks(local);
+    if (cloud) {
+      try { cloud.getItem('marks', function (err, val) { if (!err && val) applyMarks(val); }); } catch (e) { /* ок */ }
+    }
+  }
+  function saveMarks() {
+    var raw = JSON.stringify({ fav: Object.keys(MARKS.fav), want: Object.keys(MARKS.want) });
+    localSet('havchik-marks', raw);
+    if (cloud) { try { cloud.setItem('marks', raw); } catch (e) { /* ок */ } }
+  }
+  function toggleMark(kind, id) {
+    if (!byId[id]) return;
+    var on = !MARKS[kind][id];
+    if (on) MARKS[kind][id] = 1; else delete MARKS[kind][id];
+    saveMarks();
+    haptic('impactOccurred', 'light');
+    toast(on ? (kind === 'fav' ? 'Добавлено в избранное' : 'Добавлено в «Хочу сходить»') : (kind === 'fav' ? 'Убрано из избранного' : 'Убрано из «Хочу сходить»'));
+    var row = document.getElementById('marksRow');
+    if (row && sheetPlace && sheetPlace.id === id) row.outerHTML = marksRowHTML(sheetPlace);
+    if (state.mine && !Object.keys(MARKS[state.mine]).length) state.mine = '';
+    lastListKey = '';
+    render();
+  }
+  function marksRowHTML(p) {
+    var fav = !!MARKS.fav[p.id], want = !!MARKS.want[p.id];
+    return '<div class="marks" id="marksRow">' +
+      '<button class="mark-btn' + (fav ? ' is-on' : '') + '" type="button" data-action="mark" data-mark="fav" data-id-mark="' + esc(p.id) + '" aria-pressed="' + fav + '">' +
+        ICON.star + (fav ? 'В избранном' : 'В избранное') + '</button>' +
+      '<button class="mark-btn' + (want ? ' is-on' : '') + '" type="button" data-action="mark" data-mark="want" data-id-mark="' + esc(p.id) + '" aria-pressed="' + want + '">' +
+        ICON.bookmark + (want ? 'Хочу сходить ✓' : 'Хочу сходить') + '</button>' +
+      '<button class="mark-btn mark-share" type="button" data-action="share" data-id-mark="' + esc(p.id) + '" aria-label="Поделиться местом" title="Поделиться">' + ICON.share + '</button>' +
+    '</div>';
+  }
+
+  function renderMoreFilters() {
+    var fc = {};
+    places.forEach(function (p) { (p.feat || []).forEach(function (f) { fc[f] = (fc[f] || 0) + 1; }); });
+    var fh = FEATURES.filter(function (f) { return fc[f[0]]; }).map(function (f) {
+      return '<button class="chip" type="button" data-feat="' + f[0] + '" aria-pressed="' + !!state.feats[f[0]] + '">' + esc(f[1]) + '<span class="n">' + fc[f[0]] + '</span></button>';
+    }).join('');
+    $('#featChips').innerHTML = fh;
+    var pc = {};
+    places.forEach(function (p) { if (p.priceB) pc[p.priceB] = (pc[p.priceB] || 0) + 1; });
+    $('#priceChips').innerHTML = '<button class="chip" type="button" data-price="" aria-pressed="' + !state.price + '">Любой</button>' +
+      PRICES.map(function (pr) {
+        return '<button class="chip" type="button" data-price="' + pr[0] + '" aria-pressed="' + (state.price === pr[0]) + '">' + pr[1] + '<span class="n">' + (pc[pr[0]] || 0) + '</span></button>';
+      }).join('');
+    var nf = Object.keys(MARKS.fav).length, nw = Object.keys(MARKS.want).length;
+    $('#mineSection').hidden = !(nf || nw);
+    $('#mineChips').innerHTML =
+      '<button class="chip" type="button" data-mine="fav" aria-pressed="' + (state.mine === 'fav') + '">' + ICON.star + 'Избранное<span class="n">' + nf + '</span></button>' +
+      '<button class="chip" type="button" data-mine="want" aria-pressed="' + (state.mine === 'want') + '">' + ICON.bookmark + 'Хочу сходить<span class="n">' + nw + '</span></button>';
+  }
+
+  /* ---------- Поделиться и открыть место по ссылке ---------- */
+  function siteUrl() { return location.origin + location.pathname; }
+  function placeLink(p) {
+    return META.startapp ? 'https://t.me/' + META.bot + '?startapp=' + encodeURIComponent(p.id) : siteUrl() + '#' + encodeURIComponent(p.id);
+  }
+  function sharePlace(id) {
+    var p = byId[id];
+    if (!p) return;
+    var link = placeLink(p);
+    var text = p.name + (p.short ? ' — ' + p.short : '');
+    if (inTG && tg.openTelegramLink) {
+      try { tg.openTelegramLink('https://t.me/share/url?url=' + encodeURIComponent(link) + '&text=' + encodeURIComponent(text)); return; } catch (e) { /* ниже запасной вариант */ }
+    }
+    if (navigator.share) {
+      navigator.share({ title: p.name, text: text, url: link }).catch(function () { /* пользователь передумал */ });
+      return;
+    }
+    copyText(link, 'Ссылка на место скопирована');
+  }
+  function openFromLink() {
+    var id = '';
+    try { id = (inTG && tg.initDataUnsafe && tg.initDataUnsafe.start_param) || ''; } catch (e) { id = ''; }
+    if (!id && location.hash.length > 1) { try { id = decodeURIComponent(location.hash.slice(1)); } catch (e) { id = ''; } }
+    if (id && byId[id]) showPlace(id);
+  }
+
+  /* ---------- Предложить место ---------- */
+  function showSuggest() {
+    var bot = 'https://t.me/' + META.bot;
+    openSheet('<div class="sheet-inner is-revealed">' +
+      '<div class="reveal"><button class="close" type="button" data-action="close" aria-label="Закрыть">' + ICON.close + '</button>' +
+        '<div class="reveal-eyebrow">Предложить место</div>' +
+        '<div class="reveal-name" id="sheetTitle">Знаете, где вкусно?</div>' +
+        '<div class="reveal-sub">Расскажите боту, мы проверим и добавим</div></div>' +
+      '<div class="sheet-body">' +
+        '<p class="lead">Пришлите боту @' + esc(META.bot) + ' одно из трёх:</p>' +
+        '<ul class="perks">' +
+          '<li>' + ICON.play + '<span>ссылку на рилс или пост в Instagram;</span></li>' +
+          '<li>' + ICON.map + '<span>ссылку на место в Яндекс Картах;</span></li>' +
+          '<li>' + ICON.spark + '<span>просто название и адрес.</span></li>' +
+        '</ul>' +
+        '<p class="note">Бот ответит, что получил. Место появится в приложении после проверки.</p>' +
+        '<a class="btn btn-primary suggest-cta" href="' + esc(bot) + '" target="_blank" rel="noopener" data-tglink>' + ICON.chat + 'Написать боту</a>' +
+      '</div></div>');
+  }
+
+  /* ---------- Время в пути: пешком и на метро ----------
+     Своя оценка по схеме метро: пешком до ближайших станций, поезд по перегонам с ожиданием и пересадками,
+     пешком от станции до места. Точное время по расписанию покажут Яндекс Карты. */
+  var METRO = window.__METRO__ || null;
+  var TR = { key: '', cost: null, src: null, trs: null, walkIn: null };
+  var WALK_MIN_PER_KM = 1.25 / 4.8 * 60;
+  function stationPos(i) { var s = METRO.stations[i]; return [s[1], s[2]]; }
+  function lineOf(i) { return METRO.lines[METRO.stations[i][3]]; }
+  function waitOf(i) { return METRO.wait[lineOf(i)[2]] || 2; }
+  function nearStations(pos, maxKm, limit) {
+    var out = [];
+    for (var i = 0; i < METRO.stations.length; i++) {
+      var d = haversineKm(pos, stationPos(i));
+      if (d <= maxKm) out.push([i, d]);
+    }
+    out.sort(function (a, b) { return a[1] - b[1]; });
+    return out.slice(0, limit);
+  }
+  function transitPrep() {
+    if (!METRO || !LOC.pos) return false;
+    var key = LOC.pos.join(',');
+    if (TR.key === key) return !!TR.cost;
+    TR.key = key;
+    var n = METRO.stations.length;
+    if (!METRO.adj) {
+      METRO.adj = [];
+      for (var i = 0; i < n; i++) METRO.adj.push([]);
+      METRO.edges.forEach(function (e) { METRO.adj[e[0]].push([e[1], e[2], e[3]]); METRO.adj[e[1]].push([e[0], e[2], e[3]]); });
+    }
+    var start = nearStations(LOC.pos, 3, 6);
+    if (!start.length) { TR.cost = null; return false; }
+    var cost = new Array(n), src = new Array(n), trs = new Array(n), done = new Array(n);
+    for (var k = 0; k < n; k++) { cost[k] = Infinity; src[k] = -1; trs[k] = 0; done[k] = false; }
+    TR.walkIn = {};
+    start.forEach(function (s) {
+      var w = s[1] * WALK_MIN_PER_KM;
+      TR.walkIn[s[0]] = w;
+      var c = w + 2 + waitOf(s[0]);           // 2 мин на вход и спуск
+      if (c < cost[s[0]]) { cost[s[0]] = c; src[s[0]] = s[0]; }
+    });
+    for (;;) {                                  // Дейкстра на ~450 станциях: быстро и без кучи
+      var x = -1, best = Infinity;
+      for (var j = 0; j < n; j++) if (!done[j] && cost[j] < best) { best = cost[j]; x = j; }
+      if (x < 0) break;
+      done[x] = true;
+      METRO.adj[x].forEach(function (e) {
+        var y = e[0], c = cost[x] + e[1] + (e[2] ? waitOf(y) : 0);
+        if (c < cost[y]) { cost[y] = c; src[y] = src[x]; trs[y] = trs[x] + e[2]; }
+      });
+    }
+    TR.cost = cost; TR.src = src; TR.trs = trs;
+    return true;
+  }
+  function walkMinutes(km) { return km * 1.3 / 4.8 * 60; }
+  // Лучший путь на метро до места: { total, walkIn, from, ride, transfers, to, walkOut } или null
+  function transitTo(p) {
+    if (!hasCoords(p) || !transitPrep()) return null;
+    if (!p._st) p._st = nearStations([p.coords[1], p.coords[0]], 2, 4);
+    var best = null;
+    p._st.forEach(function (s) {
+      var c = TR.cost[s[0]];
+      if (!isFinite(c)) return;
+      var out = 1.5 + s[1] * WALK_MIN_PER_KM;  // 1,5 мин на выход
+      if (!best || c + out < best.total) {
+        var from = TR.src[s[0]];
+        best = { total: c + out, from: from, to: s[0], walkIn: TR.walkIn[from], walkOut: out, transfers: TR.trs[s[0]] };
+        best.ride = best.total - best.walkIn - best.walkOut;
+      }
+    });
+    if (best && best.from === best.to) return null;   // одна и та же станция: метро не нужно
+    return best;
+  }
+  // Сколько идти пешком (если не дальше 4 км) и быстрее ли метро
+  function etaOf(p) {
+    var d = distOf(p);
+    if (d === null) return null;
+    var walk = d <= 4 ? walkMinutes(d) : null;
+    var metro = transitTo(p);
+    var useMetro = metro && (walk === null || metro.total < walk - 3);
+    return { d: d, walk: walk, metro: metro, best: useMetro ? metro.total : walk, mode: useMetro ? 'metro' : (walk !== null ? 'walk' : '') };
+  }
+  function mins(m) { m = Math.max(1, Math.round(m)); return m + ' мин'; }
+  function stationHTML(i) {
+    return '<span class="metro"><i style="--c:' + esc(lineOf(i)[1]) + '"></i>' + esc(METRO.stations[i][0]) + '</span>';
+  }
+
+  /* Время на машине с пробками — только с ключом API Яндекс Карт: без ключа Яндекс маршруты не строит */
+  function carTimeInto(p, el) {
+    if (!YMAPS_KEY || !LOC.pos || !el) return;
+    var go = function () {
+      try {
+        window.ymaps.route([LOC.pos, [p.coords[1], p.coords[0]]], { routingMode: 'auto' }).then(function (r) {
+          var sec = r.getJamsTime ? r.getJamsTime() : r.getTime();
+          if (sec && document.body.contains(el)) {
+            el.innerHTML = ICON.car + '<span><b>' + mins(sec / 60) + '</b> на машине сейчас, с пробками</span>';
+            el.hidden = false;
+          }
+        }, function () { /* маршрут не построился */ });
+      } catch (e) { /* нет модуля маршрутов */ }
+    };
+    if (window.ymaps && window.ymaps.route) go();
+    else { loadYmaps(); var tries = 0; var t = setInterval(function () { if (window.ymaps && window.ymaps.route) { clearInterval(t); go(); } else if (++tries > 40) clearInterval(t); }, 500); }
+  }
+
+  function etaShort(p) {
+    var e = etaOf(p);
+    if (!e || e.best === null) return '';
+    return ' · ' + mins(e.best) + (e.mode === 'metro' ? ' на метро' : ' пешком');
+  }
+  function featTagsHTML(p) {
+    var lab = {};
+    FEATURES.forEach(function (f) { lab[f[0]] = f[1]; });
+    var t = (p.feat || []).filter(function (f) { return lab[f]; }).map(function (f) { return '<span class="tag tag-feat">' + esc(lab[f]) + '</span>'; }).join('');
+    return t ? '<div class="feat-tags">' + t + '</div>' : '';
+  }
+  function otherFilterNames() {
+    var out = [];
+    FEATURES.forEach(function (f) { if (state.feats[f[0]]) out.push(f[1]); });
+    PRICES.forEach(function (pr) { if (state.price === pr[0]) out.push('чек ' + pr[1]); });
+    if (state.mine) out.push(state.mine === 'fav' ? 'избранное' : 'хочу сходить');
+    return out;
+  }
+
 
   /* ---------- Telegram ---------- */
   function haptic(kind, arg) {
@@ -297,7 +567,8 @@
   function spinPool(tNow, opts) {
     opts = opts || {};
     var pool = places.filter(function (p) {
-      return (opts.anyCuisine || cuisineOk(p)) && (opts.anyDist || distOk(p)) && T.statusAtAbs(p._s, tNow).open;
+      return (opts.anyCuisine || cuisineOk(p)) && (opts.anyDist || distOk(p)) &&
+        (opts.anyFilter || (featOk(p) && priceOk(p) && mineOk(p))) && T.statusAtAbs(p._s, tNow).open;
     });
     var comfy = pool.filter(function (p) {
       var st = T.statusAtAbs(p._s, tNow);
@@ -312,8 +583,10 @@
     var parts = [];
     if (distOn()) parts.push('до ' + state.dist + ' км');
     if (sel.length) parts.push(sel.join(', ').toLowerCase());
+    var extra = otherFilterNames();
+    if (extra.length) parts.push(extra.join(', ').toLowerCase());
     var txt;
-    if (!n) txt = distOn() ? 'Рядом сейчас всё закрыто' : (sel.length ? 'Из выбранной кухни сейчас ничего не открыто' : 'Сейчас всё закрыто, покажу, что откроется раньше');
+    if (!n) txt = distOn() ? 'Рядом сейчас всё закрыто' : (sel.length || extra.length ? 'Под выбранное сейчас ничего не открыто' : 'Сейчас всё закрыто, покажу, что откроется раньше');
     else txt = 'Выберу из ' + n + ' ' + plural(n, 'открытого', 'открытых', 'открытых') + (parts.length ? ' · ' + parts.join(' · ') : '');
     $('#spinSub').textContent = txt;
   }
@@ -354,6 +627,7 @@
   function matches(p, tNow) {
     if (!cuisineOk(p)) return false;
     if (!distOk(p)) return false;
+    if (!featOk(p) || !priceOk(p) || !mineOk(p)) return false;
     if (state.q && p._q.indexOf(norm(state.q).trim()) === -1) return false;
     if (state.when === 'now') return T.statusAtAbs(p._s, tNow).open;
     if (typeof state.when === 'number') return T.isOpenAtAbs(p._s, state.when);
@@ -383,11 +657,12 @@
     var tags = (p.tags || []).slice(0, 2).map(function (t) { return '<span class="tag">' + esc(t) + '</span>'; }).join('');
     var meta = [];
     var d = distOf(p);
-    if (d !== null) meta.push('<span class="dist">' + ICON.navSm + esc(fmtKm(d)) + '</span>');
+    if (d !== null) meta.push('<span class="dist">' + ICON.navSm + esc(fmtKm(d) + etaShort(p)) + '</span>');
     if (p.cuisine && p.cuisine.length) meta.push('<span>' + esc(p.cuisine.join(', ')) + '</span>');
     if (p.metro && p.metro[0]) meta.push(metroHTML(p.metro[0]));
+    var badges = (MARKS.fav[p.id] ? '<i title="В избранном">' + ICON.star + '</i>' : '') + (MARKS.want[p.id] ? '<i title="Хочу сходить">' + ICON.bookmark + '</i>' : '');
     return '<button class="card' + (st.open ? '' : ' is-closed') + '" type="button" data-id="' + esc(p.id) + '">' +
-      '<span class="media">' + placeholderHTML(p) + img +
+      '<span class="media">' + placeholderHTML(p) + img + (badges ? '<span class="mark-badges">' + badges + '</span>' : '') +
         '<span class="pill tone-' + lab.tone + '" data-pill="' + esc(p.id) + '"><span class="dot"></span><span>' + esc(lab.text) + '</span></span>' +
         (p.rating ? '<span class="rating">★ ' + fmtRating(p.rating) + '</span>' : '') +
       '</span>' +
@@ -427,8 +702,8 @@
       groups = list.length ? [{ title: title, items: LOC.pos ? list.slice().sort(byDist) : list }] : [];
     }
 
-    var key = JSON.stringify(groups.map(function (g) { return [g.title, g.items.map(function (p) { return p.id; })]; }));
-    var filtered = selectedCuisines().length || state.q || state.when !== 'any' || distOn();
+    var key = JSON.stringify(groups.map(function (g) { return [g.title, g.items.map(function (p) { return p.id + (MARKS.fav[p.id] ? '*' : '') + (MARKS.want[p.id] ? '+' : ''); })]; })) + (LOC.pos || '');
+    var filtered = selectedCuisines().length || state.q || state.when !== 'any' || distOn() || otherFilterNames().length;
     $('#reset').hidden = !filtered;
     $('#count').textContent = (filtered
       ? 'Нашлось ' + list.length + ' из ' + places.length
@@ -444,7 +719,7 @@
 
     if (!groups.length) {
       $('#list').innerHTML = '<div class="empty"><b>Под эти фильтры ничего нет</b>' +
-        '<span>' + (distOn() ? 'Попробуйте радиус побольше, другое время или другую кухню.' : 'Попробуйте другое время или другую кухню.') + '</span>' +
+        '<span>' + (distOn() ? 'Попробуйте радиус побольше, другое время или другую кухню.' : 'Попробуйте другое время, кухню или особенности.') + '</span>' +
         '<button class="btn btn-secondary" type="button" data-action="reset">Сбросить фильтры</button></div>';
       return;
     }
@@ -474,6 +749,7 @@
     renderSpinSub(tNow);
     renderCuisineChips();
     renderTimeChips(now);
+    renderMoreFilters();
     renderDist();
     renderList(now);
   }
@@ -516,6 +792,8 @@
         (p.rating ? '<span>★ ' + fmtRating(p.rating) + ' на Яндексе</span>' : '') + '</div>' +
       '<div class="status-line tone-' + lab.tone + '"><span class="dot"></span><span>' + esc(lab.text) + '</span>' +
         '<span class="muted">· ' + esc(todayText(p, now).toLowerCase()) + '</span></div>' +
+      marksRowHTML(p) +
+      featTagsHTML(p) +
       '<div class="facts">' + facts.join('') + '</div>' +
       (p.description ? '<p class="lead">' + esc(p.description) + '</p>' : '') +
       (perks ? '<section><h3 class="section-h">Фишки</h3><ul class="perks">' + perks + '</ul><p class="note">Из рилсов в чате: акции и цены могли измениться.</p></section>' : '') +
@@ -533,17 +811,35 @@
     var d = distOf(p);
     var line = d === null
       ? '<span>Сколько ехать?</span><button class="link-btn" type="button" data-action="locate">Показать расстояние</button>'
-      : '<b>' + esc(fmtKm(d)) + '</b><span class="muted">' + esc(fromWhom()) + (walkText(d) ? ' · ' + esc(walkText(d)) : '') + '</span>';
+      : '<b>' + esc(fmtKm(d)) + '</b><span class="muted">' + esc(fromWhom()) + ' по прямой</span>';
+    var trip = d === null ? '' : tripHTML(p);
     var modes = [['pd', 'Пешком'], ['mt', 'Транспорт'], ['taxi', 'Такси'], ['auto', 'Авто']];
-    return '<div class="fact" id="sheetDist">' + ICON.route + '<div><div class="dist-line">' + line + '</div>' +
+    return '<div class="fact" id="sheetDist">' + ICON.route + '<div><div class="dist-line">' + line + '</div>' + trip +
       '<div class="route-btns modes">' + modes.map(function (m) {
         return '<a class="route-btn" href="' + esc(routeUrl(p, m[0])) + '" target="_blank" rel="noopener" data-external>' + m[1] + '</a>';
-      }).join('') + '</div><p class="hint">Маршрут и точное время в пути откроются в Яндекс Картах.</p></div></div>';
+      }).join('') + '</div><p class="hint">' + (d === null ? 'Маршрут откроется в Яндекс Картах.'
+        : 'Время на метро — наша оценка по схеме, с ожиданием поезда и пересадками. ' + (YMAPS_KEY ? 'Точный маршрут' : 'Время на машине с пробками и точный маршрут') + ' — по кнопкам выше, в Яндекс Картах.') + '</p></div></div>';
+  }
+
+  function tripHTML(p) {
+    var e = etaOf(p);
+    if (!e) return '';
+    var rows = '';
+    if (e.walk !== null) rows += '<div class="eta-row' + (e.mode === 'walk' ? ' is-best' : '') + '">' + ICON.walk + '<span><b>' + mins(e.walk) + '</b> пешком</span></div>';
+    var m = e.metro;
+    if (m && (e.walk === null || m.total < e.walk)) {
+      rows += '<div class="eta-row' + (e.mode === 'metro' ? ' is-best' : '') + '">' + ICON.metroM + '<span><b>' + mins(m.total) + '</b> на метро' +
+        '<span class="eta-steps">' + mins(m.walkIn) + ' пешком до ' + stationHTML(m.from) + ' → ' + mins(m.ride) + ' в метро' +
+        (m.transfers ? ', ' + m.transfers + ' ' + plural(m.transfers, 'пересадка', 'пересадки', 'пересадок') : ', без пересадок') +
+        ' → ' + mins(m.walkOut) + ' пешком от ' + stationHTML(m.to) + '</span></span></div>';
+    }
+    rows += '<div class="eta-row" id="carEta" hidden></div>';
+    return '<div class="eta">' + rows + '</div>';
   }
 
   function refreshSheetDistance() {
     var el = document.getElementById('sheetDist');
-    if (el && sheetPlace) el.outerHTML = distFactHTML(sheetPlace);
+    if (el && sheetPlace) { el.outerHTML = distFactHTML(sheetPlace); carTimeInto(sheetPlace, document.getElementById('carEta')); }
   }
 
   function phoneFactHTML(p) {
@@ -613,6 +909,7 @@
     try { sheet.focus({ preventScroll: true }); } catch (e) { sheet.focus(); }
     bindGallery();
     mountDiscussion();
+    if (sheetPlace) carTimeInto(sheetPlace, document.getElementById('carEta'));
   }
 
   function closeSheet() {
@@ -677,8 +974,9 @@
 
     if (!pool.length) {
       var why = 'all';
-      if (!opts.anyDist && distOn() && spinPool(tNow, { anyCuisine: opts.anyCuisine, anyDist: true }).length) why = 'dist';
-      else if (!opts.anyCuisine && selectedCuisines().length && spinPool(tNow, { anyCuisine: true, anyDist: opts.anyDist }).length) why = 'cuisine';
+      if (!opts.anyDist && distOn() && spinPool(tNow, { anyCuisine: opts.anyCuisine, anyFilter: opts.anyFilter, anyDist: true }).length) why = 'dist';
+      else if (!opts.anyCuisine && selectedCuisines().length && spinPool(tNow, { anyCuisine: true, anyFilter: opts.anyFilter, anyDist: opts.anyDist }).length) why = 'cuisine';
+      else if (!opts.anyFilter && otherFilterNames().length && spinPool(tNow, { anyCuisine: true, anyFilter: true, anyDist: opts.anyDist }).length) why = 'filters';
       showNothingOpen(now, tNow, why, opts);
       return;
     }
@@ -704,7 +1002,7 @@
       nameEl.textContent = pick.name;
       $('#reveal').classList.remove('is-spinning');
       var pd = distOf(pick);
-      $('#revealSub').textContent = [pd !== null ? fmtKm(pd) + ' ' + fromWhom() : '', pick.cuisine && pick.cuisine.join(', '),
+      $('#revealSub').textContent = [pd !== null ? fmtKm(pd) + etaShort(pick) : '', pick.cuisine && pick.cuisine.join(', '),
         pick.metro && pick.metro[0] && ('м. ' + pick.metro[0].name)].filter(Boolean).join(' · ');
       $('#randomSheet').classList.add('is-revealed');
       haptic('notificationOccurred', 'success');
@@ -736,7 +1034,9 @@
         .sort(function (a, b) { return a.st.until - b.st.until; })
         .slice(0, 4);
     };
-    var soon = soonest(function (p) { return (opts.anyCuisine || cuisineOk(p)) && (opts.anyDist || distOk(p)); });
+    var soon = soonest(function (p) {
+      return (opts.anyCuisine || cuisineOk(p)) && (opts.anyDist || distOk(p)) && (opts.anyFilter || (featOk(p) && priceOk(p) && mineOk(p)));
+    });
     if (!soon.length) soon = soonest(function () { return true; });
     var list = soon.map(function (x) {
       var photo = (x.p.photos || [])[0];
@@ -748,10 +1048,11 @@
     var head = {
       dist: ['Рядом всё спит', 'В радиусе ' + state.dist + ' км сейчас всё закрыто'],
       cuisine: ['Эта кухня спит', 'Из выбранного сейчас всё закрыто'],
+      filters: ['Всё спит', 'Под выбранные фильтры сейчас всё закрыто'],
       all: ['Москва спит', 'Сейчас всё закрыто']
     }[why] || ['Москва спит', 'Сейчас всё закрыто'];
     var more = why === 'dist' ? '<button class="btn btn-primary" type="button" data-action="spin-anydist">' + ICON.dice + 'Крутить по всей Москве</button>'
-      : why === 'cuisine' ? '<button class="btn btn-primary" type="button" data-action="spin-all">' + ICON.dice + 'Крутить среди всех</button>' : '';
+      : why === 'cuisine' || why === 'filters' ? '<button class="btn btn-primary" type="button" data-action="spin-all">' + ICON.dice + 'Крутить без фильтров</button>' : '';
     openSheet('<div class="sheet-inner is-revealed">' +
       '<div class="reveal"><button class="close" type="button" data-action="close" aria-label="Закрыть">' + ICON.close + '</button>' +
         '<div class="reveal-eyebrow">' + head[0] + '</div>' +
@@ -780,8 +1081,11 @@
       var a = act.getAttribute('data-action');
       if (a === 'close') closeSheet();
       else if (a === 'respin') spin(lastSpin);
-      else if (a === 'spin-all') spin({ anyCuisine: true, anyDist: lastSpin.anyDist });
-      else if (a === 'spin-anydist') spin({ anyDist: true, anyCuisine: lastSpin.anyCuisine });
+      else if (a === 'spin-all') spin({ anyCuisine: true, anyFilter: true, anyDist: lastSpin.anyDist });
+      else if (a === 'spin-anydist') spin({ anyDist: true, anyCuisine: lastSpin.anyCuisine, anyFilter: lastSpin.anyFilter });
+      else if (a === 'mark') toggleMark(act.getAttribute('data-mark'), act.getAttribute('data-id-mark'));
+      else if (a === 'share') sharePlace(act.getAttribute('data-id-mark'));
+      else if (a === 'suggest') showSuggest();
       else if (a === 'reset') resetFilters();
       else if (a === 'map-full') setMapFull(!mapIsFull());
       else if (a === 'peek-close') closePeek();
@@ -809,6 +1113,14 @@
         state.when = (w === 'any' || w === 'now') ? w : Number(w);
       } else if (chip.hasAttribute('data-dist')) {
         state.dist = Number(chip.getAttribute('data-dist')) || 0;
+      } else if (chip.hasAttribute('data-feat')) {
+        var f = chip.getAttribute('data-feat');
+        if (state.feats[f]) delete state.feats[f]; else state.feats[f] = true;
+      } else if (chip.hasAttribute('data-price')) {
+        state.price = chip.getAttribute('data-price');
+      } else if (chip.hasAttribute('data-mine')) {
+        var mk = chip.getAttribute('data-mine');
+        state.mine = state.mine === mk ? '' : mk;
       }
       render();
     }
@@ -827,6 +1139,9 @@
     state.when = 'any';
     state.q = '';
     state.dist = 0;
+    state.feats = {};
+    state.price = '';
+    state.mine = '';
     $('#q').value = '';
     render();
   }
@@ -1216,7 +1531,7 @@
       : ((p.photos || [])[0] ? '<img src="' + esc(photoUrl(p.photos[0], 'M')) + '" alt="" referrerpolicy="no-referrer">' : placeholderHTML(p));
     var meta = [];
     var d = distOf(p);
-    if (d !== null) meta.push(esc(fmtKm(d)));
+    if (d !== null) meta.push(esc(fmtKm(d) + etaShort(p)));
     if (p.cuisine && p.cuisine.length) meta.push(esc(p.cuisine.join(', ')));
     if (p.metro && p.metro[0]) meta.push('м. ' + esc(p.metro[0].name));
     return '<div class="peek-head">' +
@@ -1290,6 +1605,8 @@
 
   renderTagline();
   render();
+  loadMarks();
+  openFromLink();
   locate(true);
   setInterval(function () {
     render();

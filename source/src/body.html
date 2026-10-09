@@ -34,6 +34,11 @@
       <input id="q" type="search" placeholder="Название, метро или кухня" autocomplete="off" enterkeyhint="search" aria-label="Поиск по местам">
     </label>
 
+    <section class="filter" id="mineSection" aria-label="Мои места" hidden>
+      <div class="filter-label">Мои места</div>
+      <div class="chips" id="mineChips"></div>
+    </section>
+
     <section class="filter" aria-label="Кухня">
       <div class="filter-label">Кухня</div>
       <div class="chips" id="cuisineChips"></div>
@@ -42,6 +47,16 @@
     <section class="filter" aria-label="Время работы">
       <div class="filter-label">Открыто</div>
       <div class="chips" id="timeChips"></div>
+    </section>
+
+    <section class="filter" aria-label="Особенности">
+      <div class="filter-label">Особенности</div>
+      <div class="chips" id="featChips"></div>
+    </section>
+
+    <section class="filter" aria-label="Средний чек">
+      <div class="filter-label">Средний чек</div>
+      <div class="chips" id="priceChips"></div>
     </section>
 
     <section class="filter" aria-label="Расстояние">
@@ -72,6 +87,11 @@
     </div>
 
     <main class="list" id="list"></main>
+
+    <div class="suggest-card">
+      <div><b>Знаете место, которого тут нет?</b><span>Пришлите его боту, проверим и добавим</span></div>
+      <button class="btn btn-secondary" type="button" data-action="suggest">Предложить</button>
+    </div>
 
     <p class="foot">Часы работы, адреса, телефоны и фото взяты из Яндекс Карт, фишки из рилсов в чате «Места Москва». Перед выходом лучше открыть место на карте и проверить.</p>
   </div>

@@ -4,7 +4,9 @@
    каждого человека, который хоть раз написал боту или нажал «Старт». В репозиторий пишется только
    число и солёные хэши id (по ним нельзя узнать, кто это), чтобы каждый считался один раз.
    Telegram хранит обновления сутки, поэтому запускать нужно чаще раза в сутки.
-2. Канал с комментариями. Для каждого места без поста публикует пост с фото в канале из
+2. Предложения мест: любое сообщение боту (кроме команд) попадает в data/suggestions.json —
+   текст и ссылки, без имени и id отправителя; бот отвечает «Спасибо, проверим».
+3. Канал с комментариями. Для каждого места без поста публикует пост с фото в канале из
    data/telegram.json. Комментарии под постом — это комментарии к месту в приложении.
 
 Нужны переменные окружения TG_BOT_TOKEN и HASH_SALT (в GitHub — секреты репозитория).
@@ -15,6 +17,7 @@ import hmac
 import html
 import json
 import os
+import re
 import sys
 import time
 import urllib.error
@@ -69,9 +72,23 @@ def sync_users(token, salt):
         print('getUpdates:', res.get('description'))
         return False
     changed = False
+    sugg = load('suggestions.json', {'items': []})
+    known = {it.get('update') for it in sugg['items']}
+    sugg_changed = False
     for upd in res['result']:
         st['offset'] = max(st['offset'], upd['update_id'])
         changed = True
+        msg = upd.get('message')
+        text = msg and (msg.get('text') or msg.get('caption') or '').strip()
+        # Предложение места: любое сообщение боту, кроме команд. Кто прислал, не сохраняем.
+        if text and not text.startswith('/') and upd['update_id'] not in known:
+            urls = re.findall(r'https?://\S+', text)
+            sugg['items'].append({'update': upd['update_id'], 'date': msk_today(), 'text': text[:500],
+                                  'urls': urls[:5], 'status': 'new'})
+            sugg_changed = True
+            api(token, 'sendMessage', {'chat_id': msg['chat']['id'],
+                                       'text': 'Спасибо! Получили, проверим. Если место подойдёт, оно появится в приложении.',
+                                       'reply_to_message_id': msg.get('message_id')})
         for k in USER_KEYS:
             obj = upd.get(k)
             who = obj and (obj.get('from') or obj.get('user'))
@@ -79,6 +96,8 @@ def sync_users(token, salt):
                 h = hmac.new(salt.encode(), str(who['id']).encode(), hashlib.sha256).hexdigest()[:20]
                 if h not in st['users']:
                     st['users'][h] = msk_today()
+    if sugg_changed:
+        save('suggestions.json', sugg)
     st['count'] = len(st['users'])
     if changed:
         save('users.json', st)
@@ -144,6 +163,14 @@ def main():
         print('Секреты TG_BOT_TOKEN и HASH_SALT не заданы: пропускаю.')
         return 0
     only = sys.argv[1] if len(sys.argv) > 1 else 'all'
+    # Настроено ли в BotFather главное мини-приложение: от этого зависит, куда ведут ссылки «Поделиться»
+    me = api(token, 'getMe')
+    if me.get('ok'):
+        tg = load('telegram.json', {'channel': '', 'posts': {}})
+        flag, name = bool(me['result'].get('has_main_web_app')), me['result'].get('username')
+        if tg.get('startapp') != flag or tg.get('bot') != name:
+            tg['startapp'], tg['bot'] = flag, name
+            save('telegram.json', tg)
     if only in ('all', 'users'):
         sync_users(token, salt)
     if only in ('all', 'posts'):

@@ -2,6 +2,7 @@
 
 python3 -I source/tools/snippet.py ig                         рилсы чата, кроме уже разобранных
 python3 -I source/tools/snippet.py comments КОД               комментарии к рилсу
+python3 -I source/tools/snippet.py media КОД [КОД ...]       рилсы по ссылкам, присланным боту
 python3 -I source/tools/snippet.py ya "ключ=запрос" [...]     поиск на Яндекс Картах
 """
 import json
@@ -23,6 +24,9 @@ def main():
     elif kind == 'comments' and len(sys.argv) == 3:
         js = (TOOLS / 'ig_comments.js').read_text(encoding='utf-8')
         print(js.replace('__CODE__', sys.argv[2].replace("'", '')))
+    elif kind == 'media' and len(sys.argv) >= 3:
+        js = (TOOLS / 'ig_media.js').read_text(encoding='utf-8')
+        print(js.replace('__CODES__', json.dumps([c.strip() for c in sys.argv[2:]], ensure_ascii=False)))
     elif kind == 'ya' and len(sys.argv) >= 3:
         queries = []
         for arg in sys.argv[2:]:

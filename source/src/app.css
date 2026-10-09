@@ -932,3 +932,48 @@ html[data-tg] .hero { --hh: var(--tg-viewport-stable-height, 100svh); }
   .map-peek { animation: none; }
   .me-dot::after, .toast { animation: none; }
 }
+
+/* ---------- Избранное, «Хочу сходить», поделиться ---------- */
+.marks { display: grid; grid-template-columns: 1fr 1fr 44px; gap: 8px; margin: 12px 0 2px; }
+.mark-share { padding: 0; }
+.mark-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  min-height: 40px; padding: 0 12px; border-radius: 12px;
+  border: 1px solid var(--line); background: var(--surface); color: var(--ink);
+  font: 600 13px/1.1 var(--f-body); cursor: pointer; white-space: nowrap;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+.mark-btn svg { flex: none; }
+.mark-btn.is-on { background: var(--cheese); border-color: var(--cheese); color: var(--cheese-ink); }
+.mark-btn:focus-visible { outline: 2px solid var(--ketchup); outline-offset: 2px; }
+@media (max-width: 350px) { .mark-btn { font-size: 12px; padding: 0 8px; gap: 4px; } }
+.mark-badges { position: absolute; left: 10px; bottom: 10px; display: flex; gap: 6px; }
+.mark-badges i {
+  display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%;
+  background: var(--cheese); color: var(--cheese-ink); box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+}
+.feat-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.tag-feat { background: color-mix(in srgb, var(--cheese) 22%, var(--surface-2)); color: var(--ink); }
+
+/* ---------- Время в пути ---------- */
+.eta { display: flex; flex-direction: column; gap: 8px; margin: 8px 0 2px; }
+.eta-row { display: flex; align-items: flex-start; gap: 8px; color: var(--ink-2); font-size: 14px; line-height: 1.35; }
+.eta-row[hidden] { display: none; }
+.eta-row > svg { flex: none; margin-top: 1px; color: var(--muted); }
+.eta-row b { color: var(--ink); font-variant-numeric: tabular-nums; }
+.eta-row.is-best > svg { color: var(--me); }
+.eta-steps { display: block; margin-top: 3px; color: var(--muted); font-size: 12.5px; }
+.eta-steps .metro { color: var(--ink-2); gap: 4px; }
+.eta-steps .metro i { width: 8px; height: 8px; }
+
+/* ---------- Предложить место ---------- */
+.suggest-card {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  margin: 18px 0 6px; padding: 14px 16px; border-radius: 16px;
+  background: var(--surface); border: 1px solid var(--line);
+}
+.suggest-card div { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.suggest-card b { font: 600 15px/1.25 var(--f-body); }
+.suggest-card span { color: var(--muted); font-size: 13px; }
+.suggest-card .btn { flex: none; width: auto; }
+.suggest-cta { display: flex; width: 100%; margin-top: 14px; }
