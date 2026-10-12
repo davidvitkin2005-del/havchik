@@ -18,10 +18,17 @@ UPDATE_FIELDS = ("phones", "booking", "site", "hours", "hoursText", "status", "r
 STATE_RE = re.compile(r'<script type="application/json" class="state-view">(.*?)</script>', re.S)
 
 
-def get(url):
-    req = urllib.request.Request(url, headers={"User-Agent": UA, "Accept-Language": "ru-RU,ru;q=0.9"})
-    with urllib.request.urlopen(req, timeout=30) as r:
-        return r.read().decode("utf-8", "replace")
+def get(url, tries=4):
+    """Яндекс иногда рвёт соединение без ответа: пробуем ещё раз с паузой."""
+    for i in range(tries):
+        req = urllib.request.Request(url, headers={"User-Agent": UA, "Accept-Language": "ru-RU,ru;q=0.9"})
+        try:
+            with urllib.request.urlopen(req, timeout=30) as r:
+                return r.read().decode("utf-8", "replace")
+        except Exception:  # noqa: BLE001
+            if i == tries - 1:
+                raise
+            time.sleep(5 + 10 * i)
 
 
 def find_org(st, oid):
