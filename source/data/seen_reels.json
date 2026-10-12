@@ -1,5 +1,5 @@
 {
- "checked_at": "2026-10-06",
+ "checked_at": "2026-10-12",
  "thread": "Места Москва",
  "reels": {
   "DbtbeOQNd9n": {
@@ -239,16 +239,38 @@
    ]
   },
   "DaKxoIvOW81": {
-   "skip": "бильярдный клуб Legend, не про еду"
+   "places": [
+    "legend"
+   ]
   },
   "Dc3fyqFDP9X": {
-   "skip": "подборка шаурмы без названий мест"
+   "places": [
+    "mosdoner",
+    "shgiros",
+    "sahara",
+    "meatpoint",
+    "shaurlandia",
+    "shaurmabasm"
+   ]
   },
   "DW6EpkVAmYc": {
    "skip": "аренда кинозала"
   },
   "DY-SlgTR5Zm": {
-   "skip": "подборка танцевальных баров"
+   "places": [
+    "veronika",
+    "soma",
+    "greendog",
+    "yauzaplace",
+    "profsoyuz",
+    "lucky",
+    "strelka",
+    "stereopeople",
+    "tantsy",
+    "zavarka",
+    "deepfried",
+    "noor"
+   ]
   },
   "DZ9RC6fIjpd": {
    "skip": "баня"
@@ -257,7 +279,9 @@
    "skip": "домики за городом"
   },
   "DdEM330nyuZ": {
-   "skip": "BOLO в Нарышкинском сквере временно закрыт (сезонный поп-ап)"
+   "places": [
+    "bolokosino"
+   ]
   },
   "DZx0AmORpTj": {
    "skip": "Funky Food закрылся навсегда"
@@ -269,7 +293,9 @@
    "skip": "Калининград"
   },
   "Dc-1dyeoS8w": {
-   "skip": "кальянная без названия"
+   "places": [
+    "ombra"
+   ]
   },
   "DbiruLlMZDb": {
    "skip": "Санкт-Петербург"
@@ -293,7 +319,12 @@
    "skip": "рецепт, не место"
   },
   "DZ0CPFFM0PB": {
-   "skip": "подборка танцевальных баров"
+   "places": [
+    "veronika",
+    "noor",
+    "strelka",
+    "zorka"
+   ]
   },
   "DY5ad_xyJZ3": {
    "skip": "вечеринка"
@@ -305,13 +336,17 @@
    "skip": "тусовочное сообщество"
   },
   "DcOiTdOM9wx": {
-   "skip": "пиццерия без названия"
+   "places": [
+    "terrapieno"
+   ]
   },
   "DbDx_5VIFec": {
    "skip": "поездки за город"
   },
   "DZufonDtgSa": {
-   "skip": "печенье, место не названо"
+   "places": [
+    "meltis"
+   ]
   },
   "Db5O3c1tVFH": {
    "skip": "доставка крабов, не заведение"
@@ -320,13 +355,32 @@
    "skip": "заброшенный ТЦ"
   },
   "DbxHhTigeyf": {
-   "skip": "стритфуд без названия"
+   "skip": "бургерная на Ленинском, название не названо"
   },
   "Dc6BIm2N0v1": {
    "skip": "бани"
   },
   "DdJ0tD2Pk4A": {
    "skip": "Ростов-на-Дону"
+  },
+  "DeJ_aqTAgro": {
+   "places": [
+    "kultdoner"
+   ]
+  },
+  "DeQ0CmYOzKT": {
+   "places": [
+    "voskhod"
+   ]
+  },
+  "DeLv169sIeG": {
+   "skip": "вечеринка в ДЕПО 31 октября, не заведение"
+  },
+  "DeL3JFHIyZi": {
+   "skip": "место не названо: только видео про 20 тартаров, без подписи и комментариев"
+  },
+  "DeW-2D3OofF": {
+   "skip": "место не названо в подписи и комментариях"
   }
  }
 }

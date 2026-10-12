@@ -5653,5 +5653,2625 @@
   ],
   "booking": null,
   "site": "https://dreamfishsmolenka.moscow/"
+ },
+ "kultdoner": {
+  "id": "27073444648",
+  "seoname": "kult_pro_doner",
+  "title": "Культ про Донер",
+  "address": "Москва, Страстной бул., 4, стр. 4",
+  "coords": [
+   37.607742,
+   55.765008
+  ],
+  "status": "open",
+  "categories": [
+   "Быстрое питание"
+  ],
+  "hours": [
+   "11:00-23:00",
+   "11:00-23:00",
+   "11:00-23:00",
+   "11:00-23:00",
+   "11:00-23:00",
+   "11:00-23:00",
+   "11:00-23:00"
+  ],
+  "hoursText": "ежедневно, 11:00 AM–11:00 PM",
+  "metro": [
+   {
+    "name": "Чеховская",
+    "color": "#999999",
+    "distance": "106 м",
+    "meters": 106.458
+   },
+   {
+    "name": "Тверская",
+    "color": "#3aa63a",
+    "distance": "120 м",
+    "meters": 120.619
+   },
+   {
+    "name": "Пушкинская",
+    "color": "#8647b2",
+    "distance": "140 м",
+    "meters": 140.425
+   }
+  ],
+  "photoCount": 30,
+  "photos": [
+   "https://avatars.mds.yandex.net/get-altay/20765460/2a000001a0672d930addd88d632ccd874b15/%s",
+   "https://avatars.mds.yandex.net/get-altay/20838862/2a000001a0672d4d041e2914d6f6f135198f/%s",
+   "https://avatars.mds.yandex.net/get-altay/21010120/2a000001a0672d1e4844f7c0ce6e9200f996/%s",
+   "https://avatars.mds.yandex.net/get-altay/20368588/2a000001a072a3ae57f0e5773bdefe6a72a0/%s",
+   "https://avatars.mds.yandex.net/get-altay/20307657/2a000001a0717e20cdd9b3103a6694a5480d/%s",
+   "https://avatars.mds.yandex.net/get-altay/20880388/2a000001a06928ad49ea8ab98878aad1e3d8/%s",
+   "https://avatars.mds.yandex.net/get-altay/20994058/2a000001a06814452d448ac513a196523247/%s",
+   "https://avatars.mds.yandex.net/get-altay/20879492/2a000001a0672d92cd8e461c4ce099435908/%s",
+   "https://avatars.mds.yandex.net/get-altay/21104762/2a000001a0730afcf73d4ee114b5d8eeeb31/%s",
+   "https://avatars.mds.yandex.net/get-altay/20368588/2a000001a0672d9318dab4cfe1f225a8deb7/%s"
+  ],
+  "rating": 4.7,
+  "ratingCount": 28,
+  "features": [
+   "кофе с собой",
+   "Можно с собакой",
+   "посещение с животными: разрешено со всеми животными",
+   "кондиционер",
+   "тип заведения: фаст-фуд",
+   "особенности заведения: можно с животными",
+   "можно с ноутбуком",
+   "велопарковка",
+   "туалет"
+  ],
+  "social": [
+   "https://t.me/cult_pro_doner"
+  ],
+  "links": [],
+  "chain": "Культ про Донер",
+  "logo": "https://avatars.mds.yandex.net/get-altay/20781119/2a000001a0860147b14434f7aa137d4dc7b7/%s",
+  "phones": [
+   {
+    "n": "+7 (903) 119-18-40",
+    "v": "+79031191840",
+    "i": null
+   }
+  ],
+  "booking": null,
+  "site": "https://kylt-pro-doner.ru/"
+ },
+ "voskhod": {
+  "id": "131115614953",
+  "seoname": "voshod",
+  "title": "Восход",
+  "address": "Москва, ул. Варварка, 6, стр. 7",
+  "coords": [
+   37.627118,
+   55.750377
+  ],
+  "status": "open",
+  "categories": [
+   "Ресторан"
+  ],
+  "hours": [
+   "12:00-00:00",
+   "12:00-00:00",
+   "12:00-00:00",
+   "12:00-00:00",
+   "12:00-00:00",
+   "12:00-00:00",
+   "12:00-00:00"
+  ],
+  "hoursText": "ежедневно, 12:00 PM–12:00 AM",
+  "metro": [
+   {
+    "name": "Китай-город",
+    "color": "#8647b2",
+    "distance": "600 м",
+    "meters": 595.379
+   },
+   {
+    "name": "Китай-город",
+    "color": "#f28b24",
+    "distance": "640 м",
+    "meters": 644.26
+   },
+   {
+    "name": "Площадь Революции",
+    "color": "#0070bf",
+    "distance": "900 м",
+    "meters": 899.373
+   }
+  ],
+  "photoCount": 777,
+  "photos": [
+   "https://avatars.mds.yandex.net/get-altay/15539509/2a000001978f63fa3edb3691d955b9ac4e5b/%s",
+   "https://avatars.mds.yandex.net/get-altay/14336229/2a000001978f0bc6bb069bef1fb6f3c294f5/%s",
+   "https://avatars.mds.yandex.net/get-altay/5445147/2a0000017e8cb7145146c80658b030d4a069/%s",
+   "https://avatars.mds.yandex.net/get-altay/16617364/2a000001978f63b8086433dc5091d7bd5db9/%s",
+   "https://avatars.mds.yandex.net/get-altay/14271118/2a00000192dda4234dfff884a2393764982a/%s",
+   "https://avatars.mds.yandex.net/get-altay/8377501/2a0000018da483e1cf5b4fa651f4630bfec8/%s",
+   "https://avatars.mds.yandex.net/get-altay/16617364/2a000001978f622f43028939bd3c516818f9/%s",
+   "https://avatars.mds.yandex.net/get-altay/11300692/2a00000190e5bb0071145e0a412625fec436/%s",
+   "https://avatars.mds.yandex.net/get-altay/11244149/2a0000018b9a2da145d0a2ddf2e331961dc4/%s",
+   "https://avatars.mds.yandex.net/get-altay/15152716/2a000001978f6485683f92d4db1683f98824/%s"
+  ],
+  "rating": 4.8,
+  "ratingCount": 6744,
+  "features": [
+   "средний счёт: 2000–3000 ₽",
+   "доставка еды",
+   "кофе с собой",
+   "еда навынос",
+   "цены: высокие",
+   "Можно с собакой",
+   "подарочный сертификат",
+   "Чай",
+   "посещение с животными: разрешено только с собаками",
+   "парковка",
+   "способ оплаты: наличными, оплата картой",
+   "Кофе",
+   null,
+   "акции: спецпредложения",
+   "None: Гастробар",
+   "танцпол",
+   "детское меню",
+   "Предзаказ онлайн",
+   "туалет",
+   "WC",
+   "предварительная запись",
+   "None: Рестораны",
+   "None: Ультима Яндекс Консьерж, Яндекс Консьерж",
+   "лифт",
+   "None: Москва",
+   "туалет для людей с инвалидностью",
+   "Оплата картой",
+   "специальное меню: детское",
+   "парковка для людей с инвалидностью",
+   "кухня: грузинская, европейская, кавказская, русская, узбекская, украинская, армянская, славянских народов, национальная",
+   "доступность входа на инвалидной коляске: доступно",
+   "Wi-Fi",
+   "тип заведения: ресторан с живой музыкой, ресторан с летней верандой",
+   null,
+   "доступность помещения на инвалидной коляске: доступно",
+   "особенности заведения: меню на английском, живая музыка, местоположение у воды, бесплатная парковка, барная стойка, винная карта, танцпол, есть банкетный зал",
+   "доставка еды: Яндекс.Еда",
+   "летняя веранда"
+  ],
+  "social": [
+   "https://t.me/voshodrest"
+  ],
+  "links": [
+   "https://yandex.ru/web-maps/webview?booking[permalink]=131115614953&booking[standalone]=true&mode=booking&source=partner-cta"
+  ],
+  "chain": null,
+  "logo": "https://avatars.mds.yandex.net/get-altay/14067398/2a0000019384064d75c5b00ec6f4f25353ca/%s",
+  "phones": [
+   {
+    "n": "+7 (495) 531-04-30",
+    "v": "+74955310430",
+    "i": null
+   }
+  ],
+  "booking": "https://yandex.ru/web-maps/webview?booking[permalink]=131115614953&booking[standalone]=true&mode=booking&source=partner-cta",
+  "site": "http://voshodrest.ru/"
+ },
+ "meltis": {
+  "id": "61128088376",
+  "seoname": "meltisss",
+  "title": "Meltisss",
+  "address": "Москва, Большая Бронная ул., 25, стр. 3",
+  "coords": [
+   37.602141,
+   55.763734
+  ],
+  "status": "open",
+  "categories": [
+   "Кафе",
+   "кондитерская"
+  ],
+  "hours": [
+   "10:00-22:00",
+   "10:00-22:00",
+   "10:00-22:00",
+   "10:00-22:00",
+   "10:00-22:00",
+   "10:00-23:00",
+   "10:00-23:00"
+  ],
+  "hoursText": "пн-чт 10:00 AM–10:00 PM; пт,сб 10:00 AM–11:00 PM; вс 10:00 AM–10:00 PM",
+  "metro": [
+   {
+    "name": "Тверская",
+    "color": "#3aa63a",
+    "distance": "217 м",
+    "meters": 217.756
+   },
+   {
+    "name": "Пушкинская",
+    "color": "#8647b2",
+    "distance": "257 м",
+    "meters": 257.906
+   },
+   {
+    "name": "Чеховская",
+    "color": "#999999",
+    "distance": "560 м",
+    "meters": 563.652
+   }
+  ],
+  "photoCount": 131,
+  "photos": [
+   "https://avatars.mds.yandex.net/get-altay/16420800/2a0000019dc9ef865cef150f65588a0ca9cc/%s",
+   "https://avatars.mds.yandex.net/get-altay/18134764/2a0000019da4e5f3bdde28be2be9d3b654af/%s",
+   "https://avatars.mds.yandex.net/get-altay/19546938/2a0000019da4e4c3eb27486cd0e9c9341eb6/%s",
+   "https://avatars.mds.yandex.net/get-altay/19862889/2a0000019e124f4fc07b0aa72c54da0e7030/%s",
+   "https://avatars.mds.yandex.net/get-altay/18152412/2a0000019db9070def6eb6886fefcf8ca621/%s",
+   "https://avatars.mds.yandex.net/get-altay/17737331/2a0000019db90725db50439e93311ba56d3d/%s",
+   "https://avatars.mds.yandex.net/get-altay/18143431/2a0000019e11a571ab73f32f0edb68795334/%s",
+   "https://avatars.mds.yandex.net/get-altay/19392709/2a0000019e124f31e5a9fb6a1245c641a752/%s",
+   "https://avatars.mds.yandex.net/get-altay/18134764/2a0000019e124f1551a97827c81e0f26bc5c/%s",
+   "https://avatars.mds.yandex.net/get-altay/19521209/2a0000019dd2f2b20552e8cc4f1345e7700e/%s"
+  ],
+  "rating": 4.4,
+  "ratingCount": 115,
+  "features": [
+   "кофе с собой",
+   null,
+   "доступность входа на инвалидной коляске: недоступно"
+  ],
+  "social": [],
+  "links": [],
+  "chain": "Meltisss",
+  "logo": "https://avatars.mds.yandex.net/get-altay/19816667/2a0000019daa96bbe6c6c583fbc8c459dad9/%s",
+  "phones": [
+   {
+    "n": "+7 (916) 919-32-44",
+    "v": "+79169193244",
+    "i": null
+   }
+  ],
+  "booking": null,
+  "site": "http://meltissscookies.ru/"
+ },
+ "terrapieno": {
+  "id": "177090981793",
+  "seoname": "terrapieno",
+  "title": "Террапиено",
+  "address": "Москва, Садовническая ул., 80",
+  "coords": [
+   37.640103,
+   55.737214
+  ],
+  "status": "open",
+  "categories": [
+   "Пиццерия",
+   "ресторан"
+  ],
+  "hours": [
+   "11:00-23:00",
+   "10:00-23:00",
+   "10:00-23:00",
+   "10:00-23:00",
+   "10:00-23:00",
+   "10:00-23:00",
+   "11:00-23:00"
+  ],
+  "hoursText": "пн-пт 10:00 AM–11:00 PM; сб,вс 11:00 AM–11:00 PM",
+  "metro": [
+   {
+    "name": "Павелецкая",
+    "color": "#3aa63a",
+    "distance": "870 м",
+    "meters": 868.672
+   },
+   {
+    "name": "Павелецкая",
+    "color": "#805139",
+    "distance": "930 м",
+    "meters": 934.961
+   },
+   {
+    "name": "Новокузнецкая",
+    "color": "#3aa63a",
+    "distance": "1,24 км",
+    "meters": 1235.92
+   }
+  ],
+  "photoCount": 297,
+  "photos": [
+   "https://avatars.mds.yandex.net/get-altay/19553098/2a0000019c47ec5c33f719759fe7b62f4afe/%s",
+   "https://avatars.mds.yandex.net/get-altay/16329243/2a0000019c48dfc2c832551fb1c041e2deb2/%s",
+   "https://avatars.mds.yandex.net/get-altay/19720204/2a0000019c48dfc2feeea618325f0d873bbd/%s",
+   "https://avatars.mds.yandex.net/get-altay/18105464/2a0000019c47ff58566a4a21bbc0e4e45337/%s",
+   "https://avatars.mds.yandex.net/get-altay/19582126/2a0000019c47ff5d68ecaaa0c1e39e5740da/%s",
+   "https://avatars.mds.yandex.net/get-altay/17750410/2a0000019c48dfc2f04fb6e8d3e37a7c0224/%s",
+   "https://avatars.mds.yandex.net/get-altay/17681761/2a0000019c48d27d7b32c64b4f2484be451b/%s",
+   "https://avatars.mds.yandex.net/get-altay/18105464/2a0000019c47ff584be80574535bea5e8a5e/%s",
+   "https://avatars.mds.yandex.net/get-altay/17750410/2a0000019c48d2bb5dd07953d694bd99b5f3/%s",
+   "https://avatars.mds.yandex.net/get-altay/17788144/2a0000019c47ff61025f62f1a5af591ec8cf/%s"
+  ],
+  "rating": 5,
+  "ratingCount": 794,
+  "features": [
+   "цены: средние",
+   "доставка еды",
+   "средний счёт: 1500–1700 ₽",
+   "еда навынос",
+   "Можно с собакой",
+   "типы безналичных чаевых: нетмонет",
+   "События: Деловая встреча, Семейный ужин, День Рождения, Свидание",
+   null,
+   "Забота о курьерах",
+   "Чай",
+   "посещение с животными: разрешено с собаками до 35 см.",
+   "способ оплаты: наличными, оплата картой, безналичная, QR-код",
+   "Кофе",
+   null,
+   "музыка: europop",
+   "завтрак",
+   "акции: скидки, акции, спецпредложения, бонусы, подарки",
+   "Зарядка для телефона",
+   "Скидка на еду",
+   "для детей",
+   null,
+   "Предзаказ онлайн",
+   "туалет",
+   "WC",
+   "предварительная запись",
+   null,
+   "Оплата картой",
+   "специальное меню: сезонное, детское",
+   "Питьевая вода",
+   "кухня: итальянская",
+   "доступность входа на инвалидной коляске: доступно",
+   "Wi-Fi",
+   null,
+   "тип заведения: семейный ресторан, итальянский ресторан, ресторан с летней верандой",
+   "доступность помещения на инвалидной коляске: частично доступно",
+   "особенности заведения: местоположение у воды, винная карта, можно с ноутбуком",
+   "доставка еды: Яндекс.Еда, Delivery-club, собственная курьерская служба",
+   "количество столов в зале для посадки: от 9",
+   "летняя веранда",
+   null,
+   "кофе с собой"
+  ],
+  "social": [
+   "https://wa.me/79653359583",
+   "https://t.me/terrapienopizza",
+   "https://vk.ru/pizzaterrapieno"
+  ],
+  "links": [
+   "https://yandex.ru/web-maps/webview?booking[permalink]=177090981793&booking[standalone]=true&mode=booking&source=partner-cta"
+  ],
+  "chain": null,
+  "logo": "https://avatars.mds.yandex.net/get-altay/19648454/2a0000019c49223cac1cff93374d3b60e2ac/%s",
+  "phones": [
+   {
+    "n": "+7 (934) 008-61-90",
+    "v": "+79340086190",
+    "i": null
+   }
+  ],
+  "booking": "https://yandex.ru/web-maps/webview?booking[permalink]=177090981793&booking[standalone]=true&mode=booking&source=partner-cta",
+  "site": "https://pizzaterrapieno.com/"
+ },
+ "ombra": {
+  "id": "7703668540",
+  "seoname": "hookahplace_ombra",
+  "title": "HookahPlace Ombra",
+  "address": "Москва, Волоколамское ш., 71/8к1",
+  "coords": [
+   37.427717,
+   55.818904
+  ],
+  "status": "open",
+  "categories": [
+   "Кальян-бар",
+   "ресторан",
+   "бар"
+  ],
+  "hours": [
+   "12:00-00:00",
+   "12:00-00:00",
+   "12:00-00:00",
+   "12:00-00:00",
+   "12:00-00:00",
+   "12:00-01:00",
+   "12:00-01:00"
+  ],
+  "hoursText": "пн-чт 12:00 PM–12:00 AM; пт,сб 12:00 PM–1:00 AM; вс 12:00 PM–12:00 AM",
+  "metro": [
+   {
+    "name": "Спартак",
+    "color": "#8647b2",
+    "distance": "500 м",
+    "meters": 501.545
+   },
+   {
+    "name": "Тушинская",
+    "color": "#8647b2",
+    "distance": "1,21 км",
+    "meters": 1210.17
+   },
+   {
+    "name": "Щукинская",
+    "color": "#8647b2",
+    "distance": "4,1 км",
+    "meters": 4112.73
+   }
+  ],
+  "photoCount": 50,
+  "photos": [
+   "https://avatars.mds.yandex.net/get-altay/20880388/2a000001a0a4ddd927c7e789880ad069096e/%s",
+   "https://avatars.mds.yandex.net/get-altay/19807214/2a0000019ed6bd03a4fcb38a02ff5e2619f0/%s",
+   "https://avatars.mds.yandex.net/get-altay/20656027/2a000001a0a4dc77f5fb29cccddfa0324378/%s",
+   "https://avatars.mds.yandex.net/get-altay/20431688/2a000001a0a4ddd875b31886d73d06bf279e/%s",
+   "https://avatars.mds.yandex.net/get-altay/20112234/2a0000019ed6bcec44e122f40a89167a6b51/%s",
+   "https://avatars.mds.yandex.net/get-altay/20368588/2a000001a0a4da7658ac02e52267bc68165d/%s",
+   "https://avatars.mds.yandex.net/get-altay/20928768/2a000001a0a4db1def70ea107217a7498c25/%s",
+   "https://avatars.mds.yandex.net/get-altay/21525983/2a000001a0a4dcea9ce3c6047a95bf93c018/%s",
+   "https://avatars.mds.yandex.net/get-altay/13789674/2a0000019dfe1040b847cc1a00ff5eb25b99/%s",
+   "https://avatars.mds.yandex.net/get-altay/21166000/2a000001a0a4ddd8e6793b4dec628748ccc1/%s"
+  ],
+  "rating": 5,
+  "ratingCount": 62,
+  "features": [
+   "еда навынос",
+   "Можно с собакой",
+   "типы безналичных чаевых: нетмонет",
+   "События: Свидание, Деловая встреча, День Рождения",
+   "Чай",
+   "посещение с животными: разрешено с собаками до 35 см.",
+   "способ оплаты: QR-код, оплата картой, СБП, наличными",
+   "Кофе",
+   "ограничения по возрасту: с 18 лет",
+   null,
+   "музыка: фоновая",
+   "Зарядка для телефона",
+   "цена бокала пива: 750–750 ₽",
+   "туалет",
+   "WC",
+   "предварительная запись",
+   "можно с ноутбуком",
+   "Оплата картой",
+   "Питьевая вода",
+   "кухня: азиатская",
+   "доступность входа на инвалидной коляске: доступно",
+   "только для взрослых",
+   "Wi-Fi",
+   "тип заведения: лаунж-бар",
+   "доступность помещения на инвалидной коляске: частично доступно",
+   "приглушенный свет",
+   "средний счёт: 3000–5000 ₽",
+   "количество столов в зале для посадки: до 20",
+   "кондиционер",
+   "кофе с собой"
+  ],
+  "social": [
+   "https://www.youtube.com/hookahplacetv",
+   "https://t.me/hookahplace_ombra",
+   "https://vk.ru/hookahplacetv",
+   "https://vk.ru/hookahplace"
+  ],
+  "links": [],
+  "chain": "HookahPlace",
+  "logo": "https://avatars.mds.yandex.net/get-altay/1348156/2a0000016677dec716ca4ffeb134ca621222/%s",
+  "phones": [
+   {
+    "n": "+7 (989) 598-99-49",
+    "v": "+79895989949",
+    "i": "Для бронирования"
+   }
+  ],
+  "booking": null,
+  "site": "https://hookahplace.ru/"
+ },
+ "bolokosino": {
+  "id": "27342367318",
+  "seoname": "bolo",
+  "title": "Bolo",
+  "address": "Москва, Новоухтомское ш., 2А",
+  "coords": [
+   37.844907,
+   55.712161
+  ],
+  "status": "open",
+  "categories": [
+   "Быстрое питание",
+   "кафе"
+  ],
+  "hours": [
+   "10:00-21:45",
+   "10:00-21:45",
+   "10:00-21:45",
+   "10:00-21:45",
+   "10:00-21:45",
+   "10:00-21:45",
+   "10:00-21:45"
+  ],
+  "hoursText": "ежедневно, 10:00 AM–9:45 PM",
+  "metro": [
+   {
+    "name": "Косино",
+    "color": "#e66ac0",
+    "distance": "1,34 км",
+    "meters": 1337.33
+   },
+   {
+    "name": "Лермонтовский проспект",
+    "color": "#8647b2",
+    "distance": "1,8 км",
+    "meters": 1797.48
+   },
+   {
+    "name": "Улица Дмитриевского",
+    "color": "#e66ac0",
+    "distance": "2,34 км",
+    "meters": 2341.7
+   }
+  ],
+  "photoCount": 185,
+  "photos": [
+   "https://avatars.mds.yandex.net/get-altay/16420800/2a0000019b171f511a61e9276c413a131d8c/%s",
+   "https://avatars.mds.yandex.net/get-altay/18151954/2a0000019bcb53701459cf341a98c37dfc8a/%s",
+   "https://avatars.mds.yandex.net/get-altay/19613367/2a0000019b171d4f0746bf0ea5aaf043a63a/%s",
+   "https://avatars.mds.yandex.net/get-altay/15408870/2a0000019b17204caa8c2438168f532897b9/%s",
+   "https://avatars.mds.yandex.net/get-altay/16398472/2a0000019bfa3a5e7f88a409d62ff3952df1/%s",
+   "https://avatars.mds.yandex.net/get-altay/14296532/2a0000019b1d0b76098d9b82967060c0fb91/%s",
+   "https://avatars.mds.yandex.net/get-altay/16130837/2a0000019b17204c0549213c66d47ac33493/%s",
+   "https://avatars.mds.yandex.net/get-altay/16465668/2a0000019b6647acfaa03fecbc986e118a47/%s",
+   "https://avatars.mds.yandex.net/get-altay/16451045/2a0000019b600209af98f52ba83215540cfa/%s",
+   "https://avatars.mds.yandex.net/get-altay/16404250/2a0000019b17204ea941f834e30793f1ee4c/%s"
+  ],
+  "rating": 4.8,
+  "ratingCount": 307,
+  "features": [
+   "средний счёт: 600–1500 ₽",
+   "кофе с собой",
+   "еда навынос",
+   "Можно с собакой",
+   "События: Свидание, Корпоратив, День Рождения",
+   "время завтрака: 12–22 час",
+   "бабл-чай",
+   "Чай",
+   "посещение с животными: разрешено с собаками до 35 см.",
+   "парковка",
+   "способ оплаты: бесконтактная оплата, QR-код, банковским переводом, оплата картой, безналичная, СБП, наличными, онлайн",
+   "Кофе",
+   null,
+   "завтрак",
+   "музыка: ретро",
+   "акции: бонусы, акции, скидки",
+   "детское меню",
+   "туалет",
+   "WC",
+   "комната матери и ребёнка",
+   "расположен в фудкорте",
+   "автоматическая дверь",
+   "лифт",
+   "туалет для людей с инвалидностью",
+   "можно с ноутбуком",
+   "Оплата картой",
+   "велопарковка",
+   "ограниченный доступ",
+   "специальное меню: гриль",
+   "парковка для людей с инвалидностью",
+   "Питьевая вода",
+   "кухня: европейская",
+   "доступность входа на инвалидной коляске: доступно",
+   "Wi-Fi",
+   "тип заведения: фаст-фуд",
+   "доступность помещения на инвалидной коляске: частично доступно",
+   "особенности заведения: можно с животными, открытая кухня, можно с ноутбуком, меню на английском",
+   "приглушенный свет",
+   "доставка еды: нет по умолчанию",
+   null,
+   "Самовывоз",
+   "кондиционер",
+   null
+  ],
+  "social": [],
+  "links": [],
+  "chain": null,
+  "logo": "https://avatars.mds.yandex.net/get-altay/16472720/2a0000019b171df6094616210a2d7d5a3ac8/%s",
+  "phones": [
+   {
+    "n": "+7 (919) 964-96-03",
+    "v": "+79199649603",
+    "i": null
+   }
+  ],
+  "booking": null,
+  "site": "https://bolo.ru/"
+ },
+ "mosdoner": {
+  "id": "4324263276",
+  "seoname": "mosdoner",
+  "title": "МосДонер",
+  "address": "Москва, Новослободская ул., 46",
+  "coords": [
+   37.595513,
+   55.785785
+  ],
+  "status": "open",
+  "categories": [
+   "Кафе",
+   "ресторан",
+   "быстрое питание"
+  ],
+  "hours": [
+   "00:00-00:00",
+   "00:00-00:00",
+   "00:00-00:00",
+   "00:00-00:00",
+   "00:00-00:00",
+   "00:00-00:00",
+   "00:00-00:00"
+  ],
+  "hoursText": "ежедневно, круглосуточно",
+  "metro": [
+   {
+    "name": "Менделеевская",
+    "color": "#999999",
+    "distance": "510 м",
+    "meters": 512.367
+   },
+   {
+    "name": "Новослободская",
+    "color": "#805139",
+    "distance": "810 м",
+    "meters": 810.554
+   },
+   {
+    "name": "Савёловская",
+    "color": "#999999",
+    "distance": "1 000 м",
+    "meters": 995.997
+   }
+  ],
+  "photoCount": 205,
+  "photos": [
+   "https://avatars.mds.yandex.net/get-altay/1551063/2a00000167d3008415aa3dbec5985084ad65/%s",
+   "https://avatars.mds.yandex.net/get-altay/1622057/2a00000167d300a9e90cf272744bde45ab30/%s",
+   "https://avatars.mds.yandex.net/get-altay/1627037/2a00000167d2ff60354765f365e53c8a8c16/%s",
+   "https://avatars.mds.yandex.net/get-altay/1633071/2a00000167d2ffc1e3063cab3e6f8ca75ad2/%s",
+   "https://avatars.mds.yandex.net/get-altay/1551063/2a00000167d2ff967aeecd65b9ddf59d5125/%s",
+   "https://avatars.mds.yandex.net/get-altay/1439437/2a00000167d30033b21208f2f3f1f96277cb/%s",
+   "https://avatars.mds.yandex.net/get-altay/1678797/2a00000167d30033af01334fc407518c4de5/%s",
+   "https://avatars.mds.yandex.net/get-altay/1483503/2a00000167d300a9e8cff86da3193426b391/%s",
+   "https://avatars.mds.yandex.net/get-altay/1439437/2a00000167d2ff418b67d6ddd391de20799c/%s",
+   "https://avatars.mds.yandex.net/get-altay/1485972/2a00000167d300af9c8b17d9e7668d54d2e2/%s"
+  ],
+  "rating": 4.3,
+  "ratingCount": 2621,
+  "features": [
+   "цены: средние",
+   "средний счёт: 300–350 ₽",
+   "кофе с собой",
+   "еда навынос",
+   null,
+   "доступность входа на инвалидной коляске: доступно",
+   "Оплата счета по QR-коду",
+   "Оплата картой",
+   "крафтовое пиво",
+   "специальное меню: гриль",
+   "круглосуточная работа",
+   null,
+   "цена бизнес-ланча: 350 ₽",
+   "кухня: кавказская, турецкая, японская, мясная, смешанная, шашлык",
+   "тип заведения: закусочная, фаст-фуд, пивной ресторан",
+   "Wi-Fi",
+   "особенности заведения: круглосуточная кухня",
+   "спортивные трансляции",
+   "проектор",
+   "бизнес-ланч",
+   "число экранов: 12"
+  ],
+  "social": [],
+  "links": [],
+  "chain": null,
+  "logo": null,
+  "phones": [
+   {
+    "n": "+7 (499) 972-44-12",
+    "v": "+74999724412",
+    "i": "Ресторан "
+   }
+  ],
+  "booking": null,
+  "site": null
+ },
+ "shgiros": {
+  "id": "195561182497",
+  "seoname": "shaurma_i_giros",
+  "title": "Шаурма и Гирос",
+  "address": "Москва, ул. Дмитрия Ульянова, 10/1к1",
+  "coords": [
+   37.56644,
+   55.689618
+  ],
+  "status": "open",
+  "categories": [
+   "Кафе"
+  ],
+  "hours": [
+   "11:00-23:00",
+   "11:00-23:00",
+   "11:00-23:00",
+   "11:00-23:00",
+   "11:00-23:00",
+   "11:00-23:00",
+   "11:00-23:00"
+  ],
+  "hoursText": "ежедневно, 11:00 AM–11:00 PM",
+  "metro": [
+   {
+    "name": "Академическая",
+    "color": "#f28b24",
+    "distance": "500 м",
+    "meters": 501.258
+   },
+   {
+    "name": "Академическая",
+    "color": "#177245",
+    "distance": "590 м",
+    "meters": 590.963
+   },
+   {
+    "name": "Профсоюзная",
+    "color": "#f28b24",
+    "distance": "1,49 км",
+    "meters": 1490.64
+   }
+  ],
+  "photoCount": 21,
+  "photos": [
+   "https://avatars.mds.yandex.net/get-altay/19829109/2a0000019e77fd607a356cdb0f3261f52160/%s",
+   "https://avatars.mds.yandex.net/get-altay/18101536/2a0000019e77fd60172eb286878df3f90b01/%s",
+   "https://avatars.mds.yandex.net/get-altay/18116908/2a0000019de38979d02c256063c404d5de4e/%s",
+   "https://avatars.mds.yandex.net/get-altay/16166099/2a0000019de38f4275576fa10def72fe16cc/%s",
+   "https://avatars.mds.yandex.net/get-altay/18134764/2a0000019ef42d08b6b4235b628cc1a61ba5/%s",
+   "https://avatars.mds.yandex.net/get-altay/19580059/2a0000019e4ad680ae39ea84de8e3e6e3f64/%s",
+   "https://avatars.mds.yandex.net/get-altay/19876101/2a0000019e4ad6055c5a58d50639e5b4c1d1/%s",
+   "https://avatars.mds.yandex.net/get-altay/20980815/2a0000019ef42d0c9ea4166d94f2ddbc5783/%s",
+   "https://avatars.mds.yandex.net/get-altay/18173477/2a0000019de38f94dfa047d88b7ccc197cc4/%s",
+   "https://avatars.mds.yandex.net/get-altay/14586367/2a0000019eb79438016f6c102bff6c5e07eb/%s"
+  ],
+  "rating": 4.6,
+  "ratingCount": 60,
+  "features": [
+   "доставка еды",
+   "средний счёт: 300–300 ₽",
+   "кофе с собой",
+   "еда навынос",
+   "Можно с собакой",
+   "туалет",
+   "Чай",
+   "доставка еды: Яндекс.Еда",
+   "Кофе",
+   "Зарядка для телефона",
+   "доступность входа на инвалидной коляске: доступно",
+   "Оплата картой",
+   "WC",
+   "Питьевая вода",
+   "акции: спецпредложения",
+   "можно с ноутбуком",
+   null,
+   "цена бизнес-ланча: 440 ₽",
+   "тип заведения: фаст-фуд",
+   "детское меню",
+   "завтрак",
+   "бизнес-ланч",
+   "число экранов: 2"
+  ],
+  "social": [],
+  "links": [],
+  "chain": null,
+  "logo": "https://avatars.mds.yandex.net/get-altay/19580059/2a0000019de38ea96a52805c76d263713114/%s",
+  "phones": [
+   {
+    "n": "+7 (916) 594-05-83",
+    "v": "+79165940583",
+    "i": null
+   }
+  ],
+  "booking": null,
+  "site": null
+ },
+ "sahara": {
+  "id": "56673348950",
+  "seoname": "sahara",
+  "title": "Сахара",
+  "address": "Москва, МКАД, 73-й километр, 7, корп. 1",
+  "coords": [
+   37.423477,
+   55.87599
+  ],
+  "status": "open",
+  "categories": [
+   "Ресторан",
+   "доставка еды и обедов",
+   "быстрое питание"
+  ],
+  "hours": [
+   "00:00-00:00",
+   "00:00-00:00",
+   "00:00-00:00",
+   "00:00-00:00",
+   "00:00-00:00",
+   "00:00-00:00",
+   "00:00-00:00"
+  ],
+  "hoursText": "ежедневно, круглосуточно",
+  "metro": [
+   {
+    "name": "Планерная",
+    "color": "#8647b2",
+    "distance": "3,9 км",
+    "meters": 3852.35
+   },
+   {
+    "name": "Сходненская",
+    "color": "#8647b2",
+    "distance": "5 км",
+    "meters": 4986.93
+   }
+  ],
+  "photoCount": 289,
+  "photos": [
+   "https://avatars.mds.yandex.net/get-altay/10963046/2a0000018a97a320b06815ea522ae143fff8/%s",
+   "https://avatars.mds.yandex.net/get-altay/10589039/2a0000018c167eb1ce948a644ffc4ab30240/%s",
+   "https://avatars.mds.yandex.net/get-altay/224414/2a000001865419d62e3611e9f0cbb26b02a7/%s",
+   "https://avatars.mds.yandex.net/get-altay/1908863/2a0000016a550eb1172aa81a607910fc33d9/%s",
+   "https://avatars.mds.yandex.net/get-altay/13671440/2a000001932ed5d042d404461a4aab999fcd/%s",
+   "https://avatars.mds.yandex.net/get-altay/4234257/2a00000179bc36024403b621b2bbbc17c310/%s",
+   "https://avatars.mds.yandex.net/get-altay/18708590/2a0000019b7ac4ecae97a8eaec53596fb004/%s",
+   "https://avatars.mds.yandex.net/get-altay/1987173/2a0000018654195c0644b27ca2b8339b0288/%s",
+   "https://avatars.mds.yandex.net/get-altay/13897576/2a00000191c1980745acbabe3d0b967a8887/%s",
+   "https://avatars.mds.yandex.net/get-altay/9704097/2a0000018b23f08bbf1525098a063930ace5/%s"
+  ],
+  "rating": 4.4,
+  "ratingCount": 7619,
+  "features": [
+   "доставка еды",
+   "кофе с собой",
+   "еда навынос",
+   "цены: выше среднего",
+   "Чай",
+   null,
+   "доставка еды: собственная курьерская служба",
+   "Кофе",
+   "Зарядка для телефона",
+   "способ оплаты: наличными, оплата картой, банковским переводом",
+   "Оплата картой",
+   "парковка",
+   "доставка",
+   "WC",
+   "летняя веранда",
+   "специальное меню: постное, сезонное, блинное, гриль, детское, правильное питание, шаурма, донер",
+   "Бесплатная доставка",
+   "круглосуточная работа",
+   "танцпол",
+   "Меню: гриль, суши и роллы, сладости, домашняя еда, выпечка, узбекская еда, шашлыки, здоровое питание, плов, бургеры",
+   "караоке",
+   "детская комната",
+   null,
+   "кухня: грузинская, европейская, кавказская, турецкая, паназиатская, русская, узбекская, восточная, азербайджанская, азиатская, мясная, национальная",
+   "тип заведения: закусочная, фаст-фуд, чайный клуб",
+   "Wi-Fi",
+   "особенности заведения: своя пекарня, живая музыка, круглосуточная кухня, бесплатная парковка, танцпол, есть банкетный зал, можно с ноутбуком",
+   "Время доставки: за час",
+   "спортивные трансляции",
+   "завтрак",
+   "Предзаказ онлайн",
+   "Минимальный заказ: 1000 ₽"
+  ],
+  "social": [
+   "https://vk.ru/sahara.resto"
+  ],
+  "links": [],
+  "chain": "Сахара",
+  "logo": "https://avatars.mds.yandex.net/get-altay/1637232/2a0000016a0cd5dc752a7cba65dc5cc07f40/%s",
+  "phones": [
+   {
+    "n": "+7 (495) 204-24-24",
+    "v": "+74952042424",
+    "i": null
+   }
+  ],
+  "booking": null,
+  "site": "https://cafesahara.ru/"
+ },
+ "meatpoint": {
+  "id": "1158500483",
+  "seoname": "meatpoint",
+  "title": "Alexander`s митпоинт",
+  "address": "Москва, Брюсов пер., 11, стр. 1",
+  "coords": [
+   37.605529,
+   55.759017
+  ],
+  "status": "open",
+  "categories": [
+   "Быстрое питание"
+  ],
+  "hours": [
+   "00:00-00:00",
+   null,
+   "00:00-00:00",
+   "00:00-00:00",
+   "00:00-00:00",
+   "00:00-00:00",
+   "00:00-00:00"
+  ],
+  "hoursText": "вт-вс круглосуточно",
+  "metro": [
+   {
+    "name": "Тверская",
+    "color": "#3aa63a",
+    "distance": "740 м",
+    "meters": 738.662
+   },
+   {
+    "name": "Пушкинская",
+    "color": "#8647b2",
+    "distance": "740 м",
+    "meters": 744.431
+   },
+   {
+    "name": "Охотный Ряд",
+    "color": "#f23d30",
+    "distance": "860 м",
+    "meters": 862.53
+   }
+  ],
+  "photoCount": 279,
+  "photos": [
+   "https://avatars.mds.yandex.net/get-altay/16404250/2a000001973638ba3be248685c1677bc10fd/%s",
+   "https://avatars.mds.yandex.net/get-altay/13063086/2a0000019369628c3b507e7a6475c221d71d/%s",
+   "https://avatars.mds.yandex.net/get-altay/11401274/2a0000018b6169e31fa9b48fa134501d49ee/%s",
+   "https://avatars.mds.yandex.net/get-altay/1860543/2a0000016ed08b3c357ddcf8a62d445677b7/%s",
+   "https://avatars.mds.yandex.net/get-altay/20249436/2a0000019ef871558fc84ddf3b1524bfd0d1/%s",
+   "https://avatars.mds.yandex.net/get-altay/8074519/2a000001879a4a7d5efc40edbeff53408885/%s",
+   "https://avatars.mds.yandex.net/get-altay/15401366/2a00000194e943717edfe1f4920162bea39d/%s",
+   "https://avatars.mds.yandex.net/get-altay/14635327/2a00000196aa43aa9cee23b507172686da21/%s",
+   "https://avatars.mds.yandex.net/get-altay/16457969/2a0000019a1c3392f6fafb97eda8a5f394f9/%s",
+   "https://avatars.mds.yandex.net/get-altay/17863912/2a0000019c37f1f637d07c0019e88479f187/%s"
+  ],
+  "rating": 4.8,
+  "ratingCount": 2603,
+  "features": [
+   "средний счёт: от 250 ₽",
+   "кофе с собой",
+   "еда навынос",
+   "цены: средние",
+   null,
+   "доставка еды: нет по умолчанию",
+   "доступность входа на инвалидной коляске: доступно",
+   "способ оплаты: наличными, оплата картой",
+   null,
+   "кухня: турецкая, восточная",
+   "Wi-Fi"
+  ],
+  "social": [
+   "https://vk.ru/alexandersmeatpoint"
+  ],
+  "links": [],
+  "chain": null,
+  "logo": null,
+  "phones": [
+   {
+    "n": "+7 (495) 940-66-96",
+    "v": "+74959406696",
+    "i": "Предварительный заказ"
+   },
+   {
+    "n": "+7 (926) 743-12-44",
+    "v": "+79267431244",
+    "i": null
+   }
+  ],
+  "booking": null,
+  "site": null
+ },
+ "veronika": {
+  "id": "74042940170",
+  "seoname": "veronique2vie",
+  "title": "Двойная Жизнь Вероники",
+  "address": "Москва, Новая площадь, 8, стр. 2",
+  "coords": [
+   37.626318,
+   55.757956
+  ],
+  "status": "open",
+  "categories": [
+   "Бар",
+   "ресторан",
+   "ночной клуб"
+  ],
+  "hours": [
+   "16:00-00:00",
+   null,
+   "16:00-00:00",
+   "16:00-00:00",
+   "16:00-00:00",
+   "16:00-04:00",
+   "16:00-04:00"
+  ],
+  "hoursText": "вт-чт 4:00 PM–12:00 AM; пт,сб 4:00 PM–4:00 AM; вс 4:00 PM–12:00 AM",
+  "metro": [
+   {
+    "name": "Лубянка",
+    "color": "#f23d30",
+    "distance": "156 м",
+    "meters": 156.366
+   },
+   {
+    "name": "Китай-город",
+    "color": "#f28b24",
+    "distance": "291 м",
+    "meters": 291.949
+   },
+   {
+    "name": "Китай-город",
+    "color": "#8647b2",
+    "distance": "350 м",
+    "meters": 348.267
+   }
+  ],
+  "photoCount": 125,
+  "photos": [
+   "https://avatars.mds.yandex.net/get-altay/7636462/2a000001878c98c0de5a8ea2381d563c8d76/%s",
+   "https://avatars.mds.yandex.net/get-altay/14209766/2a000001947495a49c42c18669fc1707032e/%s",
+   "https://avatars.mds.yandex.net/get-altay/13996387/2a000001947495bd05bc1ae9034920b5b508/%s",
+   "https://avatars.mds.yandex.net/get-altay/14844975/2a000001947495de9252bdc38f7f52a8a762/%s",
+   "https://avatars.mds.yandex.net/get-altay/14333651/2a00000194749627e6344073e2eb8951e009/%s",
+   "https://avatars.mds.yandex.net/get-altay/12865251/2a0000018ec849e930bafaa8c2da5fd65ed5/%s",
+   "https://avatars.mds.yandex.net/get-altay/11408080/2a0000019160cf68ba281e9bf62a60acdb57/%s",
+   "https://avatars.mds.yandex.net/get-altay/14578051/2a00000194749626f008074209f87d0112bf/%s",
+   "https://avatars.mds.yandex.net/get-altay/4476499/2a000001829b1266b4eff3e11d474e58e6ae/%s",
+   "https://avatars.mds.yandex.net/get-altay/20218502/2a0000019e8e44311e3b980518ce1552dd00/%s"
+  ],
+  "rating": 4.8,
+  "ratingCount": 4572,
+  "features": [
+   "цена бокала пива: 500–500 ₽",
+   "цены: высокие",
+   "Можно с собакой",
+   "фейс-контроль",
+   null,
+   "шоу-программа",
+   "Чай",
+   "посещение с животными: разрешено с кошками и собаками",
+   "способ оплаты: наличными, оплата картой, безналичная, оплата кредитной картой, QR-код",
+   "Кофе",
+   "музыка: pop, 80-90-х, dj`s, танцевальная, фоновая",
+   "акции: скидки, акции, спецпредложения",
+   "Зарядка для телефона",
+   "танцпол",
+   "дресс-код",
+   null,
+   "туалет",
+   "WC",
+   "предварительная запись",
+   "Оплата картой",
+   "специальное меню: сезонное",
+   "ресторан",
+   "Питьевая вода",
+   "кухня: индийская, европейская, итальянская, тайская, паназиатская, авторская, морская, мясная, рыбная, средиземноморская",
+   "доступность входа на инвалидной коляске: недоступно",
+   "только для взрослых",
+   "Wi-Fi",
+   "тип заведения: гастропаб, коктейльный бар, танцевальный бар, ресторан с летней верандой, винный ресторан",
+   null,
+   "доступность помещения на инвалидной коляске: недоступно",
+   "особенности заведения: DJ, барная стойка, винная карта, танцпол, можно с животными, можно с ноутбуком",
+   "средний счёт: 1500–2000 ₽",
+   "доставка еды: нет по умолчанию",
+   "количество столов в зале для посадки: 9–12",
+   null,
+   "кофе с собой"
+  ],
+  "social": [
+   "https://t.me/veronique2vie"
+  ],
+  "links": [],
+  "chain": null,
+  "logo": "https://avatars.mds.yandex.net/get-altay/5102477/2a0000018bf945c9a17aa11ffa414a5b8d47/%s",
+  "phones": [
+   {
+    "n": "+7 (925) 700-06-09",
+    "v": "+79257000609",
+    "i": null
+   }
+  ],
+  "booking": null,
+  "site": "https://taplink.cc/veronique2vie"
+ },
+ "soma": {
+  "id": "186010982061",
+  "seoname": "soma",
+  "title": "Soma",
+  "address": "Москва, Петровский бул., 14",
+  "coords": [
+   37.620218,
+   55.767061
+  ],
+  "status": "open",
+  "categories": [
+   "Ресторан"
+  ],
+  "hours": [
+   "12:00-00:00",
+   "12:00-00:00",
+   "12:00-00:00",
+   "12:00-00:00",
+   "12:00-00:00",
+   "12:00-02:00",
+   "12:00-02:00"
+  ],
+  "hoursText": "пн-чт 12:00 PM–12:00 AM; пт,сб 12:00 PM–2:00 AM; вс 12:00 PM–12:00 AM",
+  "metro": [
+   {
+    "name": "Трубная",
+    "color": "#9fbf00",
+    "distance": "283 м",
+    "meters": 283.627
+   },
+   {
+    "name": "Цветной бульвар",
+    "color": "#999999",
+    "distance": "640 м",
+    "meters": 638.986
+   },
+   {
+    "name": "Пушкинская",
+    "color": "#8647b2",
+    "distance": "850 м",
+    "meters": 848.045
+   }
+  ],
+  "photoCount": 232,
+  "photos": [
+   "https://avatars.mds.yandex.net/get-altay/16105135/2a00000197fa7c8af5a4363aa05659e4eda7/%s",
+   "https://avatars.mds.yandex.net/get-altay/19902702/2a0000019d155189365a13b405d256f363a0/%s",
+   "https://avatars.mds.yandex.net/get-altay/15232415/2a00000197fa7c8bd1e817e681857f999ad6/%s",
+   "https://avatars.mds.yandex.net/get-altay/16396695/2a00000197fa7c8d641e4a093a0f31ebb6e1/%s",
+   "https://avatars.mds.yandex.net/get-altay/16416536/2a0000019d155267cf55f75d4c8daae71e4b/%s",
+   "https://avatars.mds.yandex.net/get-altay/17021023/2a00000197fa7c8d4d959e6e43aff78d1ed0/%s",
+   "https://avatars.mds.yandex.net/get-altay/15251677/2a00000197fa7c8b81f9dbc71d671887aa94/%s",
+   "https://avatars.mds.yandex.net/get-altay/15043309/2a00000197fa7c9778b42ca5ecaa4187f009/%s",
+   "https://avatars.mds.yandex.net/get-altay/13206609/2a0000019016dc794a49c7c106f047a5d124/%s",
+   "https://avatars.mds.yandex.net/get-altay/13294935/2a00000193db230e9e9df14486caca6b33c5/%s"
+  ],
+  "rating": 4.8,
+  "ratingCount": 2299,
+  "features": [
+   "средний счёт: 2500–3000 ₽",
+   "доставка еды",
+   "кофе с собой",
+   "еда навынос",
+   "цены: высокие",
+   "Можно с собакой",
+   "типы безналичных чаевых: нетмонет",
+   "События: Деловая встреча, Семейный ужин, Корпоратив, Банкет, День Рождения, Свадьба",
+   null,
+   "Чай",
+   "посещение с животными: разрешено со всеми животными",
+   "способ оплаты: наличными, оплата картой",
+   "Кофе",
+   "музыка: live dj sets, электронная, джаз, живая, electro",
+   "завтрак",
+   "акции: бонусы",
+   "Зарядка для телефона",
+   "None: Смарт Кэжуал",
+   "танцпол",
+   "туалет",
+   "WC",
+   "предварительная запись",
+   null,
+   "None: Рестораны",
+   "None: Ультима Яндекс Консьерж, Яндекс Консьерж",
+   "None: Москва",
+   "Оплата картой",
+   "велопарковка",
+   "специальное меню: сезонное, гриль",
+   "Питьевая вода",
+   "кухня: европейская, авторская, морская, вегетарианская",
+   "доступность входа на инвалидной коляске: недоступно",
+   "Wi-Fi",
+   null,
+   "тип заведения: ресторан авторской кухни, ресторан с летней верандой",
+   "доступность помещения на инвалидной коляске: недоступно",
+   "особенности заведения: DJ, живая музыка, барная стойка, танцпол, есть банкетный зал, можно с животными, можно с ноутбуком",
+   "приглушенный свет",
+   "доставка еды: Яндекс.Еда",
+   "количество столов в зале для посадки: 75–90",
+   "летняя веранда",
+   null
+  ],
+  "social": [
+   "https://t.me/somateam"
+  ],
+  "links": [],
+  "chain": null,
+  "logo": "https://avatars.mds.yandex.net/get-altay/4546519/2a00000182abbb0f2d38a2f9c6e2165df3b8/%s",
+  "phones": [
+   {
+    "n": "+7 (999) 766-20-00",
+    "v": "+79997662000",
+    "i": null
+   }
+  ],
+  "booking": null,
+  "site": "https://soma.moscow/"
+ },
+ "greendog": {
+  "id": "1251187414",
+  "seoname": "green_dog",
+  "title": "Зеленая собака",
+  "address": "Москва, ул. Кузнецкий Мост, 3, стр. 2",
+  "coords": [
+   37.617087,
+   55.761651
+  ],
+  "status": "open",
+  "categories": [
+   "Бар",
+   "ресторан",
+   "ночной клуб"
+  ],
+  "hours": [
+   "17:00-02:00",
+   "17:00-02:00",
+   "17:00-02:00",
+   "17:00-02:00",
+   "17:00-02:00",
+   "17:00-06:00",
+   "17:00-06:00"
+  ],
+  "hoursText": "пн-чт 5:00 PM–2:00 AM; пт,сб 5:00 PM–6:00 AM; вс 5:00 PM–2:00 AM",
+  "metro": [
+   {
+    "name": "Охотный Ряд",
+    "color": "#f23d30",
+    "distance": "450 м",
+    "meters": 447.947
+   },
+   {
+    "name": "Театральная",
+    "color": "#3aa63a",
+    "distance": "480 м",
+    "meters": 479.415
+   },
+   {
+    "name": "Кузнецкий Мост",
+    "color": "#8647b2",
+    "distance": "560 м",
+    "meters": 556.594
+   }
+  ],
+  "photoCount": 512,
+  "photos": [
+   "https://avatars.mds.yandex.net/get-altay/2363990/2a0000017b2cda515c80447c7cf9cf5658a1/%s",
+   "https://avatars.mds.yandex.net/get-altay/2044663/2a0000017b2cda2f0096606474e3c0790aeb/%s",
+   "https://avatars.mds.yandex.net/get-altay/4562252/2a0000017b2cda94419ee4767deb8c0b360a/%s",
+   "https://avatars.mds.yandex.net/get-altay/4255939/2a0000017b2cda62fc3a61fc6390889d71ad/%s",
+   "https://avatars.mds.yandex.net/get-altay/2384989/2a0000017684c925ffd40b4fde88977c3ede/%s",
+   "https://avatars.mds.yandex.net/get-altay/2424821/2a0000017684c9208a0263a4e13db84ea3f9/%s",
+   "https://avatars.mds.yandex.net/get-altay/5245944/2a0000017b2cda9312810eddcc3ca71c7174/%s",
+   "https://avatars.mds.yandex.net/get-altay/5235220/2a0000017b2cddd4ddccac1c6b6ee75b2d53/%s",
+   "https://avatars.mds.yandex.net/get-altay/4552098/2a0000017b2cdbd65c82fa70b53e4a496da6/%s",
+   "https://avatars.mds.yandex.net/get-altay/4234174/2a0000017b2cda92a735f02007a7633cf77e/%s"
+  ],
+  "rating": 5,
+  "ratingCount": 2763,
+  "features": [
+   "цена бокала пива: 500–550 ₽",
+   "цены: выше среднего",
+   "еда навынос",
+   "Можно с собакой",
+   "фейс-контроль",
+   "типы безналичных чаевых: нетмонет",
+   "подарочный сертификат",
+   null,
+   "шоу-программа",
+   "Чай",
+   "посещение с животными: разрешено со всеми животными",
+   "парковка",
+   "способ оплаты: наличными, оплата картой",
+   "Кофе",
+   "музыка: pop, funky, r'n'b, рэп, soul, dj`s, europop, reggae, танцевальная, live dj sets, ремиксы на шлягеры, латиноамериканская, 80-90-х, блюз, живая, диско, mash-up, авторская песня, tech, ретро, джаз, рок-н-ролл",
+   "акции: скидки, спецпредложения, подарки, акции, бонусы",
+   "Зарядка для телефона",
+   "танцпол",
+   "дресс-код",
+   "Скидка на еду",
+   null,
+   "Предзаказ онлайн",
+   "туалет",
+   "WC",
+   "предварительная запись",
+   "вместимость зала: 80–200",
+   "Оплата картой",
+   "велопарковка",
+   "крафтовое пиво",
+   "специальное меню: сезонное",
+   "ресторан",
+   "Питьевая вода",
+   "кухня: европейская, фьюжн, авторская, домашняя, восточно-европейская",
+   "доступность входа на инвалидной коляске: недоступно",
+   "vip-зона",
+   "Wi-Fi",
+   "тип заведения: бар-клуб, ресторан с летней верандой, крафтовый бар, виски бар, коктейльный бар, гастропаб, спикизи бар, танцевальный бар, винный ресторан, винотека",
+   null,
+   "доступность помещения на инвалидной коляске: частично доступно",
+   "зимняя веранда",
+   "особенности заведения: меню на английском, DJ, барная стойка, винная карта, танцпол, есть банкетный зал, можно с животными, живая музыка, можно с ноутбуком",
+   "средний счёт: 1500–3000 ₽",
+   "количество столов в зале для посадки: 20–50",
+   "летняя веранда",
+   "проектор",
+   "число экранов: 6",
+   "кофе с собой"
+  ],
+  "social": [
+   "https://t.me/zelenaja_sobaka"
+  ],
+  "links": [],
+  "chain": null,
+  "logo": "https://avatars.mds.yandex.net/get-altay/5583647/2a0000017d1f75d3f670cc35d7ae8e779f93/%s",
+  "phones": [
+   {
+    "n": "+7 (931) 644-99-45",
+    "v": "+79316449945",
+    "i": null
+   }
+  ],
+  "booking": null,
+  "site": "https://www.zelenaya-sobaka.ru/"
+ },
+ "profsoyuz": {
+  "id": "133933857803",
+  "seoname": "profsoyuz",
+  "title": "Профсоюз",
+  "address": "Москва, Новослободская ул., 16А",
+  "coords": [
+   37.599911,
+   55.782182
+  ],
+  "status": "open",
+  "categories": [
+   "Бар",
+   "банкетный зал",
+   "ресторан"
+  ],
+  "hours": [
+   null,
+   null,
+   null,
+   null,
+   "19:00-02:00",
+   "19:00-06:00",
+   "19:00-06:00"
+  ],
+  "hoursText": "чт 7:00 PM–2:00 AM; пт,сб 7:00 PM–6:00 AM",
+  "metro": [
+   {
+    "name": "Менделеевская",
+    "color": "#999999",
+    "distance": "137 м",
+    "meters": 137.746
+   },
+   {
+    "name": "Новослободская",
+    "color": "#805139",
+    "distance": "440 м",
+    "meters": 435.933
+   },
+   {
+    "name": "Достоевская",
+    "color": "#9fbf00",
+    "distance": "1,23 км",
+    "meters": 1233.3
+   }
+  ],
+  "photoCount": 110,
+  "photos": [
+   "https://avatars.mds.yandex.net/get-altay/14295867/2a00000193f932859d99d29280b9998bae39/%s",
+   "https://avatars.mds.yandex.net/get-altay/13786585/2a00000193f92b8b4034dbf740f27152aad3/%s",
+   "https://avatars.mds.yandex.net/get-altay/14105192/2a00000193f952c83492ec74bad34802b6b3/%s",
+   "https://avatars.mds.yandex.net/get-altay/14171651/2a00000193f952c682d8e15049a7b62d7562/%s",
+   "https://avatars.mds.yandex.net/get-altay/13525210/2a00000193f930784eaec7edd4a3df816606/%s",
+   "https://avatars.mds.yandex.net/get-altay/14021521/2a00000193f92ba1a18613a1d5baaee3c0c1/%s",
+   "https://avatars.mds.yandex.net/get-altay/14098455/2a00000193f930aaa59e8f7ba654cb4a5957/%s",
+   "https://avatars.mds.yandex.net/get-altay/14185024/2a00000193f93285a66b8f4c6bd7f7d1e748/%s",
+   "https://avatars.mds.yandex.net/get-altay/14021521/2a00000193f933a6788db790335fc4b45257/%s",
+   "https://avatars.mds.yandex.net/get-altay/10878699/2a00000193f92ba17def6b78ab4f96fb0394/%s"
+  ],
+  "rating": 4.7,
+  "ratingCount": 11817,
+  "features": [
+   "цена бокала пива: до 700 ₽",
+   "еда навынос",
+   "спортивные трансляции",
+   "События: День Рождения, Корпоратив, Свадьба, Банкет, Деловая встреча",
+   null,
+   "посещение с животными: запрещено с животными",
+   "способ оплаты: наличными, оплата картой, QR-код, безналичная, оплата кредитной картой, дисконтная система скидок, СБП, предоплата, онлайн",
+   null,
+   "музыка: dj`s, живая",
+   "акции: подарки, бонусы, спецпредложения, акции, скидки",
+   "Зарядка для телефона",
+   "танцпол",
+   null,
+   "туалет",
+   "Предзаказ онлайн",
+   "WC",
+   "предварительная запись",
+   null,
+   "караоке",
+   "Оплата картой",
+   "крафтовое пиво",
+   "специальное меню: сезонное, хот-доги",
+   "кухня: европейская, американская",
+   "доступность входа на инвалидной коляске: доступно",
+   "только для взрослых",
+   "Wi-Fi",
+   "тип заведения: винотека, бар-клуб, коктейльный бар, танцевальный бар, пивной бар",
+   null,
+   "доступность помещения на инвалидной коляске: частично доступно",
+   "особенности заведения: DJ, живая музыка, танцпол, можно с ноутбуком, открытая кухня, проведение стендапов, барная стойка, винная карта",
+   "количество столов в зале для посадки: до 90",
+   "летняя веранда",
+   "проектор",
+   null,
+   "число экранов: 20",
+   "кофе с собой"
+  ],
+  "social": [
+   "https://wa.me/79268751855",
+   "https://t.me/profsouz_bars",
+   "https://vk.ru/profsouzbars"
+  ],
+  "links": [],
+  "chain": null,
+  "logo": "https://avatars.mds.yandex.net/get-altay/16323929/2a00000199e7847db44cb231e22b82bb773d/%s",
+  "phones": [
+   {
+    "n": "+7 (939) 321-59-24",
+    "v": "+79393215924",
+    "i": null
+   },
+   {
+    "n": "+7 (960) 783-93-61",
+    "v": "+79607839361",
+    "i": "Бронирование столов (ежедневно с 10:00 до 22:00)"
+   }
+  ],
+  "booking": null,
+  "site": "https://profsouzbars.com/"
+ },
+ "strelka": {
+  "id": "1058448426",
+  "seoname": "strelka",
+  "title": "Strelka bar",
+  "address": "Москва, Берсеневская наб., 14, стр. 5",
+  "coords": [
+   37.609307,
+   55.742451
+  ],
+  "status": "open",
+  "categories": [
+   "Бар",
+   "организация мероприятий",
+   "ресторан"
+  ],
+  "hours": [
+   null,
+   null,
+   null,
+   null,
+   null,
+   "18:00-03:00",
+   "18:00-03:00"
+  ],
+  "hoursText": "пт,сб 6:00 PM–3:00 AM",
+  "metro": [
+   {
+    "name": "Кропоткинская",
+    "color": "#f23d30",
+    "distance": "770 м",
+    "meters": 767.59
+   },
+   {
+    "name": "Боровицкая",
+    "color": "#999999",
+    "distance": "1,19 км",
+    "meters": 1189.93
+   },
+   {
+    "name": "Полянка",
+    "color": "#999999",
+    "distance": "1,28 км",
+    "meters": 1278.78
+   }
+  ],
+  "photoCount": 537,
+  "photos": [
+   "https://avatars.mds.yandex.net/get-altay/13220791/2a000001946f3e6aa678f42670043140fb8e/%s",
+   "https://avatars.mds.yandex.net/get-altay/1871297/2a000001701de28fdb55fb4501fc43a21715/%s",
+   "https://avatars.mds.yandex.net/get-altay/14021354/2a000001946f3e69c7b582323e56b5792887/%s",
+   "https://avatars.mds.yandex.net/get-altay/12813249/2a0000019001d5c5af410cac60855cc01eae/%s",
+   "https://avatars.mds.yandex.net/get-altay/953593/2a000001618b666489a2a6c83bfb13a39d4a/%s",
+   "https://avatars.mds.yandex.net/get-altay/12813249/2a0000019001d5c3d9a03dc59151b58ba7ec/%s",
+   "https://avatars.mds.yandex.net/get-altay/10285614/2a0000019001d697fd0fd1a5f349224e8514/%s",
+   "https://avatars.mds.yandex.net/get-altay/4289674/2a0000017b491d24673f723f7789dd5d50d2/%s",
+   "https://avatars.mds.yandex.net/get-altay/6141684/2a000001833fb9c7dbfa5803ff9515f6d2a2/%s",
+   "https://avatars.mds.yandex.net/get-altay/6514890/2a0000018b2c76a80d8a3e0c6a24e9c65b8c/%s"
+  ],
+  "rating": 4.8,
+  "ratingCount": 6830,
+  "features": [
+   "цена бокала пива: 500–500 ₽",
+   "цены: выше среднего",
+   "еда навынос",
+   "Можно с собакой",
+   "типы безналичных чаевых: нетмонет",
+   "Чай",
+   "посещение с животными: разрешено со всеми животными",
+   "способ оплаты: наличными, оплата картой",
+   "Кофе",
+   "завтрак",
+   null,
+   "Зарядка для телефона",
+   "None: Бар",
+   "танцпол",
+   "WC",
+   "None: Рестораны",
+   "None: Хорошее место Консьерж ",
+   "None: Москва",
+   "Оплата картой",
+   "велопарковка",
+   "крафтовое пиво",
+   "Питьевая вода",
+   "кухня: европейская, смешанная",
+   "доступность входа на инвалидной коляске: доступно",
+   "Wi-Fi",
+   "тип заведения: ресторан на воде",
+   null,
+   "доступность помещения на инвалидной коляске: недоступно",
+   "особенности заведения: меню на английском, DJ, бранчи, местоположение у воды, бесплатная парковка, барная стойка, есть банкетный зал",
+   "средний счёт: 1500–2000 ₽",
+   "доставка еды: нет по умолчанию",
+   "летняя веранда",
+   "проектор",
+   "кофе с собой"
+  ],
+  "social": [
+   "https://t.me/strelkabarmoscow"
+  ],
+  "links": [],
+  "chain": null,
+  "logo": "https://avatars.mds.yandex.net/get-altay/13229524/2a0000018f1a5d2b60b3232cad93f685fb4e/%s",
+  "phones": [
+   {
+    "n": "+7 (977) 580-19-68",
+    "v": "+79775801968",
+    "i": null
+   }
+  ],
+  "booking": null,
+  "site": "http://barstrelka.com/"
+ },
+ "tantsy": {
+  "id": "20028346313",
+  "seoname": "dances_food_people",
+  "title": "Танцы food&people",
+  "address": "Москва, Пречистенская наб., 15, стр. 2",
+  "coords": [
+   37.605434,
+   55.738831
+  ],
+  "status": "open",
+  "categories": [
+   "Ресторан",
+   "бар"
+  ],
+  "hours": [
+   "14:00-00:00",
+   "14:00-00:00",
+   "14:00-00:00",
+   "14:00-00:00",
+   "14:00-00:00",
+   "14:00-04:00",
+   "14:00-04:00"
+  ],
+  "hoursText": "пн-чт 2:00 PM–12:00 AM; пт,сб 2:00 PM–4:00 AM; вс 2:00 PM–12:00 AM",
+  "metro": [
+   {
+    "name": "Парк культуры",
+    "color": "#f23d30",
+    "distance": "890 м",
+    "meters": 894.853
+   },
+   {
+    "name": "Кропоткинская",
+    "color": "#f23d30",
+    "distance": "940 м",
+    "meters": 935.472
+   },
+   {
+    "name": "Парк культуры",
+    "color": "#805139",
+    "distance": "1,02 км",
+    "meters": 1022.98
+   }
+  ],
+  "photoCount": 286,
+  "photos": [
+   "https://avatars.mds.yandex.net/get-altay/12594216/2a000001934f7b13e608b9e2b56b0d8aa82f/%s",
+   "https://avatars.mds.yandex.net/get-altay/13754922/2a000001934f6ba5fdd924bfff0185edf5e6/%s",
+   "https://avatars.mds.yandex.net/get-altay/14307348/2a000001934f6d29ebfe667aeceb824b37c6/%s",
+   "https://avatars.mds.yandex.net/get-altay/14193233/2a000001934f6c83ccc943c9bded81ad0575/%s",
+   "https://avatars.mds.yandex.net/get-altay/14451083/2a000001934f74555368667521f466b8f5d4/%s",
+   "https://avatars.mds.yandex.net/get-altay/14460764/2a000001934f6c1467d289f1b4207a99638f/%s",
+   "https://avatars.mds.yandex.net/get-altay/14112077/2a000001934f698624ebd817fedd616b6aed/%s",
+   "https://avatars.mds.yandex.net/get-altay/1246719/2a00000164a15d6f91431b95d23e000b7ae4/%s",
+   "https://avatars.mds.yandex.net/get-altay/1903890/2a0000016ae304b428875fdb279a81fe193b/%s",
+   "https://avatars.mds.yandex.net/get-altay/13474366/2a00000191d31fcc83f7d7244e54d8925307/%s"
+  ],
+  "rating": 4.8,
+  "ratingCount": 3924,
+  "features": [
+   "средний счёт: 3000–3000 ₽",
+   "кофе с собой",
+   "еда навынос",
+   "цены: высокие",
+   "Можно с собакой",
+   "типы безналичных чаевых: нетмонет",
+   "подарочный сертификат",
+   null,
+   "Чай",
+   "способ оплаты: наличными, оплата картой, безналичная",
+   "Кофе",
+   null,
+   "музыка: mash-up, live dj sets, disco house, dj`s",
+   "акции: подарки",
+   "Зарядка для телефона",
+   "танцпол",
+   "цена бокала пива: 500–500 ₽",
+   "Скидка на еду",
+   null,
+   "туалет",
+   "WC",
+   "предварительная запись",
+   null,
+   "Оплата картой",
+   "специальное меню: сезонное",
+   "Питьевая вода",
+   "кухня: европейская, авторская",
+   "доступность входа на инвалидной коляске: доступно",
+   "Wi-Fi",
+   null,
+   "тип заведения: бар-клуб, коктейльный бар, танцевальный бар",
+   "особенности заведения: меню на английском, DJ, живая музыка, местоположение у воды, барная стойка, винная карта, есть банкетный зал, можно с животными, танцпол",
+   "приглушенный свет",
+   "доставка еды: нет по умолчанию",
+   "летняя веранда",
+   null
+  ],
+  "social": [
+   "https://t.me/tancyfoodpeople",
+   "https://wa.me/79851194709",
+   "https://wa.me/message/3KABKDI4V3QWK1",
+   "https://vk.ru/tancyfoodpeople"
+  ],
+  "links": [
+   "https://www.restoran.ru/booking-widget-form.php?id=2912716&name=%D0%92%D0%B8%D0%BD%D0%BD%D1%8B%D0%B9+%D0%B1%D0%B0%D0%B7%D0%B0%D1%80.+%D0%A2%D0%B0%D0%BD%D1%86%D1%8B"
+  ],
+  "chain": null,
+  "logo": "https://avatars.mds.yandex.net/get-altay/14238289/2a00000191c79343cc7b1d66f33cd54d09d0/%s",
+  "phones": [
+   {
+    "n": "+7 (985) 119-47-09",
+    "v": "+79851194709",
+    "i": null
+   }
+  ],
+  "booking": "https://www.restoran.ru/booking-widget-form.php?id=2912716&name=%D0%92%D0%B8%D0%BD%D0%BD%D1%8B%D0%B9+%D0%B1%D0%B0%D0%B7%D0%B0%D1%80.+%D0%A2%D0%B0%D0%BD%D1%86%D1%8B",
+  "site": "http://dancesfoodpeople.ru/"
+ },
+ "zavarka": {
+  "id": "72961239999",
+  "seoname": "zavarka_gastrokvartal",
+  "title": "Заварка Гастроквартал",
+  "address": "Москва, Рочдельская ул., 15, стр. 30",
+  "coords": [
+   37.561077,
+   55.755978
+  ],
+  "status": "open",
+  "categories": [
+   "Ночной клуб",
+   "бар"
+  ],
+  "hours": [
+   null,
+   null,
+   null,
+   null,
+   null,
+   "22:00-06:00",
+   "22:00-06:00"
+  ],
+  "hoursText": "пт,сб 10:00 PM–6:00 AM",
+  "metro": [
+   {
+    "name": "Улица 1905 года",
+    "color": "#8647b2",
+    "distance": "1,18 км",
+    "meters": 1178.94
+   },
+   {
+    "name": "Краснопресненская",
+    "color": "#805139",
+    "distance": "1,64 км",
+    "meters": 1638.67
+   },
+   {
+    "name": "Деловой центр",
+    "color": "#21abd9",
+    "distance": "1,76 км",
+    "meters": 1760.56
+   }
+  ],
+  "photoCount": 111,
+  "photos": [
+   "https://avatars.mds.yandex.net/get-altay/1899063/2a0000016a44f363785f2d7bafd06ae0f348/%s",
+   "https://avatars.mds.yandex.net/get-altay/1903890/2a0000016a44f35ed0628da642b68d036954/%s",
+   "https://avatars.mds.yandex.net/get-altay/1879888/2a0000016a44f368e7fbe0042a6f977de44d/%s",
+   "https://avatars.mds.yandex.net/get-altay/2068435/2a0000016c608e546590f9716b057ff91dc5/%s",
+   "https://avatars.mds.yandex.net/get-altay/1773749/2a0000016a44f36de9cf282b476c72e05ecc/%s",
+   "https://avatars.mds.yandex.net/get-altay/10963046/2a0000018b39ed8d75eb4b561cef0f855933/%s",
+   "https://avatars.mds.yandex.net/get-altay/3592340/2a00000177948cdb8ed3d17e7fd3264d511a/%s",
+   "https://avatars.mds.yandex.net/get-altay/6514890/2a0000018b39f0959e9e50ffa186ab8f38bf/%s",
+   "https://avatars.mds.yandex.net/get-altay/1705560/2a0000016bb6f80073a62fa3438645d79b1e/%s",
+   "https://avatars.mds.yandex.net/get-altay/927353/2a0000018810288705dcf7f1d063748b66ee/%s"
+  ],
+  "rating": 4.5,
+  "ratingCount": 2840,
+  "features": [
+   "Оплата картой",
+   "фейс-контроль",
+   "дресс-код",
+   "музыка: pop, mash-up, live dj sets, house, euro dance, funky, электронная, chillout, r'n'b, рэп, 80-90-х, диско, живая, звёзды эстрады, disco house, dj`s, electro-house, europop, лаунж, рок, ремиксы на шлягеры, рок-н-ролл, танцевальная, фоновая",
+   "танцпол",
+   "цены: высокие",
+   null,
+   "предварительная запись",
+   "шоу-программа",
+   "доступность входа на инвалидной коляске: недоступно",
+   "способ оплаты: наличными, QR-код, оплата картой",
+   "парковка",
+   "ресторан",
+   "средний счёт: 4000–5000 ₽",
+   "чилаут",
+   "акции: акции",
+   "парковка для людей с инвалидностью",
+   "кухня: европейская, американская, итальянская, русская, японская, нет специализации",
+   "вместимость зала: 100–2000",
+   "vip-зона",
+   "Wi-Fi"
+  ],
+  "social": [
+   "https://wa.me/79329990707",
+   "https://www.youtube.com/channel/UCIZNx4FAdEl41UxfRirwwkg?utm_source=yandexmap",
+   "https://vk.ru/zavarka.gastrokvartal"
+  ],
+  "links": [],
+  "chain": null,
+  "logo": "https://avatars.mds.yandex.net/get-altay/1871013/2a0000016a6831ef97792c2532548cb13237/%s",
+  "phones": [
+   {
+    "n": "+7 (932) 999-07-07",
+    "v": "+79329990707",
+    "i": null
+   }
+  ],
+  "booking": null,
+  "site": "https://rochdale.ru/zavarka"
+ },
+ "noor": {
+  "id": "1106573003",
+  "seoname": "noor_electro",
+  "title": "Нуур Электро",
+  "address": "Москва, Тверская ул., 23, стр. 1",
+  "coords": [
+   37.600741,
+   55.767
+  ],
+  "status": "open",
+  "categories": [
+   "Бар",
+   "ресторан",
+   "ночной клуб"
+  ],
+  "hours": [
+   "10:00-03:00",
+   "10:00-03:00",
+   "10:00-03:00",
+   "10:00-03:00",
+   "10:00-03:00",
+   "10:00-06:00",
+   "10:00-06:00"
+  ],
+  "hoursText": "пн-чт 10:00 AM–3:00 AM; пт,сб 10:00 AM–6:00 AM; вс 10:00 AM–3:00 AM",
+  "metro": [
+   {
+    "name": "Пушкинская",
+    "color": "#8647b2",
+    "distance": "262 м",
+    "meters": 262.112
+   },
+   {
+    "name": "Тверская",
+    "color": "#3aa63a",
+    "distance": "300 м",
+    "meters": 300.563
+   },
+   {
+    "name": "Маяковская",
+    "color": "#3aa63a",
+    "distance": "380 м",
+    "meters": 384.095
+   }
+  ],
+  "photoCount": 138,
+  "photos": [
+   "https://avatars.mds.yandex.net/get-altay/467304/2a0000015ed06604c1f9930ec6a8ee25fb13/%s",
+   "https://avatars.mds.yandex.net/get-altay/1132477/2a00000188f533767a8995d8ebd7edf519ff/%s",
+   "https://avatars.mds.yandex.net/get-altay/9284964/2a0000018a40c291a98f30d6b71e97b5a461/%s",
+   "https://avatars.mds.yandex.net/get-altay/9709783/2a0000018a40c39316eff679ceb333106976/%s",
+   "https://avatars.mds.yandex.net/get-altay/10869107/2a0000018a40c3214317c41b8a5344d694d7/%s",
+   "https://avatars.mds.yandex.net/get-altay/790902/2a0000016288993e2bdcb8d5c5a12c1aac7b/%s",
+   "https://avatars.mds.yandex.net/get-altay/240733/2a0000015ed066398a2a5627c97e39a963b1/%s",
+   "https://avatars.mds.yandex.net/get-altay/859900/2a0000015f49c1f96ace4222b429530000c2/%s",
+   "https://avatars.mds.yandex.net/get-altay/1811309/2a0000016db4d7ddd21f19aa118fc6359896/%s",
+   "https://avatars.mds.yandex.net/get-altay/4663168/2a00000177948a36884c10c480d9b294404f/%s"
+  ],
+  "rating": 4.9,
+  "ratingCount": 6445,
+  "features": [
+   "доставка еды",
+   "цена бокала пива: 350–400 ₽",
+   "цены: высокие",
+   "еда навынос",
+   "фейс-контроль",
+   null,
+   "шоу-программа",
+   "Чай",
+   "способ оплаты: наличными",
+   "Кофе",
+   "завтрак",
+   "музыка: house, электронная, диско, disco house, dj`s, танцевальная",
+   "чилаут",
+   "Зарядка для телефона",
+   "None: Бар",
+   "танцпол",
+   "дресс-код",
+   null,
+   "Предзаказ онлайн",
+   "WC",
+   null,
+   "None: Рестораны",
+   "None: Хорошее место Консьерж ",
+   "None: Москва",
+   "ресторан",
+   "Питьевая вода",
+   "кухня: европейская, русская, авторская, международная",
+   "доступность входа на инвалидной коляске: недоступно",
+   "vip-зона",
+   "Wi-Fi",
+   "тип заведения: коктейльный бар, танцевальный бар, ресторан авторской кухни, ресторан с живой музыкой, ресторан с летней верандой, кофейня с завтраками",
+   null,
+   "особенности заведения: меню на английском, DJ, бранчи, бесплатная парковка, барная стойка, детская анимация, винная карта, танцпол, есть банкетный зал, можно с ноутбуком",
+   "средний счёт: 2500–3000 ₽",
+   "летняя веранда",
+   "проектор",
+   "число экранов: 1",
+   "кофе с собой"
+  ],
+  "social": [
+   "https://www.youtube.com/channel/UCDcDFtXgbj7hMeuJUz5Ev9A",
+   "https://t.me/noorbarlive"
+  ],
+  "links": [
+   "https://yandex.ru/web-maps/webview?booking[permalink]=1106573003&booking[standalone]=true&mode=booking&source=partner-cta"
+  ],
+  "chain": null,
+  "logo": "https://avatars.mds.yandex.net/get-altay/2776464/2a0000017304a1f0d1d20a07b34fc6f1b71e/%s",
+  "phones": [
+   {
+    "n": "+7 (903) 136-76-86",
+    "v": "+79031367686",
+    "i": null
+   }
+  ],
+  "booking": "https://yandex.ru/web-maps/webview?booking[permalink]=1106573003&booking[standalone]=true&mode=booking&source=partner-cta",
+  "site": "https://www.noorbar.com/"
+ },
+ "zorka": {
+  "id": "121485809175",
+  "seoname": "zorka",
+  "title": "Zorka",
+  "address": "Москва, ул. Косыгина, 28, стр. 1",
+  "coords": [
+   37.545636,
+   55.708183
+  ],
+  "status": "open",
+  "categories": [
+   "Ночной клуб",
+   "аренда площадок для культурно-массовых мероприятий",
+   "бар"
+  ],
+  "hours": [
+   null,
+   null,
+   null,
+   null,
+   null,
+   "22:00-06:00",
+   "22:00-06:00"
+  ],
+  "hoursText": "пт,сб 10:00 PM–6:00 AM",
+  "metro": [
+   {
+    "name": "Воробьёвы горы",
+    "color": "#f23d30",
+    "distance": "890 м",
+    "meters": 894.664
+   },
+   {
+    "name": "Ломоносовский проспект",
+    "color": "#ffd000",
+    "distance": "2,17 км",
+    "meters": 2171.59
+   },
+   {
+    "name": "Университет",
+    "color": "#f23d30",
+    "distance": "2,46 км",
+    "meters": 2463.31
+   }
+  ],
+  "photoCount": 85,
+  "photos": [
+   "https://avatars.mds.yandex.net/get-altay/14664328/2a000001973f5419026a467697b75b058600/%s",
+   "https://avatars.mds.yandex.net/get-altay/16482798/2a000001973f5449593b1965b94e2c46ba65/%s",
+   "https://avatars.mds.yandex.net/get-altay/15074774/2a000001975e469b189b92c5ee3e5ddc134d/%s",
+   "https://avatars.mds.yandex.net/get-altay/16230048/2a000001973f5478964f5ffdb8084dbf01e0/%s",
+   "https://avatars.mds.yandex.net/get-altay/15343885/2a000001973f54d5c814597962c94c249637/%s",
+   "https://avatars.mds.yandex.net/get-altay/15257527/2a000001973f54c7097cf18b7b83437a0ff4/%s",
+   "https://avatars.mds.yandex.net/get-altay/15283873/2a000001973f54c8e4d64e04653869bea2c0/%s",
+   "https://avatars.mds.yandex.net/get-altay/16182900/2a000001973f548c1d42abce76fcb15fdaf4/%s",
+   "https://avatars.mds.yandex.net/get-altay/14506105/2a000001973f544c05a83cc7ebac8b113f31/%s",
+   "https://avatars.mds.yandex.net/get-altay/14919466/2a000001973f54cb8d45a06dbb113f56175f/%s"
+  ],
+  "rating": 4.4,
+  "ratingCount": 787,
+  "features": [
+   "Оплата картой",
+   "дресс-код",
+   "музыка: dj`s",
+   "танцпол",
+   "цены: высокие",
+   "туалет",
+   null,
+   null,
+   "цена бокала пива: 500–650 ₽",
+   "аренда лофта",
+   "еда навынос",
+   "аренда танцплощадки",
+   "средний счёт: 1500–3000 ₽",
+   "летняя веранда",
+   "кофе с собой",
+   "тип заведения: бар-клуб",
+   "Wi-Fi",
+   "особенности заведения: барная стойка, DJ",
+   "только для взрослых",
+   null,
+   "События: Корпоратив, Банкет, День Рождения"
+  ],
+  "social": [],
+  "links": [],
+  "chain": null,
+  "logo": "https://avatars.mds.yandex.net/get-altay/14506105/2a000001973f525fb4d512a30d6c3abec699/%s",
+  "phones": [
+   {
+    "n": "+7 (916) 772-28-97",
+    "v": "+79167722897",
+    "i": null
+   },
+   {
+    "n": "+7 (926) 566-15-99",
+    "v": "+79265661599",
+    "i": null
+   }
+  ],
+  "booking": null,
+  "site": "https://zorka.moscow/"
+ },
+ "legend": {
+  "id": "65268431726",
+  "seoname": "legenda",
+  "title": "Легенда",
+  "address": "Москва, Флотская ул., 5, корп. В",
+  "coords": [
+   37.492096,
+   55.852071
+  ],
+  "status": "open",
+  "categories": [
+   "Ресторан",
+   "бильярдный клуб"
+  ],
+  "hours": [
+   "12:00-00:00",
+   "12:00-00:00",
+   "12:00-00:00",
+   "12:00-00:00",
+   "12:00-00:00",
+   "12:00-00:00",
+   "12:00-00:00"
+  ],
+  "hoursText": "ежедневно, 12:00 PM–12:00 AM",
+  "metro": [
+   {
+    "name": "Речной вокзал",
+    "color": "#3aa63a",
+    "distance": "1,25 км",
+    "meters": 1252.27
+   },
+   {
+    "name": "Водный стадион",
+    "color": "#3aa63a",
+    "distance": "1,88 км",
+    "meters": 1881.32
+   },
+   {
+    "name": "Беломорская",
+    "color": "#3aa63a",
+    "distance": "2,16 км",
+    "meters": 2159.24
+   }
+  ],
+  "photoCount": 122,
+  "photos": [
+   "https://avatars.mds.yandex.net/get-altay/19883212/2a0000019cb4ba4c286fd583d3b6f71767b0/%s",
+   "https://avatars.mds.yandex.net/get-altay/17773264/2a0000019e17d70eef7f31142036c3f2c489/%s",
+   "https://avatars.mds.yandex.net/get-altay/16166099/2a0000019c8b31e89a2dbd6bea6e2bc53f6a/%s",
+   "https://avatars.mds.yandex.net/get-altay/18105464/2a0000019cf0e9f1187c89dbb6d0e7a24f27/%s",
+   "https://avatars.mds.yandex.net/get-altay/18132699/2a0000019cf0e48ec26128156fac190cb2d4/%s",
+   "https://avatars.mds.yandex.net/get-altay/18108291/2a0000019d762d8b1352148c70ea296ea6df/%s",
+   "https://avatars.mds.yandex.net/get-altay/16340554/2a0000019cf0ea19ee7b2c4e386d9bb34874/%s",
+   "https://avatars.mds.yandex.net/get-altay/19883212/2a0000019c8b31dd10e99842153cbb0d8b5b/%s",
+   "https://avatars.mds.yandex.net/get-altay/18134764/2a0000019d04e8515416a0c3c795b340b88c/%s",
+   "https://avatars.mds.yandex.net/get-altay/18769949/2a0000019c8b74b2d777005d1338abad43eb/%s"
+  ],
+  "rating": 5,
+  "ratingCount": 179,
+  "features": [
+   "доставка еды",
+   "кофе с собой",
+   "подарочный сертификат",
+   "События: День Рождения, Корпоратив, Банкет, Семейный ужин",
+   "Чай",
+   "посещение с животными: запрещено с животными",
+   "парковка",
+   "способ оплаты: оплата картой, наличными, скидки на услуги льготным категориям",
+   "Кофе",
+   "акции: акции, спецпредложения",
+   "Скидка на еду",
+   "бизнес-ланч",
+   "Предзаказ онлайн",
+   "туалет",
+   "бильярд",
+   "WC",
+   "предварительная запись",
+   "турниры",
+   "можно с ноутбуком",
+   "хранение бильярдных аксессуаров клиента",
+   "Оплата картой",
+   "велопарковка",
+   "крафтовое пиво",
+   "парковка для людей с инвалидностью",
+   "кухня: европейская, русская, паназиатская",
+   "столов для пула: 4",
+   "столов для русского бильярда: 6",
+   "доступность входа на инвалидной коляске: недоступно",
+   "Wi-Fi",
+   "игра в бильярд (час): 600–2500 ₽",
+   "тип заведения: ресторан авторской кухни",
+   "пробковый сбор",
+   "доступность помещения на инвалидной коляске: недоступно",
+   "цена бизнес-ланча: 850 ₽",
+   "особенности заведения: бильярд, бесплатная парковка",
+   "приглушенный свет",
+   "доставка еды: Яндекс.Еда",
+   "количество столов в зале для посадки: от 15",
+   null,
+   null
+  ],
+  "social": [
+   "https://t.me/legendaflotskaya"
+  ],
+  "links": [],
+  "chain": null,
+  "logo": "https://avatars.mds.yandex.net/get-altay/18785127/2a0000019c99bdc02cec9c78470d023645bf/%s",
+  "phones": [
+   {
+    "n": "+7 (965) 229-65-68",
+    "v": "+79652296568",
+    "i": null
+   }
+  ],
+  "booking": null,
+  "site": "https://flotskaya.legendbc.ru/"
+ },
+ "yauzaplace": {
+  "id": "22577398171",
+  "seoname": "yauza_place",
+  "title": "Yauza place",
+  "address": "Москва, Яузский бул., 12",
+  "coords": [
+   37.644703,
+   55.751536
+  ],
+  "status": "open",
+  "categories": [
+   "Ресторан"
+  ],
+  "hours": [
+   "10:00-00:00",
+   "12:00-00:00",
+   "12:00-00:00",
+   "12:00-00:00",
+   "12:00-00:00",
+   "12:00-02:00",
+   "10:00-02:00"
+  ],
+  "hoursText": "пн-чт 12:00 PM–12:00 AM; пт 12:00 PM–2:00 AM; сб 10:00 AM–2:00 AM; вс 10:00 AM–12:00 AM",
+  "metro": [
+   {
+    "name": "Китай-город",
+    "color": "#8647b2",
+    "distance": "950 м",
+    "meters": 954.931
+   },
+   {
+    "name": "Китай-город",
+    "color": "#f28b24",
+    "distance": "1,01 км",
+    "meters": 1014.69
+   },
+   {
+    "name": "Чкаловская",
+    "color": "#9fbf00",
+    "distance": "1,2 км",
+    "meters": 1197.88
+   }
+  ],
+  "photoCount": 1523,
+  "photos": [
+   "https://avatars.mds.yandex.net/get-altay/11368589/2a0000018bd4132b6cb09895518017345a03/%s",
+   "https://avatars.mds.yandex.net/get-altay/15278128/2a000001955058958c7694d67701dedff5d3/%s",
+   "https://avatars.mds.yandex.net/get-altay/14506105/2a0000019678b039e063040c274e434eea17/%s",
+   "https://avatars.mds.yandex.net/get-altay/5298780/2a0000018212790e33d93c456dbae0727b30/%s",
+   "https://avatars.mds.yandex.net/get-altay/16451941/2a000001979ee332c22aedb9f81792b5cfe6/%s",
+   "https://avatars.mds.yandex.net/get-altay/16789805/2a00000199e89f36a597ae1b85a89f965995/%s",
+   "https://avatars.mds.yandex.net/get-altay/10101276/2a0000018ebeea09bd0884ea72b5a5c09d30/%s",
+   "https://avatars.mds.yandex.net/get-altay/16915650/2a0000019c761619d0a6a4fa8f27e7297232/%s",
+   "https://avatars.mds.yandex.net/get-altay/16340554/2a0000019d217d4b31dde73134d247558b52/%s",
+   "https://avatars.mds.yandex.net/get-altay/21012689/2a0000019ef5ad31bfeae5393b37fe01c349/%s"
+  ],
+  "rating": 4.9,
+  "ratingCount": 4944,
+  "features": [
+   "средний счёт: от 3500 ₽",
+   "доставка еды",
+   "кофе с собой",
+   "еда навынос",
+   "цены: высокие",
+   "Можно с собакой",
+   "типы безналичных чаевых: нетмонет",
+   "подарочный сертификат",
+   "События: Деловая встреча, Семейный ужин, Корпоратив, Свадьба, День Рождения, Банкет",
+   "Чай",
+   "посещение с животными: разрешено со всеми животными",
+   "парковка",
+   "способ оплаты: QR-код, по ссылке, СБП, предоплата, онлайн, безналичная, оплата картой, наличными",
+   "Кофе",
+   null,
+   "завтрак",
+   "музыка: progressive house, live dj sets, house, chillout, tech, джаз, живая, dj`s, лаунж, фоновая",
+   "Зарядка для телефона",
+   "None: Смарт Кэжуал",
+   "танцпол",
+   null,
+   "туалет",
+   "WC",
+   "предварительная запись",
+   null,
+   "None: Рестораны",
+   "None: Яндекс Консьерж, Ультима Яндекс Консьерж",
+   "None: Москва",
+   "Оплата картой",
+   "специальное меню: сезонное",
+   "Питьевая вода",
+   "кухня: европейская, авторская",
+   "доступность входа на инвалидной коляске: доступно",
+   "Wi-Fi",
+   null,
+   "тип заведения: ресторан с летней верандой, ресторан авторской кухни, ресторан премиум-класса",
+   "доступность помещения на инвалидной коляске: доступно",
+   "зимняя веранда",
+   "особенности заведения: меню на английском, DJ, живая музыка, барная стойка, винная карта, можно с животными",
+   "приглушенный свет",
+   "летняя веранда",
+   "проектор",
+   "число экранов: -1"
+  ],
+  "social": [
+   "https://t.me/yauza_place",
+   "https://wa.me/79993485066",
+   "https://vk.ru/yauza_place"
+  ],
+  "links": [],
+  "chain": null,
+  "logo": "https://avatars.mds.yandex.net/get-altay/10589039/2a00000189efba7ce24f806f4190bb0bf289/%s",
+  "phones": [
+   {
+    "n": "+7 (495) 363-04-35",
+    "v": "+74953630435",
+    "i": "бронирование"
+   }
+  ],
+  "booking": null,
+  "site": "https://yauza-place.ru/"
+ },
+ "stereopeople": {
+  "id": "127042067973",
+  "seoname": "stereopeople",
+  "title": "StereoPeople",
+  "address": "Москва, Новослободская ул., 16А",
+  "coords": [
+   37.599608,
+   55.78207
+  ],
+  "status": "open",
+  "categories": [
+   "Ночной клуб",
+   "бар",
+   "концертный зал"
+  ],
+  "hours": [
+   "19:00-06:00",
+   null,
+   null,
+   null,
+   "19:00-06:00",
+   "19:00-06:00",
+   "19:00-06:00"
+  ],
+  "hoursText": "чт-вс 7:00 PM–6:00 AM",
+  "metro": [
+   {
+    "name": "Менделеевская",
+    "color": "#999999",
+    "distance": "103 м",
+    "meters": 103.29
+   },
+   {
+    "name": "Новослободская",
+    "color": "#805139",
+    "distance": "360 м",
+    "meters": 359.148
+   },
+   {
+    "name": "Достоевская",
+    "color": "#9fbf00",
+    "distance": "1,16 км",
+    "meters": 1155.16
+   }
+  ],
+  "photoCount": 317,
+  "photos": [
+   "https://avatars.mds.yandex.net/get-altay/14264437/2a00000192f23a8cffe9c743f0c86c0aa650/%s",
+   "https://avatars.mds.yandex.net/get-altay/13467421/2a00000192f45898ab722ec32b9250d16ed1/%s",
+   "https://avatars.mds.yandex.net/get-altay/15289836/2a000001971c97003353eee4552b52c173fa/%s",
+   "https://avatars.mds.yandex.net/get-altay/15431134/2a000001971c96c50867d21331fd056f9df3/%s",
+   "https://avatars.mds.yandex.net/get-altay/13793720/2a00000192f45898a657cf19067992df7c77/%s",
+   "https://avatars.mds.yandex.net/get-altay/13294935/2a00000193b315b1e4d118b33a94e880d5f5/%s",
+   "https://avatars.mds.yandex.net/get-altay/15401795/2a000001971c97015c00aa6498c97216950d/%s",
+   "https://avatars.mds.yandex.net/get-altay/14005436/2a000001936e48ba4a2c0adc0258abc90147/%s",
+   "https://avatars.mds.yandex.net/get-altay/13925334/2a00000192f2408ce87294d9505a8b471033/%s",
+   "https://avatars.mds.yandex.net/get-altay/14392184/2a000001971913008c9c7b57886f362c77d0/%s"
+  ],
+  "rating": 4.8,
+  "ratingCount": 2364,
+  "features": [
+   "Оплата картой",
+   "фейс-контроль",
+   "дресс-код",
+   "музыка: pop, mash-up, live dj sets, euro dance, funky, r'n'b, рэп, 80-90-х, диско, живая, disco house, dj`s, europop, танцевальная",
+   "танцпол",
+   "цены: высокие",
+   "спортивные трансляции",
+   "подарочный сертификат",
+   "События: Корпоратив",
+   null,
+   "шоу-программа",
+   "Чай",
+   "посещение с животными: разрешено с собаками до 35 см.",
+   "Кофе",
+   "способ оплаты: наличными, оплата картой",
+   null,
+   "Зарядка для телефона",
+   "акции: подарки",
+   "туалет",
+   "WC",
+   "предварительная запись",
+   "можно с ноутбуком",
+   "доставка еды",
+   "вместимость зала: до 300",
+   "Питьевая вода",
+   "ресторан",
+   "кухня: европейская, американская",
+   "доступность входа на инвалидной коляске: доступно",
+   "vip-зона",
+   "Wi-Fi",
+   "тип заведения: бар-клуб",
+   null,
+   "еда навынос",
+   "доступность помещения на инвалидной коляске: частично доступно",
+   "особенности заведения: меню на английском, можно с ноутбуком, проведение стендапов, открытая кухня",
+   "приглушенный свет",
+   "средний счёт: 2000–2000 ₽",
+   "количество столов в зале для посадки: 1–25",
+   "летняя веранда",
+   "проектор",
+   null,
+   "кофе с собой"
+  ],
+  "social": [
+   "https://t.me/stereopeoplebar",
+   "https://wa.me/79017614121",
+   "https://vk.ru/stereopeople"
+  ],
+  "links": [],
+  "chain": null,
+  "logo": "https://avatars.mds.yandex.net/get-altay/14215987/2a00000192f41997dc234cf8968c2047d5eb/%s",
+  "phones": [
+   {
+    "n": "+7 (901) 761-41-21",
+    "v": "+79017614121",
+    "i": "Бронирование"
+   }
+  ],
+  "booking": null,
+  "site": "https://stereopeoplegroup.ru/"
+ },
+ "deepfried": {
+  "id": "121008180091",
+  "seoname": "restaurant_by_deep_fried_friends",
+  "title": "Restaurant by Deep Fried Friends",
+  "address": "Москва, Яузская ул., 10/2с4",
+  "coords": [
+   37.647086,
+   55.746384
+  ],
+  "status": "open",
+  "categories": [
+   "Ресторан",
+   "ночной клуб",
+   "кинотеатр"
+  ],
+  "hours": [
+   "12:00-00:00",
+   "12:00-00:00",
+   "12:00-00:00",
+   "12:00-00:00",
+   "12:00-00:00",
+   "12:00-05:00",
+   "12:00-05:00"
+  ],
+  "hoursText": "пн-чт 12:00 PM–12:00 AM; пт,сб 12:00 PM–5:00 AM; вс 12:00 PM–12:00 AM",
+  "metro": [
+   {
+    "name": "Таганская",
+    "color": "#805139",
+    "distance": "680 м",
+    "meters": 682.105
+   },
+   {
+    "name": "Марксистская",
+    "color": "#ffd000",
+    "distance": "980 м",
+    "meters": 980.023
+   },
+   {
+    "name": "Таганская",
+    "color": "#8647b2",
+    "distance": "990 м",
+    "meters": 994.906
+   }
+  ],
+  "photoCount": 662,
+  "photos": [
+   "https://avatars.mds.yandex.net/get-altay/5296145/2a00000180d91e2f9d4ca0912bbd3491be39/%s",
+   "https://avatars.mds.yandex.net/get-altay/9709178/2a00000188df71d052549e29b27dd3e52afd/%s",
+   "https://avatars.mds.yandex.net/get-altay/5476645/2a0000017e9c63154578a3556fb2af0b0880/%s",
+   "https://avatars.mds.yandex.net/get-altay/1027639/2a00000186c712b7fba34294d2c1526597b3/%s",
+   "https://avatars.mds.yandex.net/get-altay/902116/2a0000018674ef1a7ca0d63a5a7a2fd6b14d/%s",
+   "https://avatars.mds.yandex.net/get-altay/1028115/2a00000188df71cfed19dd99fbaba3e1e907/%s",
+   "https://avatars.mds.yandex.net/get-altay/5459048/2a0000017e2188f4e2e1d06988cc1cc5a402/%s",
+   "https://avatars.mds.yandex.net/get-altay/1025206/2a00000186c20a0b5446b0c783087d1330bd/%s",
+   "https://avatars.mds.yandex.net/get-altay/5480011/2a0000017eb648eda87ed0b0e756dc8ad7f4/%s",
+   "https://avatars.mds.yandex.net/get-altay/7691421/2a00000188aa3db5680e7a21753875b13a28/%s"
+  ],
+  "rating": 4.7,
+  "ratingCount": 2820,
+  "features": [
+   "средний счёт: 2500–3000 ₽",
+   "доставка еды",
+   "кофе с собой",
+   "еда навынос",
+   "цены: высокие",
+   "Можно с собакой",
+   "типы безналичных чаевых: нетмонет",
+   "подарочный сертификат",
+   null,
+   "Чай",
+   "посещение с животными: разрешено со всеми животными",
+   "способ оплаты: наличными, оплата картой, банковским переводом, QR-код, СБП",
+   "Кофе",
+   "акции: скидки, спецпредложения",
+   "Зарядка для телефона",
+   "None: Гастробар",
+   "танцпол",
+   "Предзаказ онлайн",
+   "WC",
+   null,
+   "None: Рестораны",
+   "None: Хорошее место Консьерж ",
+   "None: Москва",
+   "можно с ноутбуком",
+   "Оплата картой",
+   "специальное меню: сезонное",
+   "ресторан",
+   "кухня: авторская",
+   "доступность входа на инвалидной коляске: недоступно",
+   "Wi-Fi",
+   null,
+   "доступность помещения на инвалидной коляске: доступно",
+   "особенности заведения: DJ, бранчи, барная стойка, винная карта, танцпол, есть банкетный зал, можно с животными",
+   "доставка еды: Яндекс.Еда",
+   "летняя веранда",
+   "кондиционер"
+  ],
+  "social": [
+   "https://t.me/dffradio",
+   "https://wa.me/74959661881"
+  ],
+  "links": [
+   "https://yandex.ru/web-maps/webview?booking[permalink]=121008180091&booking[standalone]=true&mode=booking&source=partner-cta"
+  ],
+  "chain": null,
+  "logo": "https://avatars.mds.yandex.net/get-altay/5479189/2a0000017d1dbbbe149f384dbb439e201fb7/%s",
+  "phones": [
+   {
+    "n": "+7 (495) 966-18-81",
+    "v": "+74959661881",
+    "i": null
+   },
+   {
+    "n": "+7 (980) 800-60-71",
+    "v": "+79808006071",
+    "i": null
+   }
+  ],
+  "booking": "https://yandex.ru/web-maps/webview?booking[permalink]=121008180091&booking[standalone]=true&mode=booking&source=partner-cta",
+  "site": "http://deepfriedfriends.ru/"
+ },
+ "lucky": {
+  "id": "186496343704",
+  "seoname": "lucky_izakaya_bar",
+  "title": "Lucky Izakaya Bar",
+  "address": "Москва, Калашный пер., 9",
+  "coords": [
+   37.599596,
+   55.757295
+  ],
+  "status": "open",
+  "categories": [
+   "Ресторан"
+  ],
+  "hours": [
+   "12:00-00:00",
+   "12:00-00:00",
+   "12:00-00:00",
+   "12:00-00:00",
+   "12:00-00:00",
+   "12:00-02:00",
+   "12:00-02:00"
+  ],
+  "hoursText": "пн-чт 12:00 PM–12:00 AM; пт,сб 12:00 PM–2:00 AM; вс 12:00 PM–12:00 AM",
+  "metro": [
+   {
+    "name": "Арбатская",
+    "color": "#21abd9",
+    "distance": "710 м",
+    "meters": 705.493
+   },
+   {
+    "name": "Арбатская",
+    "color": "#0070bf",
+    "distance": "760 м",
+    "meters": 764.646
+   },
+   {
+    "name": "Пушкинская",
+    "color": "#8647b2",
+    "distance": "930 м",
+    "meters": 928.148
+   }
+  ],
+  "photoCount": 539,
+  "photos": [
+   "https://avatars.mds.yandex.net/get-altay/1880508/2a0000016e5d2a4840ce2acd7126bce6ecb6/%s",
+   "https://avatars.mds.yandex.net/get-altay/1666174/2a0000016e5d2a4115147ae84909dbd5b6b7/%s",
+   "https://avatars.mds.yandex.net/get-altay/1779701/2a0000016e5d2a3a2daa9060d4363225c406/%s",
+   "https://avatars.mds.yandex.net/get-altay/1680678/2a0000016e5d2a54c9c67bb9c9b8b3e9f412/%s",
+   "https://avatars.mds.yandex.net/get-altay/1551063/2a000001679a0416962267725e098eace80f/%s",
+   "https://avatars.mds.yandex.net/get-altay/14702189/2a00000194eb6cee2c685f6a61b797113d99/%s",
+   "https://avatars.mds.yandex.net/get-altay/15053227/2a00000195042a3e3ae485a100c6c410559b/%s",
+   "https://avatars.mds.yandex.net/get-altay/11385489/2a0000018d41f2bd54e87bcc022553198804/%s",
+   "https://avatars.mds.yandex.net/get-altay/13719877/2a00000193ba739493948c0f186939dfc0d6/%s",
+   "https://avatars.mds.yandex.net/get-altay/14209766/2a00000193ba73c5a28acde6899d5d7fed38/%s"
+  ],
+  "rating": 4.9,
+  "ratingCount": 4082,
+  "features": [
+   "средний счёт: 5500–5500 ₽",
+   "доставка еды",
+   "кофе с собой",
+   "еда навынос",
+   "Можно с собакой",
+   null,
+   "доступность входа на инвалидной коляске: недоступно",
+   "None: Изысканная кухня",
+   "None: Москва",
+   "None: Рестораны",
+   null,
+   "None: Ультима Яндекс Консьерж, Яндекс Консьерж"
+  ],
+  "social": [
+   "https://wa.me/79252396631",
+   "https://t.me/lucky_izakaya_bar"
+  ],
+  "links": [],
+  "chain": null,
+  "logo": "https://avatars.mds.yandex.net/get-altay/953593/2a00000189072aeb0d95551bd79c2786e037/%s",
+  "phones": [
+   {
+    "n": "+7 (495) 189-78-88",
+    "v": "+74951897888",
+    "i": null
+   }
+  ],
+  "booking": null,
+  "site": null
  }
 }
