@@ -56,6 +56,7 @@
     car: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 16.5h14v-4l-1.8-5a2 2 0 0 0-1.9-1.3H7.7a2 2 0 0 0-1.9 1.3L4 12.5v4z"/><path d="M4 12.5h16"/><circle cx="7.5" cy="16.5" r="1.8"/><circle cx="16.5" cy="16.5" r="1.8"/></svg>',
     walk: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="13" cy="4.5" r="2"/><path d="M9 21l2.5-6.5L14 17v4M8 12l2-4.5 3.5 1 2 3.5 2.5 1"/></svg>',
     metroM: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 19h18M5 19 9 6l3 7 3-7 4 13"/></svg>',
+    chev: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>',
     dice: '<svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="2"/><g fill="currentColor"><circle cx="8.5" cy="8.5" r="1.6"/><circle cx="15.5" cy="15.5" r="1.6"/><circle cx="12" cy="12" r="1.6"/></g></svg>'
   };
 
@@ -880,37 +881,72 @@
     }).join('') + '</dl>';
   }
 
+  /* Карточка места разложена по раскрывающимся разделам: сверху главное (название, статус, отметки),
+     ниже «О месте», «Как добраться», «Бронь и контакты», «Часы работы», «Комментарии».
+     Какие разделы открыты, запоминаем на время сессии. */
+  var ACC_OPEN = { about: true };
+  function accHTML(key, icon, title, hint, body, hintId) {
+    return '<details class="acc" data-acc="' + key + '"' + (ACC_OPEN[key] ? ' open' : '') + '>' +
+      '<summary><span class="acc-ic">' + icon + '</span><span class="acc-t"><b>' + esc(title) + '</b>' +
+        '<span class="acc-hint"' + (hintId ? ' id="' + hintId + '"' : '') + '>' + hint + '</span></span>' +
+        '<span class="acc-chev" aria-hidden="true">' + ICON.chev + '</span></summary>' +
+      '<div class="acc-body">' + body + '</div></details>';
+  }
+  function routeHint(p) {
+    var d = distOf(p);
+    if (d !== null) return esc(fmtKm(d) + etaShort(p));
+    var m = (p.metro || [])[0];
+    return m ? esc('м. ' + m.name + (m.distance ? ', ' + m.distance.replace(' ', ' ') : '')) : esc(p.address || '');
+  }
+  function contactHint(p) {
+    var ph = (p.phones || [])[0];
+    var parts = [];
+    if (ph) parts.push(ph.n);
+    if (p.booking) parts.push('онлайн-бронь');
+    else if (p.site && !ph) parts.push('сайт');
+    return esc(parts.join(' · '));
+  }
+  function commentHint(p) {
+    var n = commentsOf(p.id).length;
+    return n ? n + ' ' + plural(n, 'комментарий', 'комментария', 'комментариев') : 'пока нет, будьте первым';
+  }
   function detailBodyHTML(p, now, opts) {
     var tNow = T.absNow(now);
     var st = T.statusAtAbs(p._s, tNow);
     var lab = T.statusLabel(st);
-    var facts = [];
-    facts.push('<div class="fact">' + ICON.pin + '<div>' + esc(p.address) +
-      (p.metro && p.metro.length ? '<div class="meta" style="margin-top:4px">' + p.metro.slice(0, 2).map(function (m) {
-        return metroHTML(m) + (m.distance ? '<span class="muted">' + esc(m.distance) + '</span>' : '');
-      }).join('') + '</div>' : '') + '</div></div>');
-    if (hasCoords(p)) facts.push(distFactHTML(p));
-    if ((p.phones && p.phones.length) || p.booking || p.site) facts.push(phoneFactHTML(p));
-    if (p.price) facts.push('<div class="fact">' + ICON.wallet + '<div>' + esc(p.price) + '</div></div>');
     var perks = (p.perks || []).map(function (t) { return '<li>' + ICON.spark + '<span>' + esc(t.text) + '</span></li>'; }).join('');
+    var reels = p.reels && p.reels.length ? '<div class="acc-sub"><h4 class="section-h">Рилсы из чата</h4><div class="reels">' +
+      p.reels.map(function (code, i) {
+        return '<a class="reel-link" href="https://www.instagram.com/p/' + esc(code) + '/" target="_blank" rel="noopener" data-external>' +
+          ICON.play + (p.reels.length > 1 ? 'Рилс ' + (i + 1) : 'Смотреть рилс') + '</a>';
+      }).join('') + '</div></div>' : '';
+    var about = (p.description ? '<p class="lead">' + esc(p.description) + '</p>' : '') +
+      featTagsHTML(p) +
+      (perks ? '<div class="acc-sub"><h4 class="section-h">Фишки</h4><ul class="perks">' + perks + '</ul>' +
+        '<p class="note">Из рилсов в чате: акции и цены могли измениться.</p></div>' : '') +
+      reels;
+    var route = '<div class="facts"><div class="fact">' + ICON.pin + '<div>' + esc(p.address) +
+      (p.metro && p.metro.length ? '<div class="meta">' + p.metro.slice(0, 2).map(function (m) {
+        return metroHTML(m) + (m.distance ? '<span class="muted">' + esc(m.distance) + '</span>' : '');
+      }).join('') + '</div>' : '') + '</div></div>' +
+      (hasCoords(p) ? distFactHTML(p) : '') + '</div>';
+    var hasContacts = (p.phones && p.phones.length) || p.booking || p.site;
+    var sections = [
+      accHTML('about', ICON.spark, 'О месте', esc(p.short || ''), about),
+      accHTML('route', ICON.route, 'Как добраться', routeHint(p), route, 'accRouteHint'),
+      hasContacts ? accHTML('book', ICON.phone, 'Бронь и контакты', contactHint(p), '<div class="facts">' + phoneFactHTML(p) + '</div>') : '',
+      accHTML('hours', ICON.clock, 'Часы работы', esc(todayText(p, now)), hoursHTML(p, now)),
+      accHTML('comments', ICON.chat, 'Комментарии', esc(commentHint(p)), commentsHTML(p), 'accCmtHint')
+    ].join('');
     return (opts.withTitle ? '<h2 class="title" id="sheetTitle">' + esc(p.name) + '</h2>' : '') +
       '<div class="meta">' + (p.cuisine || []).map(function (c) { return '<span class="tag">' + esc(c) + '</span>'; }).join('') +
         (p.type ? '<span>' + esc(p.type) + '</span>' : '') +
-        (p.rating ? '<span>★ ' + fmtRating(p.rating) + ' на Яндексе</span>' : '') + '</div>' +
+        (p.rating ? '<span>★ ' + fmtRating(p.rating) + ' на Яндексе</span>' : '') +
+        (p.price ? '<span>' + esc(p.price.replace('Средний чек ', 'чек ')) + '</span>' : '') + '</div>' +
       '<div class="status-line tone-' + lab.tone + '"><span class="dot"></span><span>' + esc(lab.text) + '</span>' +
         '<span class="muted">· ' + esc(todayText(p, now).toLowerCase()) + '</span></div>' +
       marksRowHTML(p) +
-      featTagsHTML(p) +
-      '<div class="facts">' + facts.join('') + '</div>' +
-      (p.description ? '<p class="lead">' + esc(p.description) + '</p>' : '') +
-      (perks ? '<section><h3 class="section-h">Фишки</h3><ul class="perks">' + perks + '</ul><p class="note">Из рилсов в чате: акции и цены могли измениться.</p></section>' : '') +
-      commentsHTML(p) +
-      '<section><h3 class="section-h">Часы работы</h3>' + hoursHTML(p, now) + '</section>' +
-      (p.reels && p.reels.length ? '<section><h3 class="section-h">Откуда это место</h3><div class="reels">' +
-        p.reels.map(function (code, i) {
-          return '<a class="reel-link" href="https://www.instagram.com/p/' + esc(code) + '/" target="_blank" rel="noopener" data-external>' +
-            ICON.play + (p.reels.length > 1 ? 'Рилс ' + (i + 1) : 'Смотреть рилс') + '</a>';
-        }).join('') + '</div><p class="note">Рилсы из чата «Места Москва», откроются в Instagram.</p></section>' : '');
+      '<div class="accs">' + sections + '</div>';
   }
 
   /* ---------- Карточка места: расстояние, маршрут, телефон для брони ---------- */
@@ -947,6 +983,8 @@
   function refreshSheetDistance() {
     var el = document.getElementById('sheetDist');
     if (el && sheetPlace) { el.outerHTML = distFactHTML(sheetPlace); carTimeInto(sheetPlace, document.getElementById('carEta')); }
+    var rh = document.getElementById('accRouteHint');
+    if (rh && sheetPlace) rh.innerHTML = routeHint(sheetPlace);
   }
 
   function phoneFactHTML(p) {
@@ -1003,8 +1041,7 @@
     return html ? '<ul class="cmt-list">' + html + '</ul>' : '<p class="cmt-empty">Пока никто не написал. Будьте первым!</p>';
   }
   function commentsHTML(p) {
-    var n = commentsOf(p.id).length;
-    return '<section class="comments" id="commentsBox"><h3 class="section-h">Комментарии' + (n ? ' · ' + n : '') + '</h3>' +
+    return '<section class="comments" id="commentsBox">' +
       '<div id="cmtList">' + commentListHTML(p) + '</div>' +
       '<div class="cmt-form">' +
         '<textarea id="cmtText" rows="3" maxlength="1000" placeholder="Как вам это место? Что взять, когда лучше прийти…" aria-label="Ваш комментарий"></textarea>' +
@@ -1034,9 +1071,8 @@
     var box = document.getElementById('cmtList');
     if (box && sheetPlace) {
       box.innerHTML = commentListHTML(sheetPlace);
-      var h = document.querySelector('#commentsBox .section-h');
-      var n = commentsOf(sheetPlace.id).length;
-      if (h) h.textContent = 'Комментарии' + (n ? ' · ' + n : '');
+      var h = document.getElementById('accCmtHint');
+      if (h) h.textContent = commentHint(sheetPlace);
     }
   }
   function loadFreshComments() {
@@ -1297,6 +1333,13 @@
     }
   });
 
+  document.addEventListener('toggle', function (e) {
+    var d = e.target;
+    if (d && d.classList && d.classList.contains('acc')) {
+      ACC_OPEN[d.getAttribute('data-acc')] = d.open;
+      if (d.open) haptic('selectionChanged');
+    }
+  }, true);
   $('#spin').addEventListener('click', function () { spin(); });
   $('#reset').addEventListener('click', resetFilters);
   $('#q').addEventListener('input', function (e) { state.q = e.target.value; render(); });

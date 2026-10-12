@@ -1006,3 +1006,30 @@ html[data-tg] .hero { --hh: var(--tg-viewport-stable-height, 100svh); }
 .addr-item span span { display: block; color: var(--muted); font-size: 12.5px; margin-top: 2px; }
 .addr-item:focus-visible { outline: 2px solid var(--ketchup); outline-offset: 2px; }
 .addr-state { padding: 10px 2px; color: var(--muted); font-size: 14px; }
+
+/* ---------- Карточка места: раскрывающиеся разделы ---------- */
+.accs { display: flex; flex-direction: column; gap: 8px; }
+.acc { border-radius: 16px; background: var(--surface); border: 1px solid var(--line); overflow: hidden; }
+.acc > summary {
+  list-style: none; cursor: pointer; display: grid; grid-template-columns: 22px minmax(0, 1fr) 18px;
+  align-items: center; gap: 12px; padding: 14px 14px 14px 16px; -webkit-tap-highlight-color: transparent;
+}
+.acc > summary::-webkit-details-marker { display: none; }
+.acc > summary:focus-visible { outline: 2px solid var(--ketchup); outline-offset: -2px; border-radius: 16px; }
+.acc-ic { display: grid; place-items: center; color: var(--ketchup); }
+.acc-ic svg { width: 19px; height: 19px; }
+.acc-t { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.acc-t b { font: 600 16px/1.25 var(--f-body); color: var(--ink); }
+.acc-hint { color: var(--muted); font-size: 13px; line-height: 1.3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.acc[open] .acc-hint { white-space: normal; }
+.acc-chev { color: var(--muted); display: grid; place-items: center; transition: transform 0.2s ease; }
+.acc[open] .acc-chev { transform: rotate(180deg); }
+.acc-body { padding: 2px 16px 16px; display: flex; flex-direction: column; gap: 14px; border-top: 1px solid var(--line); padding-top: 14px; }
+.acc-body .feat-tags { margin-top: 0; }
+.acc-sub .section-h { margin-bottom: 8px; }
+.acc-body .comments { gap: 10px; }
+.acc .cmt { background: var(--bg); }
+.acc .cmt-form textarea { background: var(--bg); }
+@media (prefers-reduced-motion: reduce) { .acc-chev { transition: none; } }
+.acc[data-acc="book"] .fact { grid-template-columns: minmax(0, 1fr); }
+.acc[data-acc="book"] .fact > svg { display: none; }

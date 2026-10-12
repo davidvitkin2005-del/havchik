@@ -106,6 +106,7 @@ try:
         far = next(x for x in PLACES if x.get('coords') and abs(x['coords'][1] - 55.76) + abs(x['coords'][0] - 37.63) > 0.06)
         pg.evaluate("id => document.querySelector('[data-id=\"' + id + '\"]').click()", far['id'])
         pg.wait_for_selector('#sheet.is-open #marksRow')
+        pg.evaluate("document.querySelectorAll('#sheet details.acc').forEach(d => d.open = true)")
         eta = pg.inner_text('#sheetDist')
         print('     ', far['name'], '|', eta.replace('\n', ' / ')[:300])
         check('на метро' in eta and 'пешком до' in eta, 'в шторке разбивка: пешком до метро → в метро → пешком')
