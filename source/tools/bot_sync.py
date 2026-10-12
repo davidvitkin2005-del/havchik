@@ -4,7 +4,12 @@
    каждого человека, который хоть раз написал боту или нажал «Старт». В репозиторий пишется только
    число и солёные хэши id (по ним нельзя узнать, кто это), чтобы каждый считался один раз.
    Telegram хранит обновления сутки, поэтому запускать нужно чаще раза в сутки.
-2. Предложения мест: любое сообщение боту (кроме команд) попадает в data/suggestions.json —
+2. Комментарии к местам: приложение открывает чат с ботом с готовым текстом
+   «💬 Комментарий к «Название» [id]\n\nтекст». Такие сообщения попадают в data/comments.json
+   (имя из Telegram, дата, текст и солёный хэш автора, который на сайт не выкладывается);
+   приложение показывает их всем. Бот отвечает, что комментарий скоро появится.
+   Скрыть комментарий: поставить ему "hidden": true в data/comments.json.
+   Предложения мест: любое другое сообщение боту (кроме команд) попадает в data/suggestions.json —
    текст и ссылки, без имени и id отправителя; бот отвечает «Спасибо, проверим».
 3. Канал с комментариями. Для каждого места без поста публикует пост с фото в канале из
    data/telegram.json. Комментарии под постом — это комментарии к месту в приложении.
@@ -28,12 +33,24 @@ from pathlib import Path
 
 DATA = Path(__file__).resolve().parent.parent / 'data'
 PHOTO_BASE = 'https://avatars.mds.yandex.net/get-altay/'
+COMMENT_RE = re.compile(r'^💬[^\n\[]*\[([a-z0-9_-]{1,40})\]\s*\n+(.+)$', re.S)
 USER_KEYS = ('message', 'edited_message', 'callback_query', 'my_chat_member', 'inline_query',
              'chosen_inline_result', 'pre_checkout_query', 'shipping_query', 'chat_join_request', 'poll_answer')
 
 
 def msk_today():
     return (datetime.now(timezone.utc) + timedelta(hours=3)).strftime('%Y-%m-%d')
+
+
+def msk_at(ts):
+    return (datetime.fromtimestamp(ts, timezone.utc) + timedelta(hours=3)).strftime('%Y-%m-%d %H:%M')
+
+
+def display_name(u):
+    first = (u.get('first_name') or '').strip()
+    last = (u.get('last_name') or '').strip()
+    name = (first + (' ' + last[0] + '.' if last else '')).strip() or 'Гость'
+    return re.sub(r'\s+', ' ', name)[:40]
 
 
 def load(name, default):
@@ -75,13 +92,34 @@ def sync_users(token, salt):
     sugg = load('suggestions.json', {'items': []})
     known = {it.get('update') for it in sugg['items']}
     sugg_changed = False
+    comments = load('comments.json', {'items': []})
+    known_c = {it.get('update') for it in comments['items']}
+    names = {p['id']: p['name'] for p in load('places.json', [])}
+    comm_changed = False
     for upd in res['result']:
         st['offset'] = max(st['offset'], upd['update_id'])
         changed = True
         msg = upd.get('message')
         text = msg and (msg.get('text') or msg.get('caption') or '').strip()
-        # Предложение места: любое сообщение боту, кроме команд. Кто прислал, не сохраняем.
-        if text and not text.startswith('/') and upd['update_id'] not in known:
+        cm = text and COMMENT_RE.match(text)
+        if cm and msg['chat'].get('type') == 'private':
+            pid, body = cm.group(1), cm.group(2).strip()[:1000]
+            if upd['update_id'] in known_c:
+                pass
+            elif pid not in names or len(body) < 2:
+                api(token, 'sendMessage', {'chat_id': msg['chat']['id'], 'reply_to_message_id': msg.get('message_id'),
+                                           'text': 'Не получилось понять, к какому месту комментарий. Напишите его ещё раз из карточки места в приложении.'})
+            else:
+                who = msg.get('from') or {}
+                comments['items'].append({
+                    'update': upd['update_id'], 'place': pid, 'name': display_name(who),
+                    'date': msk_at(msg.get('date') or time.time()), 'text': body,
+                    'author': hmac.new(salt.encode(), str(who.get('id')).encode(), hashlib.sha256).hexdigest()[:20]})
+                comm_changed = True
+                api(token, 'sendMessage', {'chat_id': msg['chat']['id'], 'reply_to_message_id': msg.get('message_id'),
+                                           'text': f'Спасибо! Комментарий к «{names[pid]}» появится в приложении в течение 15–20 минут.'})
+        # Предложение места: любое сообщение боту, кроме команд и комментариев. Кто прислал, не сохраняем.
+        elif text and not text.startswith('/') and upd['update_id'] not in known:
             urls = re.findall(r'https?://\S+', text)
             sugg['items'].append({'update': upd['update_id'], 'date': msk_today(), 'text': text[:500],
                                   'urls': urls[:5], 'status': 'new'})
@@ -98,6 +136,8 @@ def sync_users(token, salt):
                     st['users'][h] = msk_today()
     if sugg_changed:
         save('suggestions.json', sugg)
+    if comm_changed:
+        save('comments.json', comments)
     st['count'] = len(st['users'])
     if changed:
         save('users.json', st)

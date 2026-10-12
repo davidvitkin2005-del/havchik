@@ -765,6 +765,8 @@
     if (d !== null) meta.push('<span class="dist">' + ICON.navSm + esc(fmtKm(d) + etaShort(p)) + '</span>');
     if (p.cuisine && p.cuisine.length) meta.push('<span>' + esc(p.cuisine.join(', ')) + '</span>');
     if (p.metro && p.metro[0]) meta.push(metroHTML(p.metro[0]));
+    var nc = commentsOf(p.id).length;
+    if (nc) meta.push('<span class="cmt-count">' + ICON.chat + nc + '</span>');
     var badges = (MARKS.fav[p.id] ? '<i title="В избранном">' + ICON.star + '</i>' : '') + (MARKS.want[p.id] ? '<i title="Хочу сходить">' + ICON.bookmark + '</i>' : '');
     return '<button class="card' + (st.open ? '' : ' is-closed') + '" type="button" data-id="' + esc(p.id) + '">' +
       '<span class="media">' + placeholderHTML(p) + img + (badges ? '<span class="mark-badges">' + badges + '</span>' : '') +
@@ -807,7 +809,7 @@
       groups = list.length ? [{ title: title, items: LOC.pos ? list.slice().sort(byDist) : list }] : [];
     }
 
-    var key = JSON.stringify(groups.map(function (g) { return [g.title, g.items.map(function (p) { return p.id + (MARKS.fav[p.id] ? '*' : '') + (MARKS.want[p.id] ? '+' : ''); })]; })) + (LOC.pos || '');
+    var key = JSON.stringify(groups.map(function (g) { return [g.title, g.items.map(function (p) { return p.id + (MARKS.fav[p.id] ? '*' : '') + (MARKS.want[p.id] ? '+' : '') + commentsOf(p.id).length; })]; })) + (LOC.pos || '');
     var filtered = selectedCuisines().length || state.q || state.when !== 'any' || distOn() || otherFilterNames().length;
     $('#reset').hidden = !filtered;
     $('#count').textContent = (filtered
@@ -961,33 +963,95 @@
   }
 
 
-  /* ---------- Комментарии: пост о месте в Telegram-канале, комментарии под ним ---------- */
-  function postUrl(p) { return 'https://t.me/' + META.channel + '/' + p.post; }
+  /* ---------- Комментарии ----------
+     Пишутся прямо в карточке места. Своего сервера нет, поэтому текст уходит боту обычным сообщением
+     (откроется чат с ботом, где остаётся нажать «Отправить»). GitHub Actions раз в ~15 минут забирает
+     сообщения у бота, складывает их в source/data/comments.json, и комментарий появляется у всех.
+     Свежие комментарии подгружаются из репозитория при открытии приложения. */
+  var COMMENTS = window.__COMMENTS__ || {};
+  var COMMENTS_URL = 'https://raw.githubusercontent.com/davidvitkin2005-del/havchik/main/source/data/comments.json';
+  var PENDING_KEY = 'havchik-pending-comments';
+  function pendingAll() { try { return JSON.parse(window.localStorage.getItem(PENDING_KEY) || '[]'); } catch (e) { return []; } }
+  function pendingSave(list) { try { window.localStorage.setItem(PENDING_KEY, JSON.stringify(list.slice(-30))); } catch (e) { /* хранилище недоступно */ } }
+  function commentsOf(id) { return COMMENTS[id] || []; }
+  function normText(s) { return String(s || '').replace(/\s+/g, ' ').trim(); }
+  function prunePending() {
+    var now = Date.now();
+    var left = pendingAll().filter(function (c) {
+      if (now - c.t > 3 * 24 * 3600 * 1000) return false;          // через 3 дня перестаём ждать
+      return !commentsOf(c.place).some(function (x) { return normText(x.text) === normText(c.text); });
+    });
+    pendingSave(left);
+    return left;
+  }
+  function fmtCommentDate(s) {
+    var m = /^(\d{4})-(\d\d)-(\d\d)(?:[ T](\d\d):(\d\d))?/.exec(s || '');
+    if (!m) return '';
+    var months = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'];
+    return Number(m[3]) + ' ' + months[Number(m[2]) - 1] + (m[4] ? ', ' + m[4] + ':' + m[5] : '');
+  }
+  function commentListHTML(p) {
+    var list = commentsOf(p.id).slice().sort(function (a, b) { return String(b.date).localeCompare(String(a.date)); });
+    var mine = prunePending().filter(function (c) { return c.place === p.id; });
+    var html = mine.map(function (c) {
+      return '<li class="cmt is-pending"><div class="cmt-head"><b>Вы</b><span>отправлено, появится у всех в течение 15–20 минут</span></div>' +
+        '<p>' + esc(c.text) + '</p></li>';
+    }).join('') + list.map(function (c) {
+      return '<li class="cmt"><div class="cmt-head"><b>' + esc(c.name || 'Гость') + '</b><span>' + esc(fmtCommentDate(c.date)) + '</span></div>' +
+        '<p>' + esc(c.text) + '</p></li>';
+    }).join('');
+    return html ? '<ul class="cmt-list">' + html + '</ul>' : '<p class="cmt-empty">Пока никто не написал. Будьте первым!</p>';
+  }
   function commentsHTML(p) {
-    if (!META.channel || !p.post) return '';
-    return '<section class="comments"><h3 class="section-h">Комментарии</h3>' +
-      '<div class="tg-discussion" data-discussion="' + esc(META.channel + '/' + p.post) + '"></div>' +
-      '<a class="btn btn-secondary btn-comment" href="' + esc(postUrl(p)) + '" target="_blank" rel="noopener" data-tglink>' + ICON.chat + 'Написать комментарий</a>' +
-      '<p class="note">Комментарии живут в Telegram-канале @' + esc(META.channel) + ' и видны всем.</p></section>';
+    var n = commentsOf(p.id).length;
+    return '<section class="comments" id="commentsBox"><h3 class="section-h">Комментарии' + (n ? ' · ' + n : '') + '</h3>' +
+      '<div id="cmtList">' + commentListHTML(p) + '</div>' +
+      '<div class="cmt-form">' +
+        '<textarea id="cmtText" rows="3" maxlength="1000" placeholder="Как вам это место? Что взять, когда лучше прийти…" aria-label="Ваш комментарий"></textarea>' +
+        '<button class="btn btn-primary cmt-send" type="button" data-action="cmt-send" data-cmt-place="' + esc(p.id) + '">' + ICON.chat + 'Отправить</button>' +
+      '</div>' +
+      '<p class="note">Комментарий отправится через бота @' + esc(META.bot) + ': откроется чат с ним, там нажмите «Отправить». ' +
+        'У всех он появится в течение 15–20 минут, рядом будет ваше имя из Telegram.</p></section>';
   }
-  function isDark() {
-    var t = document.documentElement.getAttribute('data-theme');
-    if (t) return t === 'dark';
-    return !!(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+  function sendComment(id) {
+    var p = byId[id], ta = document.getElementById('cmtText');
+    if (!p || !ta) return;
+    var text = ta.value.trim();
+    if (text.length < 2) { toast('Напишите пару слов'); try { ta.focus(); } catch (e) { /* ок */ } return; }
+    var msg = '💬 Комментарий к «' + p.name + '» [' + p.id + ']\n\n' + text;
+    var list = pendingAll();
+    list.push({ place: p.id, text: text, t: Date.now() });
+    pendingSave(list);
+    ta.value = '';
+    var box = document.getElementById('cmtList');
+    if (box) box.innerHTML = commentListHTML(p);
+    haptic('notificationOccurred', 'success');
+    var url = 'https://t.me/' + META.bot + '?text=' + encodeURIComponent(msg);
+    if (inTG && tg.openTelegramLink) { try { tg.openTelegramLink(url); return; } catch (e) { /* ниже запасной вариант */ } }
+    window.open(url, '_blank');
   }
-  function mountDiscussion() {
-    var box = document.querySelector('#sheet .tg-discussion');
-    if (!box || box.childNodes.length) return;
-    var s = document.createElement('script');
-    s.async = true;
-    s.src = 'https://telegram.org/js/telegram-widget.js?22';
-    s.setAttribute('data-telegram-discussion', box.getAttribute('data-discussion'));
-    s.setAttribute('data-comments-limit', '5');
-    s.setAttribute('data-colorful', '1');
-    s.setAttribute('data-color', isDark() ? 'FFC21A' : 'E5341D');
-    if (isDark()) s.setAttribute('data-dark', '1');
-    s.onerror = function () { box.remove(); };
-    box.appendChild(s);
+  function refreshCommentsUI() {
+    var box = document.getElementById('cmtList');
+    if (box && sheetPlace) {
+      box.innerHTML = commentListHTML(sheetPlace);
+      var h = document.querySelector('#commentsBox .section-h');
+      var n = commentsOf(sheetPlace.id).length;
+      if (h) h.textContent = 'Комментарии' + (n ? ' · ' + n : '');
+    }
+  }
+  function loadFreshComments() {
+    if (!window.fetch) return;
+    fetch(COMMENTS_URL + '?t=' + Math.floor(Date.now() / 60000), { cache: 'no-store' })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (d) {
+        if (!d || !d.items) return;
+        var by = {};
+        d.items.forEach(function (c) { if (c.place && c.text && !c.hidden) (by[c.place] = by[c.place] || []).push({ name: c.name, date: c.date, text: c.text }); });
+        COMMENTS = by;
+        lastListKey = '';
+        render();
+        refreshCommentsUI();
+      }, function () { /* нет сети: остаются встроенные комментарии */ });
   }
 
   function actionsHTML(p, mode) {
@@ -1013,7 +1077,6 @@
     }
     try { sheet.focus({ preventScroll: true }); } catch (e) { sheet.focus(); }
     bindGallery();
-    mountDiscussion();
     if (sheetPlace) carTimeInto(sheetPlace, document.getElementById('carEta'));
   }
 
@@ -1192,6 +1255,7 @@
       else if (a === 'share') sharePlace(act.getAttribute('data-id-mark'));
       else if (a === 'suggest') showSuggest();
       else if (a === 'addr') showAddr();
+      else if (a === 'cmt-send') sendComment(act.getAttribute('data-cmt-place'));
       else if (a === 'addr-pick') pickAddr(Number(act.getAttribute('data-i')));
       else if (a === 'reset') resetFilters();
       else if (a === 'map-full') setMapFull(!mapIsFull());
@@ -1714,6 +1778,7 @@
   render();
   loadMarks();
   openFromLink();
+  loadFreshComments();
   locate(true);
   setInterval(function () {
     render();

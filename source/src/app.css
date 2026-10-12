@@ -485,10 +485,24 @@ html[data-tg] .hero { --hh: var(--tg-viewport-stable-height, 100svh); }
 .note { margin: 10px 0 0; font-size: 12px; color: var(--muted); }
 .comments { display: flex; flex-direction: column; gap: 10px; }
 .comments .section-h { margin-bottom: 0; }
-.tg-discussion { min-height: 0; border-radius: 14px; overflow: hidden; }
-.tg-discussion iframe { display: block; width: 100% !important; border: 0; }
-.btn-comment { flex: none; align-self: flex-start; height: 44px; font-size: 15px; }
-.btn-comment svg { color: var(--ketchup); }
+.cmt-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.cmt { padding: 11px 13px; border-radius: 14px; background: var(--surface); border: 1px solid var(--line); }
+.cmt.is-pending { border-style: dashed; opacity: 0.85; }
+.cmt-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 8px; font-size: 13px; }
+.cmt-head b { font-weight: 600; color: var(--ink); }
+.cmt-head span { color: var(--muted); font-size: 12px; }
+.cmt p { margin: 4px 0 0; font-size: 14.5px; line-height: 1.4; color: var(--ink); white-space: pre-wrap; overflow-wrap: anywhere; }
+.cmt-empty { margin: 0; color: var(--muted); font-size: 14px; }
+.cmt-form { display: flex; flex-direction: column; gap: 8px; }
+.cmt-form textarea {
+  width: 100%; box-sizing: border-box; resize: vertical; min-height: 76px; padding: 11px 13px;
+  border-radius: 14px; border: 1px solid var(--line); background: var(--surface); color: var(--ink);
+  font: 400 15px/1.4 var(--f-body);
+}
+.cmt-form textarea:focus { outline: 2px solid var(--cheese); outline-offset: 0; border-color: transparent; }
+.cmt-form .cmt-send { flex: none; height: 48px; font-size: 15px; }
+.cmt-count { display: inline-flex; align-items: center; gap: 4px; }
+.cmt-count svg { width: 13px; height: 13px; }
 .comments .note { margin: 0; }
 .reels { display: flex; flex-wrap: wrap; gap: 8px; }
 .reel-link {

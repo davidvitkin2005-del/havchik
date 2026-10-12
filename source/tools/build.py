@@ -29,6 +29,13 @@ def main():
         metro = json.loads(metro_path.read_text(encoding='utf-8'))
         slim = {'wait': metro['wait'], 'lines': metro['lines'], 'stations': metro['stations'], 'edges': metro['edges']}
         data_js += 'window.__METRO__=' + json.dumps(slim, ensure_ascii=False, separators=(',', ':')) + ';'
+    cpath = ROOT / 'data' / 'comments.json'
+    comments = {}
+    if cpath.exists():
+        for c in json.loads(cpath.read_text(encoding='utf-8')).get('items', []):
+            if c.get('place') and c.get('text') and not c.get('hidden'):
+                comments.setdefault(c['place'], []).append({'name': c.get('name'), 'date': c.get('date'), 'text': c['text']})
+    data_js += 'window.__COMMENTS__=' + json.dumps(comments, ensure_ascii=False, separators=(',', ':')).replace('</', '<\\/') + ';'
     data_js += 'window.__META__=' + json.dumps(meta, ensure_ascii=False) + ';'
     html = f"""<!doctype html>
 <html lang="ru">
