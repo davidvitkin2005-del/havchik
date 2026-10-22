@@ -8,6 +8,17 @@
    "status": "skip",
    "places": [],
    "reason": "не нашёл такое заведение в Москве"
+  },
+  {
+   "update": 795335889,
+   "date": "2026-10-22",
+   "text": "Азербайджан Демьяна Бедного 4",
+   "urls": [],
+   "status": "added",
+   "places": [
+    "azerbaijan"
+   ],
+   "reason": ""
   }
  ]
 }
