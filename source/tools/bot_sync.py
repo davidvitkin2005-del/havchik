@@ -9,8 +9,9 @@
    (имя из Telegram, дата, текст и солёный хэш автора, который на сайт не выкладывается);
    приложение показывает их всем. Бот отвечает, что комментарий скоро появится.
    Скрыть комментарий: поставить ему "hidden": true в data/comments.json.
-   Предложения мест: любое другое сообщение боту (кроме команд) попадает в data/suggestions.json —
-   текст и ссылки, без имени и id отправителя; бот отвечает «Спасибо, проверим».
+   Новые места: любое другое сообщение боту (рилс, название, ссылка на Яндекс Карты) разбирает
+   autoadd.py — находит место в Яндекс Картах и сразу добавляет его в данные приложения;
+   бот отвечает, что получилось. Запись о сообщении (без имени и id) — в data/suggestions.json.
 3. Канал с комментариями. Для каждого места без поста публикует пост с фото в канале из
    data/telegram.json. Комментарии под постом — это комментарии к месту в приложении.
 
@@ -31,8 +32,12 @@ import urllib.request
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import autoadd  # noqa: E402
+
 DATA = Path(__file__).resolve().parent.parent / 'data'
 PHOTO_BASE = 'https://avatars.mds.yandex.net/get-altay/'
+SITE = 'https://davidvitkin2005-del.github.io/havchik/'
 COMMENT_RE = re.compile(r'^💬[^\n\[]*\[([a-z0-9_-]{1,40})\]\s*\n+(.+)$', re.S)
 USER_KEYS = ('message', 'edited_message', 'callback_query', 'my_chat_member', 'inline_query',
              'chosen_inline_result', 'pre_checkout_query', 'shipping_query', 'chat_join_request', 'poll_answer')
@@ -96,6 +101,7 @@ def sync_users(token, salt):
     known_c = {it.get('update') for it in comments['items']}
     names = {p['id']: p['name'] for p in load('places.json', [])}
     comm_changed = False
+    store, added_this_run = None, 0
     for upd in res['result']:
         st['offset'] = max(st['offset'], upd['update_id'])
         changed = True
@@ -118,15 +124,35 @@ def sync_users(token, salt):
                 comm_changed = True
                 api(token, 'sendMessage', {'chat_id': msg['chat']['id'], 'reply_to_message_id': msg.get('message_id'),
                                            'text': f'Спасибо! Комментарий к «{names[pid]}» появится в приложении в течение 15–20 минут.'})
-        # Предложение места: любое сообщение боту, кроме команд и комментариев. Кто прислал, не сохраняем.
-        elif text and not text.startswith('/') and upd['update_id'] not in known:
+        elif text and text.startswith('/start') and msg['chat'].get('type') == 'private':
+            api(token, 'sendMessage', {'chat_id': msg['chat']['id'], 'text': autoadd.HELP})
+        # Место для приложения: рилс, название или ссылка на Яндекс Карты. Бот сам ищет его и добавляет.
+        # Кто прислал, не сохраняем.
+        elif text and not text.startswith('/') and upd['update_id'] not in known and msg['chat'].get('type') == 'private':
+            if store is None:
+                store = autoadd.Store()
+            if added_this_run >= 40:
+                ares = [{'status': 'notfound', 'reason': 'сейчас много заявок, пришлите это место ещё раз чуть позже'}]
+            else:
+                try:
+                    ares = autoadd.process(text, store)
+                except Exception as e:  # noqa: BLE001
+                    print('autoadd:', e)
+                    ares = [{'status': 'notfound', 'reason': 'что-то пошло не так при поиске'}]
+            added_this_run += sum(1 for r in ares if r['status'] == 'added')
+            keys = [r['key'] for r in ares if r.get('key')]
             urls = re.findall(r'https?://\S+', text)
             sugg['items'].append({'update': upd['update_id'], 'date': msk_today(), 'text': text[:500],
-                                  'urls': urls[:5], 'status': 'new'})
+                                  'urls': urls[:5], 'status': 'added' if any(r['status'] == 'added' for r in ares) else
+                                  ('exists' if keys else 'skip'), 'places': keys,
+                                  'reason': '; '.join(r.get('reason', '') for r in ares if r.get('reason'))[:300]})
             sugg_changed = True
-            api(token, 'sendMessage', {'chat_id': msg['chat']['id'],
-                                       'text': 'Спасибо! Получили, проверим. Если место подойдёт, оно появится в приложении.',
-                                       'reply_to_message_id': msg.get('message_id')})
+            payload = {'chat_id': msg['chat']['id'], 'text': autoadd.reply_text(ares),
+                       'reply_to_message_id': msg.get('message_id'), 'link_preview_options': {'is_disabled': True}}
+            if keys:
+                payload['reply_markup'] = {'inline_keyboard': [[{'text': 'Открыть в «Хавчике»',
+                                                                 'web_app': {'url': SITE + '#' + keys[0]}}]]}
+            api(token, 'sendMessage', payload)
         for k in USER_KEYS:
             obj = upd.get(k)
             who = obj and (obj.get('from') or obj.get('user'))
@@ -134,6 +160,8 @@ def sync_users(token, salt):
                 h = hmac.new(salt.encode(), str(who['id']).encode(), hashlib.sha256).hexdigest()[:20]
                 if h not in st['users']:
                     st['users'][h] = msk_today()
+    if store is not None:
+        store.flush()
     if sugg_changed:
         save('suggestions.json', sugg)
     if comm_changed:

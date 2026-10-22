@@ -497,7 +497,7 @@
       '<div class="reveal"><button class="close" type="button" data-action="close" aria-label="Закрыть">' + ICON.close + '</button>' +
         '<div class="reveal-eyebrow">Предложить место</div>' +
         '<div class="reveal-name" id="sheetTitle">Знаете, где вкусно?</div>' +
-        '<div class="reveal-sub">Расскажите боту, мы проверим и добавим</div></div>' +
+        '<div class="reveal-sub">Пришлите боту — он сам найдёт и добавит</div></div>' +
       '<div class="sheet-body">' +
         '<p class="lead">Пришлите боту @' + esc(META.bot) + ' одно из трёх:</p>' +
         '<ul class="perks">' +
@@ -505,7 +505,7 @@
           '<li>' + ICON.map + '<span>ссылку на место в Яндекс Картах;</span></li>' +
           '<li>' + ICON.spark + '<span>просто название и адрес.</span></li>' +
         '</ul>' +
-        '<p class="note">Бот ответит, что получил. Место появится в приложении после проверки.</p>' +
+        '<p class="note">Бот сам найдёт место в Яндекс Картах и добавит его в приложение. Сообщения он проверяет раз в 15–60 минут и ответит, что получилось.</p>' +
         '<a class="btn btn-primary suggest-cta" href="' + esc(bot) + '" target="_blank" rel="noopener" data-tglink>' + ICON.chat + 'Написать боту</a>' +
       '</div></div>');
   }
