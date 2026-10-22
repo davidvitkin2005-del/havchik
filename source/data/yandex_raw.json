@@ -8721,5 +8721,189 @@
   ],
   "booking": null,
   "site": "https://tverskoydomvkusa.ru/corners/arabica/"
+ },
+ "jerusalem": {
+  "id": "57246410633",
+  "seoname": "jerusalem",
+  "title": "Иерусалим",
+  "address": "Москва, Большая Бронная ул., 6, стр. 3",
+  "coords": [
+   37.598084,
+   55.760241
+  ],
+  "status": "open",
+  "categories": [
+   "Ресторан",
+   "кафе"
+  ],
+  "hours": [
+   "11:00-00:00",
+   "11:00-00:00",
+   "11:00-00:00",
+   "11:00-00:00",
+   "11:00-00:00",
+   "11:00-14:00",
+   null
+  ],
+  "hoursText": "пн-чт 11:00 AM–12:00 AM; пт 11:00 AM–2:00 PM; вс 11:00 AM–12:00 AM",
+  "metro": [
+   {
+    "name": "Тверская",
+    "color": "#3aa63a",
+    "distance": "710 м",
+    "meters": 705.901
+   },
+   {
+    "name": "Пушкинская",
+    "color": "#8647b2",
+    "distance": "750 м",
+    "meters": 746.05
+   },
+   {
+    "name": "Чеховская",
+    "color": "#999999",
+    "distance": "1,03 км",
+    "meters": 1026.1
+   }
+  ],
+  "photoCount": 351,
+  "photos": [
+   "https://avatars.mds.yandex.net/get-altay/1003687/2a0000016239673364aeca1b75ee5231fe10/%s",
+   "https://avatars.mds.yandex.net/get-altay/9916116/2a00000188f47f3b7d33ccda298dfad0b8ab/%s",
+   "https://avatars.mds.yandex.net/get-altay/200322/2a0000015b2000547659079c8aa4b12bccb2/%s",
+   "https://avatars.mds.yandex.net/get-altay/200322/2a0000015b2e75795e12755621a0f54fdb38/%s",
+   "https://avatars.mds.yandex.net/get-altay/771751/2a0000015ed05c8bf2bdd5823e96ed65ca58/%s",
+   "https://avatars.mds.yandex.net/get-altay/9954022/2a00000188f4866f560d431413f16e92a76c/%s",
+   "https://avatars.mds.yandex.net/get-altay/223006/2a0000015b20005d8912d0f4d6f6fc399423/%s",
+   "https://avatars.mds.yandex.net/get-altay/9719535/2a00000188f484691282a68e6d7bac3cad88/%s",
+   "https://avatars.mds.yandex.net/get-altay/492546/2a0000015ed05cb3c6204844c09f6a4d9581/%s",
+   "https://avatars.mds.yandex.net/get-altay/17743308/2a0000019ec54fe64357196b10cddfcf22c3/%s"
+  ],
+  "rating": 4.9,
+  "ratingCount": 2281,
+  "features": [
+   "средний счёт: 1500–5000 ₽",
+   "доставка еды",
+   "кофе с собой",
+   "еда навынос",
+   "цены: высокие",
+   "доставка еды: Яндекс.Еда, собственная курьерская служба",
+   "доступность входа на инвалидной коляске: недоступно",
+   "способ оплаты: наличными, оплата картой",
+   "Оплата картой",
+   "летняя веранда",
+   "специальное меню: кошерное",
+   "кухня: кошерная, смешанная, еврейская, восточная",
+   "тип заведения: кошерный ресторан",
+   "Wi-Fi",
+   "особенности заведения: есть банкетный зал",
+   "лифт"
+  ],
+  "social": [],
+  "links": [],
+  "chain": null,
+  "logo": null,
+  "phones": [
+   {
+    "n": "+7 (495) 477-55-05",
+    "v": "+74954775505",
+    "i": null
+   }
+  ],
+  "booking": null,
+  "site": "https://mjcc.ru/ierusalim/"
+ },
+ "spitsa": {
+  "id": "1688140549",
+  "seoname": "spitsa",
+  "title": "Спица",
+  "address": "Москва, Никольская ул., 25",
+  "coords": [
+   37.62501,
+   55.759254
+  ],
+  "status": "open",
+  "categories": [
+   "Бар",
+   "пиццерия"
+  ],
+  "hours": [
+   "12:00-00:00",
+   "12:00-00:00",
+   "12:00-00:00",
+   "12:00-00:00",
+   "12:00-00:00",
+   "12:00-02:00",
+   "12:00-02:00"
+  ],
+  "hoursText": "пн-чт 12:00 PM–12:00 AM; пт,сб 12:00 PM–2:00 AM; вс 12:00 PM–12:00 AM",
+  "metro": [
+   {
+    "name": "Лубянка",
+    "color": "#f23d30",
+    "distance": "57 м",
+    "meters": 57.9654
+   },
+   {
+    "name": "Кузнецкий Мост",
+    "color": "#8647b2",
+    "distance": "400 м",
+    "meters": 397.824
+   },
+   {
+    "name": "Китай-город",
+    "color": "#f28b24",
+    "distance": "420 м",
+    "meters": 420.506
+   }
+  ],
+  "photoCount": 279,
+  "photos": [
+   "https://avatars.mds.yandex.net/get-altay/228191/2a000001619f15c972f3440eadbc4783f264/%s",
+   "https://avatars.mds.yandex.net/get-altay/788991/2a000001619f15cae67d3a96e206e21aa2f9/%s",
+   "https://avatars.mds.yandex.net/get-altay/1005628/2a000001619f15c95ba15bc8c5a23b7f61d5/%s",
+   "https://avatars.mds.yandex.net/get-altay/1005628/2a000001619f15c69c6fd453f54afbd61fcb/%s",
+   "https://avatars.mds.yandex.net/get-altay/750075/2a00000161a0866d64b8461eec6e2831036e/%s",
+   "https://avatars.mds.yandex.net/get-altay/17649278/2a0000019b4c0607af3aad4c8983c578b518/%s",
+   "https://avatars.mds.yandex.net/get-altay/15712112/2a00000198aab315e1293832f2d5635f1dec/%s",
+   "https://avatars.mds.yandex.net/get-altay/10804279/2a0000019017a2f2af760b0b90e3ac53786e/%s",
+   "https://avatars.mds.yandex.net/get-altay/16874425/2a0000019a841497e6a0b741143f1f883ff4/%s",
+   "https://avatars.mds.yandex.net/get-altay/15416268/2a00000198d1846f7bbf061405590af70f33/%s"
+  ],
+  "rating": 4.9,
+  "ratingCount": 2247,
+  "features": [
+   "цена бокала пива: 200–400 ₽",
+   "цены: средние",
+   "доставка еды: нет по умолчанию",
+   "доступность входа на инвалидной коляске: доступно",
+   "способ оплаты: наличными, оплата картой",
+   "Оплата картой",
+   "средний счёт: 600–600 ₽",
+   "летняя веранда",
+   "крафтовое пиво",
+   null,
+   "кухня: итальянская",
+   "Wi-Fi",
+   "доступность помещения на инвалидной коляске: недоступно",
+   "пандус"
+  ],
+  "social": [
+   "https://t.me/spitsabar"
+  ],
+  "links": [
+   "https://yandex.ru/maps/discovery/luchshie-kraftovie-bary"
+  ],
+  "chain": null,
+  "logo": "https://avatars.mds.yandex.net/get-altay/5751673/2a0000017d9e93e69e66078ecb127a8cb8fb/%s",
+  "phones": [
+   {
+    "n": "+7 (916) 211-70-88",
+    "v": "+79162117088",
+    "i": null
+   }
+  ],
+  "booking": "https://yandex.ru/maps/discovery/luchshie-kraftovie-bary",
+  "site": null
  }
 }

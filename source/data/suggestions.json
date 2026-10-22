@@ -74,6 +74,37 @@
     "arabica"
    ],
    "reason": ""
+  },
+  {
+   "update": 795335895,
+   "date": "2026-10-23",
+   "text": "Иерусалим",
+   "urls": [],
+   "status": "added",
+   "places": [
+    "jerusalem"
+   ],
+   "reason": ""
+  },
+  {
+   "update": 795335896,
+   "date": "2026-10-23",
+   "text": "Спица",
+   "urls": [],
+   "status": "added",
+   "places": [
+    "spitsa"
+   ],
+   "reason": ""
+  },
+  {
+   "update": 795335897,
+   "date": "2026-10-23",
+   "text": "Останкинские пончики",
+   "urls": [],
+   "status": "skip",
+   "places": [],
+   "reason": "не нашёл такое заведение в Москве"
   }
  ]
 }
