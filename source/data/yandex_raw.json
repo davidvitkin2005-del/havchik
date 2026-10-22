@@ -8531,5 +8531,119 @@
   ],
   "booking": null,
   "site": "https://elpimpi.rest/"
+ },
+ "jackyjacky": {
+  "id": "160823978385",
+  "seoname": "jacky_jacky",
+  "title": "Jacky Jacky",
+  "address": "Москва, ул. Верхняя Масловка, 20, стр. 1",
+  "coords": [
+   37.562162,
+   55.796082
+  ],
+  "status": "open",
+  "categories": [
+   "Ресторан",
+   "бар"
+  ],
+  "hours": [
+   "10:00-00:00",
+   "10:00-00:00",
+   "10:00-00:00",
+   "10:00-00:00",
+   "10:00-00:00",
+   "10:00-01:00",
+   "10:00-01:00"
+  ],
+  "hoursText": "пн-чт 10:00 AM–12:00 AM; пт,сб 10:00 AM–1:00 AM; вс 10:00 AM–12:00 AM",
+  "metro": [
+   {
+    "name": "Петровский парк",
+    "color": "#60bfbf",
+    "distance": "530 м",
+    "meters": 525.726
+   },
+   {
+    "name": "Динамо",
+    "color": "#3aa63a",
+    "distance": "880 м",
+    "meters": 880.337
+   },
+   {
+    "name": "Савёловская",
+    "color": "#60bfbf",
+    "distance": "1,73 км",
+    "meters": 1734.54
+   }
+  ],
+  "photoCount": 240,
+  "photos": [
+   "https://avatars.mds.yandex.net/get-altay/1344805/2a0000016579f4a163f288a9ebef24f359be/%s",
+   "https://avatars.mds.yandex.net/get-altay/467304/2a0000015ed0585fb6a4bbfac89b9229160c/%s",
+   "https://avatars.mds.yandex.net/get-altay/1352335/2a0000016579f4a7a5b27079e790836d4386/%s",
+   "https://avatars.mds.yandex.net/get-altay/1371862/2a0000016579f4ad3494a355d40faba62227/%s",
+   "https://avatars.mds.yandex.net/get-altay/1371862/2a0000016579f49bb9f599504b6b3dd44e0d/%s",
+   "https://avatars.mds.yandex.net/get-altay/367512/2a0000015b3b726b6be1eb23ac1a8f337055/%s",
+   "https://avatars.mds.yandex.net/get-altay/916509/2a0000015fba1ebfe51b90a1ccd62bee7b2d/%s",
+   "https://avatars.mds.yandex.net/get-altay/750770/2a00000162a1f58b72aa4ba7a303009fec22/%s",
+   "https://avatars.mds.yandex.net/get-altay/406255/2a00000162a1f58cb30aff78fa905f455f3f/%s",
+   "https://avatars.mds.yandex.net/get-altay/1545421/2a0000016b8c6839707851ad2cc9a81957f3/%s"
+  ],
+  "rating": 4.7,
+  "ratingCount": 2631,
+  "features": [
+   "средний счёт: 1500–1500 ₽",
+   "доставка еды",
+   "кофе с собой",
+   "еда навынос",
+   "цены: выше среднего",
+   "Можно с собакой",
+   "типы безналичных чаевых: нетмонет",
+   "спортивные трансляции",
+   "подарочный сертификат",
+   null,
+   "Чай",
+   "способ оплаты: QR-код, оплата кредитной картой, наличными, онлайн, безналичная, оплата картой, СБП",
+   "Кофе",
+   "завтрак",
+   "Зарядка для телефона",
+   "None: Гастробар",
+   "цена бокала пива: 370–410 ₽",
+   "детское меню",
+   "Предзаказ онлайн",
+   "туалет",
+   "WC",
+   "предварительная запись",
+   null,
+   "None: Рестораны",
+   "None: Хорошее место Консьерж ",
+   "None: Москва",
+   "Оплата картой",
+   "специальное меню: постное, сезонное",
+   "Питьевая вода",
+   "кухня: европейская, американская, итальянская, тайская, авторская, домашняя, смешанная",
+   "тип заведения: гастропаб",
+   null,
+   "Оплата счета по QR-коду",
+   "особенности заведения: меню на английском, барная стойка, винная карта, есть банкетный зал",
+   "доставка еды: Delivery-club, Яндекс.Еда",
+   "летняя веранда"
+  ],
+  "social": [
+   "https://wa.me/79257419797",
+   "https://t.me/jackyjackyclub"
+  ],
+  "links": [],
+  "chain": "Jacky Jacky",
+  "logo": "https://avatars.mds.yandex.net/get-altay/10878016/2a0000018b9446824f8634d299c1409b3761/%s",
+  "phones": [
+   {
+    "n": "+7 (925) 741-97-97",
+    "v": "+79257419797",
+    "i": null
+   }
+  ],
+  "booking": null,
+  "site": "http://jacky-jacky.com/"
  }
 }
