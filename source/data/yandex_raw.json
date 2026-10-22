@@ -8645,5 +8645,81 @@
   ],
   "booking": null,
   "site": "http://jacky-jacky.com/"
+ },
+ "arabica": {
+  "id": "58272813990",
+  "seoname": "arabica",
+  "title": "Arabica",
+  "address": "Тверской бул., 27, стр. 6, Москва",
+  "coords": [
+   37.602899,
+   55.763253
+  ],
+  "status": "open",
+  "categories": [
+   "Быстрое питание"
+  ],
+  "hours": [
+   "10:00-22:00",
+   "10:00-22:00",
+   "10:00-22:00",
+   "10:00-22:00",
+   "10:00-22:00",
+   "10:00-22:00",
+   "10:00-22:00"
+  ],
+  "hoursText": "ежедневно, 10:00–22:00",
+  "metro": [
+   {
+    "name": "Пушкинская",
+    "color": "#8647b2",
+    "distance": "240 м",
+    "meters": 240.114
+   },
+   {
+    "name": "Тверская",
+    "color": "#3aa63a",
+    "distance": "250 м",
+    "meters": 250.702
+   },
+   {
+    "name": "Чеховская",
+    "color": "#999999",
+    "distance": "480 м",
+    "meters": 477.583
+   }
+  ],
+  "photoCount": 23,
+  "photos": [
+   "https://avatars.mds.yandex.net/get-altay/21119124/2a000001a14f4717b383d9a753dfb6426ea8/%s",
+   "https://avatars.mds.yandex.net/get-altay/17771550/2a000001a126376e1dd1954ff45319ff5003/%s",
+   "https://avatars.mds.yandex.net/get-altay/20368588/2a000001a0c50ffc64cb00b18212b41b112c/%s",
+   "https://avatars.mds.yandex.net/get-altay/20274901/2a000001a0c50fe935a9495e168a898ea8f4/%s",
+   "https://avatars.mds.yandex.net/get-altay/22027314/2a000001a0c50fcb2e08b52fb745a22f911b/%s",
+   "https://avatars.mds.yandex.net/get-altay/20656027/2a000001a0c4edb7be7fa231feca0189aaef/%s",
+   "https://avatars.mds.yandex.net/get-altay/20614309/2a000001a0a26d8cc8ec12f69d25c7abb030/%s",
+   "https://avatars.mds.yandex.net/get-altay/21012689/2a000001a0a2674f4af301c8e56d79a3723d/%s",
+   "https://avatars.mds.yandex.net/get-altay/21119124/2a000001a0a265e5f4991273abd7666126be/%s",
+   "https://avatars.mds.yandex.net/get-altay/20858623/2a000001a08c682b15146001736b0f1345d4/%s"
+  ],
+  "rating": 4.7,
+  "ratingCount": 45,
+  "features": [
+   "кухня: турецкая, восточная",
+   "доступность входа на инвалидной коляске: недоступно"
+  ],
+  "social": [],
+  "links": [],
+  "chain": null,
+  "logo": null,
+  "phones": [
+   {
+    "n": "+7 (910) 440-19-99",
+    "v": "+79104401999",
+    "i": null
+   }
+  ],
+  "booking": null,
+  "site": "https://tverskoydomvkusa.ru/corners/arabica/"
  }
 }
