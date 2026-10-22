@@ -177,6 +177,17 @@ def caption_queries(caption, author):
 # ---------- Яндекс Карты ----------
 
 def ya_search(q):
+    """Поиск заведений. Яндекс иногда понимает запрос как адрес или страну («Азербайджан …» → Баку),
+    тогда пробуем ещё раз с рубрикой впереди."""
+    for pref in ('', 'ресторан ', 'кафе ', 'бар '):
+        items = ya_search_raw(pref + q)
+        if items:
+            return items
+        time.sleep(0.7)
+    return []
+
+
+def ya_search_raw(q):
     url = 'https://yandex.ru/maps/213/moscow/search/' + urllib.parse.quote(q) + '/'
     page = yafetch.get(url)
     m = yafetch.STATE_RE.search(page)
