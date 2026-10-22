@@ -19,6 +19,17 @@
     "azerbaijan"
    ],
    "reason": ""
+  },
+  {
+   "update": 795335890,
+   "date": "2026-10-22",
+   "text": "https://www.instagram.com/reel/DeuZvyAo6DF/?srtk=MWVoaWI4OXdqNndk",
+   "urls": [
+    "https://www.instagram.com/reel/DeuZvyAo6DF/?srtk=MWVoaWI4OXdqNndk"
+   ],
+   "status": "skip",
+   "places": [],
+   "reason": "в подписи рилса нет названия места"
   }
  ]
 }
