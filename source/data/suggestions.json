@@ -30,6 +30,17 @@
    "status": "skip",
    "places": [],
    "reason": "в подписи рилса нет названия места"
+  },
+  {
+   "update": 795335891,
+   "date": "2026-10-22",
+   "text": "Эль пимпи",
+   "urls": [],
+   "status": "added",
+   "places": [
+    "elpimpi"
+   ],
+   "reason": ""
   }
  ]
 }

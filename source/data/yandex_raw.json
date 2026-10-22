@@ -8427,5 +8427,109 @@
   ],
   "booking": "https://www.restoran.ru/booking-widget-form.php?id=388296&name=%D0%90%D0%B7%D0%B5%D1%80%D0%B1%D0%B0%D0%B9%D0%B4%D0%B6%D0%B0%D0%BD",
   "site": "https://aze-restoran.ru/"
+ },
+ "elpimpi": {
+  "id": "176721649030",
+  "seoname": "el_pimpi",
+  "title": "El Pimpi",
+  "address": "Москва, Большая Никитская ул., 12",
+  "coords": [
+   37.606343,
+   55.756518
+  ],
+  "status": "open",
+  "categories": [
+   "Ресторан"
+  ],
+  "hours": [
+   "12:00-00:00",
+   "12:00-00:00",
+   "12:00-00:00",
+   "12:00-00:00",
+   "12:00-00:00",
+   "12:00-02:00",
+   "12:00-02:00"
+  ],
+  "hoursText": "пн-чт 12:00 PM–12:00 AM; пт,сб 12:00 PM–2:00 AM; вс 12:00 PM–12:00 AM",
+  "metro": [
+   {
+    "name": "Александровский сад",
+    "color": "#21abd9",
+    "distance": "660 м",
+    "meters": 662.962
+   },
+   {
+    "name": "Библиотека им. Ленина",
+    "color": "#f23d30",
+    "distance": "680 м",
+    "meters": 677.335
+   },
+   {
+    "name": "Охотный Ряд",
+    "color": "#f23d30",
+    "distance": "710 м",
+    "meters": 706.623
+   }
+  ],
+  "photoCount": 487,
+  "photos": [
+   "https://avatars.mds.yandex.net/get-altay/13940652/2a00000195a9897bbb3f88ef7fc72dc6ce8c/%s",
+   "https://avatars.mds.yandex.net/get-altay/13941727/2a000001957015cc9ed727035841a9104ea2/%s",
+   "https://avatars.mds.yandex.net/get-altay/14007310/2a00000195701784ad38ae5fead4ad546661/%s",
+   "https://avatars.mds.yandex.net/get-altay/15181550/2a000001957017d829875d0a1ce640b3dfe9/%s",
+   "https://avatars.mds.yandex.net/get-altay/14396200/2a000001958c2d9ddcdd7b657bbd430ef8cb/%s",
+   "https://avatars.mds.yandex.net/get-altay/16105091/2a0000019625841f80c57b5325f54e9bc664/%s",
+   "https://avatars.mds.yandex.net/get-altay/14376766/2a00000195a968bcb562e3b0901a4929e48e/%s",
+   "https://avatars.mds.yandex.net/get-altay/15205167/2a00000195e0a5d4811c3aee6a10b41f1c3c/%s",
+   "https://avatars.mds.yandex.net/get-altay/15053227/2a00000195a49a05b208ef348a465ff3cf78/%s",
+   "https://avatars.mds.yandex.net/get-altay/15285331/2a0000019605f9b42a0c0da7e8c26d407ebd/%s"
+  ],
+  "rating": 4.7,
+  "ratingCount": 674,
+  "features": [
+   "доставка еды",
+   "кофе с собой",
+   "еда навынос",
+   "Можно с собакой",
+   "События: Деловая встреча, Свадьба, День Рождения, Семейный ужин, Корпоратив, Банкет",
+   null,
+   "Чай",
+   "парковка",
+   "способ оплаты: оплата картой, наличными",
+   "Кофе",
+   "Зарядка для телефона",
+   "None: Смарт Кэжуал",
+   "туалет",
+   "WC",
+   null,
+   "None: Рестораны",
+   "None: Ультима Яндекс Консьерж, Яндекс Консьерж",
+   "None: Москва",
+   "Оплата картой",
+   "Питьевая вода",
+   "кухня: испанская",
+   "доступность входа на инвалидной коляске: недоступно",
+   "парковщик",
+   "Wi-Fi",
+   "тип заведения: ресторан с летней верандой, ресторан премиум-класса, ресторан морепродуктов, винотека",
+   null,
+   "доступность помещения на инвалидной коляске: частично доступно",
+   "особенности заведения: винная карта",
+   "летняя веранда",
+   null
+  ],
+  "social": [],
+  "links": [],
+  "chain": null,
+  "logo": "https://avatars.mds.yandex.net/get-altay/15157522/2a00000194f4050002681376e1bbaca580b4/%s",
+  "phones": [
+   {
+    "n": "+7 (915) 227-60-67",
+    "v": "+79152276067",
+    "i": null
+   }
+  ],
+  "booking": null,
+  "site": "https://elpimpi.rest/"
  }
 }
