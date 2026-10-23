@@ -114,6 +114,17 @@
    "status": "skip",
    "places": [],
    "reason": "не нашёл такое заведение в Москве"
+  },
+  {
+   "update": 795335899,
+   "date": "2026-10-23",
+   "text": "Шеф Бон",
+   "urls": [],
+   "status": "added",
+   "places": [
+    "shefbon95"
+   ],
+   "reason": ""
   }
  ]
 }

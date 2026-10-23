@@ -8905,5 +8905,81 @@
   ],
   "booking": "https://yandex.ru/maps/discovery/luchshie-kraftovie-bary",
   "site": null
+ },
+ "shefbon95": {
+  "id": "240594476706",
+  "seoname": "shef_bon_95",
+  "title": "Шеф БОН 95",
+  "address": "Щёлково, микрорайон Богородский, 8А",
+  "coords": [
+   37.973392,
+   55.939235
+  ],
+  "status": "open",
+  "categories": [
+   "Быстрое питание",
+   "кафе"
+  ],
+  "hours": [
+   "00:00-00:00",
+   "00:00-00:00",
+   "00:00-00:00",
+   "00:00-00:00",
+   "00:00-00:00",
+   "00:00-00:00",
+   "00:00-00:00"
+  ],
+  "hoursText": "ежедневно, круглосуточно",
+  "metro": [],
+  "photoCount": 85,
+  "photos": [
+   "https://avatars.mds.yandex.net/get-altay/16437561/2a00000197cb975f84622457b208bbdb0c4c/%s",
+   "https://avatars.mds.yandex.net/get-altay/13594632/2a00000194e60b49da0f7d6b1c9b6501b55b/%s",
+   "https://avatars.mds.yandex.net/get-altay/20412588/2a0000019ee1aa2dcf8bda44cd058a22b5b1/%s",
+   "https://avatars.mds.yandex.net/get-altay/15340601/2a000001961f839b8b13b2b268d514bca312/%s",
+   "https://avatars.mds.yandex.net/get-altay/16319048/2a00000199fcb79a1dea851232f6acaa472d/%s",
+   "https://avatars.mds.yandex.net/get-altay/16287657/2a000001982cff1bda5ca62085331c8e2f53/%s",
+   "https://avatars.mds.yandex.net/get-altay/19582126/2a0000019c1d8f09f6d407cfd0b538680862/%s",
+   "https://avatars.mds.yandex.net/get-altay/14021027/2a00000193d330bf46d0827b243352bf07eb/%s",
+   "https://avatars.mds.yandex.net/get-altay/14007310/2a00000195ed53f96fe6f937bff7ae71b01a/%s",
+   "https://avatars.mds.yandex.net/get-altay/18108291/2a0000019c2a67dbeb8ad22a47f124b22e6d/%s"
+  ],
+  "rating": 5,
+  "ratingCount": 336,
+  "features": [
+   "доставка еды",
+   "кофе с собой",
+   "еда навынос",
+   "посещение с животными: запрещено с животными",
+   "Чай",
+   "Кофе",
+   "Зарядка для телефона",
+   "Самовывоз",
+   "Оплата картой",
+   "парковка",
+   "WC",
+   "Питьевая вода",
+   "халяль",
+   "круглосуточная работа",
+   null,
+   "цена бизнес-ланча: 1e+06 €",
+   "Предзаказ онлайн"
+  ],
+  "social": [
+   "https://t.me/+79279888832",
+   "https://vk.ru/id773879981"
+  ],
+  "links": [],
+  "chain": null,
+  "logo": "https://avatars.mds.yandex.net/get-altay/18107333/2a0000019e07c48359f93762787fd29b4353/%s",
+  "phones": [
+   {
+    "n": "+7 (927) 988-88-31",
+    "v": "+79279888831",
+    "i": null
+   }
+  ],
+  "booking": null,
+  "site": null
  }
 }
