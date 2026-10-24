@@ -176,6 +176,17 @@
    "status": "skip",
    "places": [],
    "reason": "не нашёл такое заведение в Москве"
+  },
+  {
+   "update": 795335905,
+   "date": "2026-10-24",
+   "text": "Шаурляндия",
+   "urls": [],
+   "status": "exists",
+   "places": [
+    "shaurlandia"
+   ],
+   "reason": ""
   }
  ]
 }
