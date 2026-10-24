@@ -8981,5 +8981,206 @@
   ],
   "booking": null,
   "site": null
+ },
+ "sliders": {
+  "id": "8034663955",
+  "seoname": "sliders",
+  "title": "Sliders",
+  "address": "Москва, Малая Сухаревская площадь, 2/4",
+  "coords": [
+   37.628173,
+   55.773015
+  ],
+  "status": "open",
+  "categories": [
+   "Быстрое питание",
+   "кафе"
+  ],
+  "hours": [
+   "12:00-22:00",
+   null,
+   "12:00-22:00",
+   "12:00-22:00",
+   "12:00-22:00",
+   "12:00-22:00",
+   "12:00-22:00"
+  ],
+  "hoursText": "вт-вс 12:00 PM–10:00 PM",
+  "metro": [
+   {
+    "name": "Сухаревская",
+    "color": "#f28b24",
+    "distance": "310 м",
+    "meters": 309.418
+   },
+   {
+    "name": "Цветной бульвар",
+    "color": "#999999",
+    "distance": "670 м",
+    "meters": 671.236
+   },
+   {
+    "name": "Трубная",
+    "color": "#9fbf00",
+    "distance": "980 м",
+    "meters": 978.552
+   }
+  ],
+  "photoCount": 263,
+  "photos": [
+   "https://avatars.mds.yandex.net/get-altay/14811824/2a0000019695e57dfa0b215d0ffc5aaea06c/%s",
+   "https://avatars.mds.yandex.net/get-altay/15289836/2a000001969b7564ec3e56da2f4a370b89ab/%s",
+   "https://avatars.mds.yandex.net/get-altay/15053227/2a00000195f52bbfc8b4f9521fb73258eb17/%s",
+   "https://avatars.mds.yandex.net/get-altay/14919466/2a0000019644df637f3181616451bfd2d14d/%s",
+   "https://avatars.mds.yandex.net/get-altay/15112342/2a000001969b7568610a934807e65962bd7d/%s",
+   "https://avatars.mds.yandex.net/get-altay/13482651/2a00000193217e0ddd78d9dbb030d4e5c140/%s",
+   "https://avatars.mds.yandex.net/get-altay/15439859/2a00000195f52bc128d4182c53cbda24a8df/%s",
+   "https://avatars.mds.yandex.net/get-altay/15251163/2a0000019772c1b6c3a792461121064b5b0a/%s",
+   "https://avatars.mds.yandex.net/get-altay/13904936/2a0000019319eb79c118af001a44c66e1a00/%s",
+   "https://avatars.mds.yandex.net/get-altay/14185024/2a00000195f52d10c0d7764d1d1b3fe34361/%s"
+  ],
+  "rating": 5,
+  "ratingCount": 395,
+  "features": [
+   "доставка еды",
+   "кофе с собой",
+   "еда навынос",
+   "Можно с собакой",
+   null,
+   "доступность входа на инвалидной коляске: недоступно",
+   null,
+   "детская комната",
+   "кухня: американская",
+   "тип заведения: фаст-фуд",
+   "Wi-Fi"
+  ],
+  "social": [
+   "https://vk.ru/sliders1921"
+  ],
+  "links": [],
+  "chain": "Sliders",
+  "logo": "https://avatars.mds.yandex.net/get-altay/10228783/2a0000019319ea0c869c109365812f64c7be/%s",
+  "phones": [
+   {
+    "n": "+7 (901) 694-32-77",
+    "v": "+79016943277",
+    "i": null
+   },
+   {
+    "n": "+7 (495) 608-87-50",
+    "v": "+74956088750",
+    "i": null
+   }
+  ],
+  "booking": null,
+  "site": "https://sliders-malaja-suharevskaja-ploschad.clients.site/"
+ },
+ "vsetvoidruzya": {
+  "id": "1373229350",
+  "seoname": "vse_tvoi_druzya",
+  "title": "Все твои друзья",
+  "address": "Москва, Малый Гнездниковский пер., 12",
+  "coords": [
+   37.60673,
+   55.762666
+  ],
+  "status": "open",
+  "categories": [
+   "Бар",
+   "кафе",
+   "быстрое питание"
+  ],
+  "hours": [
+   "12:00-06:00",
+   "12:00-06:00",
+   "12:00-06:00",
+   "12:00-06:00",
+   "12:00-06:00",
+   "12:00-06:00",
+   "12:00-06:00"
+  ],
+  "hoursText": "ежедневно, 12:00 PM–6:00 AM",
+  "metro": [
+   {
+    "name": "Тверская",
+    "color": "#3aa63a",
+    "distance": "233 м",
+    "meters": 233.743
+   },
+   {
+    "name": "Пушкинская",
+    "color": "#8647b2",
+    "distance": "254 м",
+    "meters": 254.826
+   },
+   {
+    "name": "Чеховская",
+    "color": "#999999",
+    "distance": "470 м",
+    "meters": 471.48
+   }
+  ],
+  "photoCount": 166,
+  "photos": [
+   "https://avatars.mds.yandex.net/get-altay/7979597/2a0000019155325d94a009a23dd8261e9194/%s",
+   "https://avatars.mds.yandex.net/get-altay/14007310/2a000001964a8e7c15963eb02ac7fbb14f2f/%s",
+   "https://avatars.mds.yandex.net/get-altay/14699088/2a000001964a9850efb461b3ae62e5b906b2/%s",
+   "https://avatars.mds.yandex.net/get-altay/14885978/2a000001964a98532c2ec1042bfa1fbfaf32/%s",
+   "https://avatars.mds.yandex.net/get-altay/18115183/2a0000019fc65b55b8ad39c4331f2ac87e29/%s",
+   "https://avatars.mds.yandex.net/get-altay/21595040/2a0000019fc65b55351cc6e59d4b550c1b61/%s",
+   "https://avatars.mds.yandex.net/get-altay/20412588/2a0000019fc65b55c1ad8b32d7c38b56434b/%s",
+   "https://avatars.mds.yandex.net/get-altay/14396200/2a000001939be7a0df649c0cca429625557a/%s",
+   "https://avatars.mds.yandex.net/get-altay/14844975/2a000001964a9851e4b1f5f1d31d2eda220e/%s",
+   "https://avatars.mds.yandex.net/get-altay/14337779/2a000001964a8e78f736371058e42bd9fc8b/%s"
+  ],
+  "rating": 4.8,
+  "ratingCount": 2598,
+  "features": [
+   "цена бокала пива: 200–400 ₽",
+   "цены: средние",
+   "еда навынос",
+   "Можно с собакой",
+   "типы безналичных чаевых: нетмонет",
+   "спортивные трансляции",
+   "Чай",
+   "посещение с животными: разрешено со всеми животными",
+   "способ оплаты: наличными, оплата картой",
+   "Скидка на еду",
+   "туалет",
+   "WC",
+   null,
+   "Оплата картой",
+   "крафтовое пиво",
+   "Питьевая вода",
+   "кухня: американская, восточно-европейская",
+   "доступность входа на инвалидной коляске: недоступно",
+   "Wi-Fi",
+   "тип заведения: гриль-бар, закусочная, фаст-фуд, бургерная, крафтовый бар, пивной бар",
+   null,
+   "доступность помещения на инвалидной коляске: недоступно",
+   "особенности заведения: DJ, барная стойка, танцпол, есть банкетный зал, можно с животными",
+   "средний счёт: 1000–2000 ₽",
+   "доставка еды: нет по умолчанию",
+   "число экранов: 3",
+   null
+  ],
+  "social": [
+   "https://t.me/shirokayabar",
+   "https://vk.ru/craftbar"
+  ],
+  "links": [
+   "https://yandex.ru/maps/discovery/luchshie-kraftovie-bary"
+  ],
+  "chain": null,
+  "logo": "https://avatars.mds.yandex.net/get-altay/247136/2a0000015b2e8945248b35e52dab76d4f134/%s",
+  "phones": [
+   {
+    "n": "+7 (985) 991-66-10",
+    "v": "+79859916610",
+    "i": null
+   }
+  ],
+  "booking": "https://yandex.ru/maps/discovery/luchshie-kraftovie-bary",
+  "site": null
  }
 }

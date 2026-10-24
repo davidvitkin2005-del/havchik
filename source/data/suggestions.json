@@ -125,6 +125,48 @@
     "shefbon95"
    ],
    "reason": ""
+  },
+  {
+   "update": 795335900,
+   "date": "2026-10-24",
+   "text": "Underdog",
+   "urls": [],
+   "status": "exists",
+   "places": [
+    "underdog"
+   ],
+   "reason": ""
+  },
+  {
+   "update": 795335901,
+   "date": "2026-10-24",
+   "text": "Sliders",
+   "urls": [],
+   "status": "added",
+   "places": [
+    "sliders"
+   ],
+   "reason": ""
+  },
+  {
+   "update": 795335902,
+   "date": "2026-10-24",
+   "text": "Neighbourhood",
+   "urls": [],
+   "status": "skip",
+   "places": [],
+   "reason": "не нашёл такое заведение в Москве"
+  },
+  {
+   "update": 795335903,
+   "date": "2026-10-24",
+   "text": "Все твои",
+   "urls": [],
+   "status": "added",
+   "places": [
+    "vsetvoidruzya"
+   ],
+   "reason": ""
   }
  ]
 }
