@@ -8,7 +8,7 @@
    37.629371,
    55.764343
   ],
-  "status": "open",
+  "status": "permanent-closed",
   "categories": [
    "Быстрое питание",
    "бар"
@@ -57,7 +57,7 @@
    "https://avatars.mds.yandex.net/get-altay/17677530/2a0000019d4e6551dd49db0282485268dbdf/%s"
   ],
   "rating": 4.9,
-  "ratingCount": 92,
+  "ratingCount": 95,
   "features": [
    "средний счёт: от 800 ₽",
    "кофе с собой",
@@ -124,7 +124,7 @@
    "12:00-02:00",
    "12:00-02:00"
   ],
-  "hoursText": "пн-чт 12:00 PM–12:00 AM; пт,сб 12:00 PM–2:00 AM; вс 12:00 PM–12:00 AM",
+  "hoursText": "пн-чт 12:00–00:00; пт,сб 12:00–02:00; вс 12:00–00:00",
   "metro": [
    {
     "name": "Москва-Сити",
@@ -159,7 +159,7 @@
    "https://avatars.mds.yandex.net/get-altay/4304228/2a000001796122b11059edba5453aebb2884/%s"
   ],
   "rating": 4.9,
-  "ratingCount": 12936,
+  "ratingCount": 12948,
   "features": [
    "средний счёт: от 3000 ₽",
    "кофе с собой",
@@ -241,7 +241,7 @@
    "11:00-00:00",
    "11:00-00:00"
   ],
-  "hoursText": "пн-чт 11:00 AM–11:00 PM; пт,сб 11:00 AM–12:00 AM; вс 11:00 AM–11:00 PM",
+  "hoursText": "пн-чт 11:00–23:00; пт,сб 11:00–00:00; вс 11:00–23:00",
   "metro": [
    {
     "name": "Таганская",
@@ -276,7 +276,7 @@
    "https://avatars.mds.yandex.net/get-altay/16866637/2a00000197f5e0d91a5564e3ca2b19d8e5b7/%s"
   ],
   "rating": 4.4,
-  "ratingCount": 2508,
+  "ratingCount": 2514,
   "features": [
    "цены: средние",
    "средний счёт: 150–300 ₽",
@@ -379,7 +379,7 @@
    "https://avatars.mds.yandex.net/get-altay/10589039/2a0000018ba8aa1d90452b9b46d15071bdf2/%s"
   ],
   "rating": 4.9,
-  "ratingCount": 774,
+  "ratingCount": 782,
   "features": [
    "еда навынос",
    "Можно с собакой",
@@ -436,7 +436,7 @@
     "i": null
    }
   ],
-  "booking": "https://yandex.ru/web-maps/webview?booking[permalink]=155636975560&booking[standalone]=true&mode=booking&source=partner-cta",
+  "booking": null,
   "site": "https://apartmentbar.ru/"
  },
  "klich": {
@@ -498,7 +498,7 @@
    "https://avatars.mds.yandex.net/get-altay/16914582/2a000001994d3281054833513a07bcc32867/%s"
   ],
   "rating": 4.9,
-  "ratingCount": 446,
+  "ratingCount": 459,
   "features": [
    "средний счёт: 4200–4200 ₽",
    "доставка еды",
@@ -552,8 +552,8 @@
   "logo": "https://avatars.mds.yandex.net/get-altay/16158716/2a000001994d2a2c767568b072b755e67481/%s",
   "phones": [
    {
-    "n": "+7 (900) 155-99-99",
-    "v": "+79001559999",
+    "n": "+7 (965) 229-87-24",
+    "v": "+79652298724",
     "i": null
    }
   ],
@@ -617,7 +617,7 @@
    "https://avatars.mds.yandex.net/get-altay/16457969/2a0000019c2493a32446aa95e299e4b8b54b/%s"
   ],
   "rating": 4.9,
-  "ratingCount": 342,
+  "ratingCount": 357,
   "features": [
    "доставка еды",
    "средний счёт: до 500 ₽",
@@ -714,7 +714,7 @@
    "https://avatars.mds.yandex.net/get-altay/19840634/2a0000019fa8265ccc87751e7cda99d59a19/%s"
   ],
   "rating": 4.7,
-  "ratingCount": 872,
+  "ratingCount": 875,
   "features": [
    "средний счёт: 3500–4500 ₽",
    "доставка еды",
@@ -760,13 +760,13 @@
   "logo": "https://avatars.mds.yandex.net/get-altay/7779554/2a00000187e8a40fc541712e81526f45a0c3/%s",
   "phones": [
    {
-    "n": "+7 (964) 599-72-29",
-    "v": "+79645997229",
+    "n": "+7 (495) 801-64-20",
+    "v": "+74958016420",
     "i": null
    },
    {
-    "n": "+7 (495) 799-72-29",
-    "v": "+74957997229",
+    "n": "+7 (964) 599-72-29",
+    "v": "+79645997229",
     "i": null
    }
   ],
@@ -797,7 +797,7 @@
    "12:00-00:00",
    "12:00-00:00"
   ],
-  "hoursText": "ежедневно, 12:00–00:00",
+  "hoursText": "ежедневно, 12:00 PM–12:00 AM",
   "metro": [
    {
     "name": "Дмитровская",
@@ -832,7 +832,7 @@
    "https://avatars.mds.yandex.net/get-altay/13192844/2a00000190db6429aba6853be9ef8ac5ead1/%s"
   ],
   "rating": 5,
-  "ratingCount": 5972,
+  "ratingCount": 5998,
   "features": [
    "средний счёт: 500–1500 ₽",
    "доставка еды",
@@ -1043,8 +1043,8 @@
    "https://avatars.mds.yandex.net/get-altay/17750410/2a0000019b73f12b3f32ce44cd2f246bfa80/%s",
    "https://avatars.mds.yandex.net/get-altay/16609617/2a0000019b73f12b4c67e7c8c32c824836f4/%s"
   ],
-  "rating": 5,
-  "ratingCount": 753,
+  "rating": 4.9,
+  "ratingCount": 764,
   "features": [
    "средний счёт: до 2500 ₽",
    "доставка еды",
@@ -1168,7 +1168,7 @@
    "https://avatars.mds.yandex.net/get-altay/16330083/2a000001982c8308bfa2428d21ef394b6f2f/%s"
   ],
   "rating": 5,
-  "ratingCount": 782,
+  "ratingCount": 793,
   "features": [
    "средний счёт: 1500–3000 ₽",
    "доставка еды",
@@ -1219,7 +1219,18 @@
   "links": [],
   "chain": null,
   "logo": "https://avatars.mds.yandex.net/get-altay/19824988/2a000001a061c0bb632edf62820de4f81d4b/%s",
-  "phones": [],
+  "phones": [
+   {
+    "n": "+7 (495) 106-77-49",
+    "v": "+74951067749",
+    "i": "Основной"
+   },
+   {
+    "n": "+7 (932) 491-32-59",
+    "v": "+79324913259",
+    "i": "Резервный"
+   }
+  ],
   "booking": null,
   "site": "https://brasserie.ru/"
  },
@@ -1245,7 +1256,7 @@
    "10:00-00:00",
    "10:00-00:00"
   ],
-  "hoursText": "ежедневно, 10:00 AM–12:00 AM",
+  "hoursText": "ежедневно, 10:00–00:00",
   "metro": [
    {
     "name": "Лубянка",
@@ -1365,7 +1376,7 @@
    "07:00-20:30,21:00-00:00",
    "07:00-20:30,21:00-00:00"
   ],
-  "hoursText": "ежедневно, 7:00 AM–12:00 AM, перерыв 8:30 PM–9:00 PM",
+  "hoursText": "ежедневно, 07:00–00:00, перерыв 20:30–21:00",
   "metro": [
    {
     "name": "Шаболовская",
@@ -1400,7 +1411,7 @@
    "https://avatars.mds.yandex.net/get-altay/18150755/2a0000019cb4a326d259d1656b4bc12a293b/%s"
   ],
   "rating": 4.9,
-  "ratingCount": 2952,
+  "ratingCount": 2963,
   "features": [
    "средний счёт: 190–350 ₽",
    "кофе с собой",
@@ -1457,7 +1468,7 @@
    "12:00-00:00",
    "12:00-00:00"
   ],
-  "hoursText": "ежедневно, 12:00–00:00",
+  "hoursText": "ежедневно, 12:00 PM–12:00 AM",
   "metro": [
    {
     "name": "Смоленская",
@@ -1492,7 +1503,7 @@
    "https://avatars.mds.yandex.net/get-altay/12838938/2a0000019289eb53e2356940259fab768432/%s"
   ],
   "rating": 4.9,
-  "ratingCount": 6247,
+  "ratingCount": 6254,
   "features": [
    "средний счёт: 2000–2500 ₽",
    "доставка еды",
@@ -1615,7 +1626,7 @@
    "https://avatars.mds.yandex.net/get-altay/15395175/2a000001986676fe3e5c6f397c99d827dda3/%s"
   ],
   "rating": 4.9,
-  "ratingCount": 1095,
+  "ratingCount": 1097,
   "features": [
    "доставка еды",
    "цена бокала пива: 250–300 ₽",
@@ -1721,7 +1732,7 @@
    "https://avatars.mds.yandex.net/get-altay/11940760/2a0000018ec907e720187999676a4669919c/%s"
   ],
   "rating": 4.9,
-  "ratingCount": 8891,
+  "ratingCount": 8899,
   "features": [
    "средний счёт: 3500–3500 ₽",
    "доставка еды",
@@ -1851,7 +1862,7 @@
    "https://avatars.mds.yandex.net/get-altay/16299341/2a0000019c4f209d5decaeb83dd5d8d1dce2/%s"
   ],
   "rating": 5,
-  "ratingCount": 1211,
+  "ratingCount": 1218,
   "features": [
    "доставка еды",
    "средний счёт: 280–600 ₽",
@@ -1932,7 +1943,7 @@
    "12:00-22:00",
    "12:00-22:00"
   ],
-  "hoursText": "ежедневно, 12:00 PM–10:00 PM",
+  "hoursText": "ежедневно, 12:00–22:00",
   "metro": [
    {
     "name": "Парк культуры",
@@ -1967,7 +1978,7 @@
    "https://avatars.mds.yandex.net/get-altay/20420873/2a0000019ea0ed9ae170f59bb581a001998d/%s"
   ],
   "rating": 5,
-  "ratingCount": 143,
+  "ratingCount": 145,
   "features": [
    "средний счёт: 650–2000 ₽",
    "еда навынос",
@@ -2069,7 +2080,7 @@
    "https://avatars.mds.yandex.net/get-altay/17754824/2a0000019d975e716d33339a93708bf9ad3a/%s"
   ],
   "rating": 5,
-  "ratingCount": 922,
+  "ratingCount": 932,
   "features": [
    "доставка еды",
    "кофе с собой",
@@ -2190,7 +2201,7 @@
    "https://avatars.mds.yandex.net/get-altay/9663145/2a000001886dc700403764f20d3a5f716cac/%s"
   ],
   "rating": 5,
-  "ratingCount": 4202,
+  "ratingCount": 4213,
   "features": [
    "доставка еды",
    "цена бокала пива: 380–560 ₽",
@@ -2323,7 +2334,7 @@
    "https://avatars.mds.yandex.net/get-altay/16478002/2a0000019b2d2c7cf70b2340ec816c307b08/%s"
   ],
   "rating": 4.7,
-  "ratingCount": 578,
+  "ratingCount": 581,
   "features": [
    "средний счёт: до 2500 ₽",
    "доставка еды",
@@ -2432,7 +2443,7 @@
    "https://avatars.mds.yandex.net/get-altay/18105464/2a0000019bb7ed106ca9f250d3bd0c92ca47/%s"
   ],
   "rating": 4.7,
-  "ratingCount": 3225,
+  "ratingCount": 3226,
   "features": [
    "средний счёт: 1500–2000 ₽",
    "доставка еды",
@@ -2508,7 +2519,7 @@
    "12:00-00:00",
    "12:00-00:00"
   ],
-  "hoursText": "ежедневно, 12:00 PM–12:00 AM",
+  "hoursText": "ежедневно, 12:00–00:00",
   "metro": [
    {
     "name": "Пушкинская",
@@ -2543,7 +2554,7 @@
    "https://avatars.mds.yandex.net/get-altay/754546/2a0000018bbfdab3240bbbf5f99ce4b48ccd/%s"
   ],
   "rating": 4.8,
-  "ratingCount": 3780,
+  "ratingCount": 3796,
   "features": [
    "средний счёт: 3000–5000 ₽",
    "доставка еды",
@@ -2660,7 +2671,7 @@
    "https://avatars.mds.yandex.net/get-altay/14336229/2a000001976e4a52bd6adfcc01d9318cb871/%s"
   ],
   "rating": 4.9,
-  "ratingCount": 9455,
+  "ratingCount": 9661,
   "features": [
    "средний счёт: 2199–2200 ₽",
    "доставка еды",
@@ -2784,7 +2795,7 @@
    "https://avatars.mds.yandex.net/get-altay/14264437/2a0000019136ecfbcb9d532c67c1057653a4/%s"
   ],
   "rating": 4.9,
-  "ratingCount": 8109,
+  "ratingCount": 8120,
   "features": [
    "средний счёт: 2700–2700 ₽",
    "доставка еды",
@@ -2894,7 +2905,7 @@
    "https://avatars.mds.yandex.net/get-altay/7760835/2a000001838565c4ac789d0ee2f2d14d7237/%s"
   ],
   "rating": 4.8,
-  "ratingCount": 463,
+  "ratingCount": 464,
   "features": [
    "цены: высокие",
    "еда навынос",
@@ -2992,7 +3003,7 @@
    "13:00-01:00",
    "13:00-01:00"
   ],
-  "hoursText": "пн-чт 1:00 PM–11:00 PM; пт,сб 1:00 PM–1:00 AM; вс 1:00 PM–11:00 PM",
+  "hoursText": "пн-чт 13:00–23:00; пт,сб 13:00–01:00; вс 13:00–23:00",
   "metro": [
    {
     "name": "Лубянка",
@@ -3027,7 +3038,7 @@
    "https://avatars.mds.yandex.net/get-altay/16430504/2a00000199a8953eb5d5d76a8d457dcbf68d/%s"
   ],
   "rating": 5,
-  "ratingCount": 3089,
+  "ratingCount": 3096,
   "features": [
    "цены: средние",
    "доставка еды",
@@ -3129,7 +3140,7 @@
    "https://avatars.mds.yandex.net/get-altay/15682944/2a0000019995ecc0990492a3c0df56bec6f6/%s"
   ],
   "rating": 5,
-  "ratingCount": 528,
+  "ratingCount": 532,
   "features": [
    "доставка еды",
    "средний счёт: 300–500 ₽",
@@ -3186,15 +3197,15 @@
    "кафе"
   ],
   "hours": [
-   "11:00-23:00",
-   "11:00-23:00",
-   "11:00-23:00",
-   "11:00-23:00",
-   "11:00-23:00",
-   "11:00-23:00",
-   "11:00-23:00"
+   "11:00-22:00",
+   "11:00-22:00",
+   "11:00-22:00",
+   "11:00-22:00",
+   "11:00-22:00",
+   "11:00-22:00",
+   "11:00-22:00"
   ],
-  "hoursText": "ежедневно, 11:00 AM–11:00 PM",
+  "hoursText": "ежедневно, 11:00 AM–10:00 PM",
   "metro": [
    {
     "name": "Бауманская",
@@ -3229,7 +3240,7 @@
    "https://avatars.mds.yandex.net/get-altay/14097168/2a00000193d96f3dac1d2cfdb1453f1663b9/%s"
   ],
   "rating": 5,
-  "ratingCount": 404,
+  "ratingCount": 407,
   "features": [
    "доставка еды",
    "средний счёт: 300–700 ₽",
@@ -3350,7 +3361,7 @@
    "https://avatars.mds.yandex.net/get-altay/16480550/2a0000019b31be6c604bfb844d738f2f49da/%s"
   ],
   "rating": 5,
-  "ratingCount": 214,
+  "ratingCount": 215,
   "features": [
    "доставка еды",
    "кофе с собой",
@@ -3455,7 +3466,7 @@
    "https://avatars.mds.yandex.net/get-altay/9331640/2a000001881f92de8a1794a511de9ebac79f/%s"
   ],
   "rating": 4.8,
-  "ratingCount": 1666,
+  "ratingCount": 1674,
   "features": [
    "средний счёт: 650–1200 ₽",
    "доставка еды",
@@ -3581,7 +3592,7 @@
    "https://avatars.mds.yandex.net/get-altay/20478540/2a0000019ed0b390de623a012bf9786130cc/%s"
   ],
   "rating": 4.9,
-  "ratingCount": 73,
+  "ratingCount": 75,
   "features": [
    "туалет",
    "посещение с животными: запрещено с животными",
@@ -3665,7 +3676,7 @@
    "https://avatars.mds.yandex.net/get-altay/16472720/2a0000019b526d0ab745b8bda82de8a65c43/%s"
   ],
   "rating": 4.8,
-  "ratingCount": 797,
+  "ratingCount": 804,
   "features": [
    "средний счёт: от 2000 ₽",
    "еда навынос",
@@ -3757,7 +3768,7 @@
    "https://avatars.mds.yandex.net/get-altay/4120601/2a00000178945851332f7641a9d39e290b7c/%s"
   ],
   "rating": 5,
-  "ratingCount": 5929,
+  "ratingCount": 5942,
   "features": [
    "цены: средние",
    "доставка еды",
@@ -3856,7 +3867,7 @@
    "12:00-00:00",
    "12:00-00:00"
   ],
-  "hoursText": "ежедневно, 12:00–00:00",
+  "hoursText": "ежедневно, 12:00 PM–12:00 AM",
   "metro": [
    {
     "name": "Улица 1905 года",
@@ -3891,7 +3902,7 @@
    "https://avatars.mds.yandex.net/get-altay/2006845/2a0000016ec6877418e54e60fa88369d5d4b/%s"
   ],
   "rating": 4.9,
-  "ratingCount": 6445,
+  "ratingCount": 6449,
   "features": [
    "средний счёт: 3000–5000 ₽",
    "доставка еды",
@@ -3977,7 +3988,7 @@
    "10:00-22:00",
    "10:00-22:00"
   ],
-  "hoursText": "ежедневно, 10:00–22:00",
+  "hoursText": "ежедневно, 10:00 AM–10:00 PM",
   "metro": [
    {
     "name": "Менделеевская",
@@ -4012,7 +4023,7 @@
    "https://avatars.mds.yandex.net/get-altay/18005133/2a0000019bc95f67fa091901f9a781df6794/%s"
   ],
   "rating": 5,
-  "ratingCount": 244,
+  "ratingCount": 246,
   "features": [
    "доставка еды",
    "средний счёт: 350–500 ₽",
@@ -4092,7 +4103,7 @@
    "https://avatars.mds.yandex.net/get-altay/17843434/2a0000019d49f5f8acc2fb49263263488145/%s"
   ],
   "rating": 4.7,
-  "ratingCount": 304,
+  "ratingCount": 311,
   "features": [
    "еда навынос",
    "Можно с собакой",
@@ -4188,7 +4199,7 @@
    "https://avatars.mds.yandex.net/get-altay/20879831/2a000001a0dda08f738e9c30e5877560c7db/%s"
   ],
   "rating": 4.2,
-  "ratingCount": 56,
+  "ratingCount": 59,
   "features": [
    "доставка еды",
    "средний счёт: 400–600 ₽",
@@ -4250,7 +4261,7 @@
    "12:00-02:00",
    "14:00-02:00"
   ],
-  "hoursText": "пн-чт 12:00–00:00; пт 12:00–02:00; сб 14:00–02:00; вс 14:00–00:00",
+  "hoursText": "пн-чт 12:00 PM–12:00 AM; пт 12:00 PM–2:00 AM; сб 2:00 PM–2:00 AM; вс 2:00 PM–12:00 AM",
   "metro": [
    {
     "name": "Белорусская",
@@ -4285,7 +4296,7 @@
    "https://avatars.mds.yandex.net/get-altay/6928818/2a0000018348423763ebfcc77fcfbf5f4e99/%s"
   ],
   "rating": 4.8,
-  "ratingCount": 1235,
+  "ratingCount": 1240,
   "features": [
    "средний счёт: 1500–2500 ₽",
    "цены: выше среднего",
@@ -4390,7 +4401,7 @@
    "https://avatars.mds.yandex.net/get-altay/18748915/2a0000019df35c5079a54a943b3bb327d378/%s"
   ],
   "rating": 4.8,
-  "ratingCount": 2081,
+  "ratingCount": 2090,
   "features": [
    "средний счёт: от 5000 ₽",
    "доставка еды",
@@ -4518,7 +4529,7 @@
    "https://avatars.mds.yandex.net/get-altay/16823151/2a000001987ef5597a7f307be23e56760d44/%s"
   ],
   "rating": 4.7,
-  "ratingCount": 5189,
+  "ratingCount": 5210,
   "features": [
    "средний счёт: 2500–3500 ₽",
    "кофе с собой",
@@ -4682,7 +4693,7 @@
    "https://avatars.mds.yandex.net/get-altay/19648454/2a0000019ccaa7859f74971a47e185e57f97/%s"
   ],
   "rating": 5,
-  "ratingCount": 115,
+  "ratingCount": 122,
   "features": [
    "доставка еды",
    "средний счёт: 700–1210 ₽",
@@ -4782,7 +4793,7 @@
    "https://avatars.mds.yandex.net/get-altay/15352901/2a00000195d7281d5790d3daf2090f13a732/%s"
   ],
   "rating": 5,
-  "ratingCount": 1462,
+  "ratingCount": 1464,
   "features": [
    "кофе с собой",
    "доставка продуктов",
@@ -4839,7 +4850,7 @@
    "18:00-06:00",
    "18:00-06:00"
   ],
-  "hoursText": "вт-чт 18:00–00:00; пт,сб 18:00–06:00; вс 14:00–00:00",
+  "hoursText": "вт-чт 6:00 PM–12:00 AM; пт,сб 6:00 PM–6:00 AM; вс 2:00 PM–12:00 AM",
   "metro": [
    {
     "name": "Улица 1905 года",
@@ -4873,8 +4884,8 @@
    "https://avatars.mds.yandex.net/get-altay/19392709/2a0000019d6dabdc5e5574b85895a8d40d01/%s",
    "https://avatars.mds.yandex.net/get-altay/19720204/2a0000019d6dabdc009b4b0471d90a267481/%s"
   ],
-  "rating": 4.9,
-  "ratingCount": 77,
+  "rating": 5,
+  "ratingCount": 78,
   "features": [
    "цена бокала пива: от 650 ₽",
    "еда навынос",
@@ -4933,7 +4944,7 @@
    37.645096,
    55.764249
   ],
-  "status": "open",
+  "status": "permanent-closed",
   "categories": [
    "Кофейня"
   ],
@@ -4981,7 +4992,7 @@
    "https://avatars.mds.yandex.net/get-altay/18730616/2a0000019eac1ff59eab36ca66bb8e1409b1/%s"
   ],
   "rating": 4.2,
-  "ratingCount": 373,
+  "ratingCount": 374,
   "features": [
    "кофе с собой",
    "еда навынос",
@@ -4996,7 +5007,13 @@
   "links": [],
   "chain": null,
   "logo": null,
-  "phones": [],
+  "phones": [
+   {
+    "n": "+7 (926) 083-02-17",
+    "v": "+79260830217",
+    "i": null
+   }
+  ],
   "booking": null,
   "site": null
  },
@@ -5058,7 +5075,7 @@
    "https://avatars.mds.yandex.net/get-altay/15042938/2a0000019ad5c753d9a2c3de931936b7255d/%s"
   ],
   "rating": 4.9,
-  "ratingCount": 1654,
+  "ratingCount": 1663,
   "features": [
    "средний счёт: 750–2500 ₽",
    "кофе с собой",
@@ -5160,7 +5177,7 @@
    "https://avatars.mds.yandex.net/get-altay/19082209/2a0000019e2314ccac705163120b1c23c643/%s"
   ],
   "rating": 5,
-  "ratingCount": 1522,
+  "ratingCount": 1546,
   "features": [
    "средний счёт: 1500–1700 ₽",
    "кофе с собой",
@@ -5227,7 +5244,7 @@
    "10:00-00:00",
    "10:00-00:00"
   ],
-  "hoursText": "пн-чт 10:00–23:00; пт,сб 10:00–00:00; вс 10:00–23:00",
+  "hoursText": "пн-чт 10:00 AM–11:00 PM; пт,сб 10:00 AM–12:00 AM; вс 10:00 AM–11:00 PM",
   "metro": [
    {
     "name": "Трубная",
@@ -5349,7 +5366,7 @@
    "https://avatars.mds.yandex.net/get-altay/2761244/2a000001736c12b564de307c04124e959bb1/%s"
   ],
   "rating": 4.7,
-  "ratingCount": 3597,
+  "ratingCount": 3604,
   "features": [
    "доставка еды",
    "цены: средние",
@@ -5448,7 +5465,7 @@
    "https://avatars.mds.yandex.net/get-altay/3954938/2a000001763caef878e07704af1ca5d95179/%s"
   ],
   "rating": 4.9,
-  "ratingCount": 2958,
+  "ratingCount": 2957,
   "features": [
    "средний счёт: 5000–10000 ₽",
    "доставка еды",
@@ -5549,7 +5566,7 @@
    "10:00-23:00",
    "10:00-23:00"
   ],
-  "hoursText": "пн-чт 10:00–22:00; пт,сб 10:00–23:00; вс 10:00–22:00",
+  "hoursText": "пн-чт 10:00 AM–10:00 PM; пт,сб 10:00 AM–11:00 PM; вс 10:00 AM–10:00 PM",
   "metro": [
    {
     "name": "Смоленская",
@@ -5584,7 +5601,7 @@
    "https://avatars.mds.yandex.net/get-altay/13220782/2a00000191b7cde1ab408de9336681b54bbe/%s"
   ],
   "rating": 5,
-  "ratingCount": 863,
+  "ratingCount": 865,
   "features": [
    "средний счёт: 1500–2500 ₽",
    "доставка еды",
@@ -5710,8 +5727,8 @@
    "https://avatars.mds.yandex.net/get-altay/21104762/2a000001a0730afcf73d4ee114b5d8eeeb31/%s",
    "https://avatars.mds.yandex.net/get-altay/20368588/2a000001a0672d9318dab4cfe1f225a8deb7/%s"
   ],
-  "rating": 4.7,
-  "ratingCount": 28,
+  "rating": 4.8,
+  "ratingCount": 34,
   "features": [
    "кофе с собой",
    "Можно с собакой",
@@ -5796,7 +5813,7 @@
    "https://avatars.mds.yandex.net/get-altay/15152716/2a000001978f6485683f92d4db1683f98824/%s"
   ],
   "rating": 4.8,
-  "ratingCount": 6745,
+  "ratingCount": 6747,
   "features": [
    "средний счёт: 2000–3000 ₽",
    "доставка еды",
@@ -5913,7 +5930,7 @@
    "https://avatars.mds.yandex.net/get-altay/19521209/2a0000019dd2f2b20552e8cc4f1345e7700e/%s"
   ],
   "rating": 4.4,
-  "ratingCount": 115,
+  "ratingCount": 116,
   "features": [
    "кофе с собой",
    null,
@@ -5991,7 +6008,7 @@
    "https://avatars.mds.yandex.net/get-altay/17788144/2a0000019c47ff61025f62f1a5af591ec8cf/%s"
   ],
   "rating": 5,
-  "ratingCount": 795,
+  "ratingCount": 798,
   "features": [
    "цены: средние",
    "доставка еды",
@@ -6047,8 +6064,8 @@
   "logo": "https://avatars.mds.yandex.net/get-altay/19648454/2a0000019c49223cac1cff93374d3b60e2ac/%s",
   "phones": [
    {
-    "n": "+7 (934) 008-61-90",
-    "v": "+79340086190",
+    "n": "+7 (495) 363-04-11",
+    "v": "+74953630411",
     "i": null
    }
   ],
@@ -6079,7 +6096,7 @@
    "12:00-01:00",
    "12:00-01:00"
   ],
-  "hoursText": "пн-чт 12:00–00:00; пт,сб 12:00–01:00; вс 12:00–00:00",
+  "hoursText": "пн-чт 12:00 PM–12:00 AM; пт,сб 12:00 PM–1:00 AM; вс 12:00 PM–12:00 AM",
   "metro": [
    {
     "name": "Спартак",
@@ -6114,7 +6131,7 @@
    "https://avatars.mds.yandex.net/get-altay/21166000/2a000001a0a4ddd8e6793b4dec628748ccc1/%s"
   ],
   "rating": 5,
-  "ratingCount": 62,
+  "ratingCount": 66,
   "features": [
    "еда навынос",
    "Можно с собакой",
@@ -6223,8 +6240,8 @@
    "https://avatars.mds.yandex.net/get-altay/16451045/2a0000019b600209af98f52ba83215540cfa/%s",
    "https://avatars.mds.yandex.net/get-altay/16404250/2a0000019b17204ea941f834e30793f1ee4c/%s"
   ],
-  "rating": 4.8,
-  "ratingCount": 314,
+  "rating": 4.9,
+  "ratingCount": 339,
   "features": [
    "средний счёт: 600–1500 ₽",
    "кофе с собой",
@@ -6343,7 +6360,7 @@
    "https://avatars.mds.yandex.net/get-altay/1485972/2a00000167d300af9c8b17d9e7668d54d2e2/%s"
   ],
   "rating": 4.3,
-  "ratingCount": 2621,
+  "ratingCount": 2623,
   "features": [
    "цены: средние",
    "средний счёт: 300–350 ₽",
@@ -6403,7 +6420,7 @@
    "11:00-23:00",
    "11:00-23:00"
   ],
-  "hoursText": "ежедневно, 11:00 AM–11:00 PM",
+  "hoursText": "ежедневно, 11:00–23:00",
   "metro": [
    {
     "name": "Академическая",
@@ -6437,8 +6454,8 @@
    "https://avatars.mds.yandex.net/get-altay/18173477/2a0000019de38f94dfa047d88b7ccc197cc4/%s",
    "https://avatars.mds.yandex.net/get-altay/14586367/2a0000019eb79438016f6c102bff6c5e07eb/%s"
   ],
-  "rating": 4.7,
-  "ratingCount": 61,
+  "rating": 4.6,
+  "ratingCount": 62,
   "features": [
    "доставка еды",
    "средний счёт: 300–300 ₽",
@@ -6531,7 +6548,7 @@
    "https://avatars.mds.yandex.net/get-altay/9704097/2a0000018b23f08bbf1525098a063930ace5/%s"
   ],
   "rating": 4.4,
-  "ratingCount": 7620,
+  "ratingCount": 7622,
   "features": [
    "доставка еды",
    "кофе с собой",
@@ -6639,7 +6656,7 @@
    "https://avatars.mds.yandex.net/get-altay/17863912/2a0000019c37f1f637d07c0019e88479f187/%s"
   ],
   "rating": 4.8,
-  "ratingCount": 2606,
+  "ratingCount": 2614,
   "features": [
    "средний счёт: от 250 ₽",
    "кофе с собой",
@@ -6698,7 +6715,7 @@
    "16:00-04:00",
    "16:00-04:00"
   ],
-  "hoursText": "вт-чт 16:00–00:00; пт,сб 16:00–04:00; вс 16:00–00:00",
+  "hoursText": "вт-чт 4:00 PM–12:00 AM; пт,сб 4:00 PM–4:00 AM; вс 4:00 PM–12:00 AM",
   "metro": [
    {
     "name": "Лубянка",
@@ -6733,7 +6750,7 @@
    "https://avatars.mds.yandex.net/get-altay/20218502/2a0000019e8e44311e3b980518ce1552dd00/%s"
   ],
   "rating": 4.8,
-  "ratingCount": 4572,
+  "ratingCount": 4574,
   "features": [
    "цена бокала пива: 500–500 ₽",
    "цены: высокие",
@@ -6810,7 +6827,7 @@
    "12:00-02:00",
    "12:00-02:00"
   ],
-  "hoursText": "пн-чт 12:00–00:00; пт,сб 12:00–02:00; вс 12:00–00:00",
+  "hoursText": "пн-чт 12:00 PM–12:00 AM; пт,сб 12:00 PM–2:00 AM; вс 12:00 PM–12:00 AM",
   "metro": [
    {
     "name": "Трубная",
@@ -6845,7 +6862,7 @@
    "https://avatars.mds.yandex.net/get-altay/13294935/2a00000193db230e9e9df14486caca6b33c5/%s"
   ],
   "rating": 4.8,
-  "ratingCount": 2299,
+  "ratingCount": 2301,
   "features": [
    "средний счёт: 2500–3000 ₽",
    "доставка еды",
@@ -6965,7 +6982,7 @@
    "https://avatars.mds.yandex.net/get-altay/4234174/2a0000017b2cda92a735f02007a7633cf77e/%s"
   ],
   "rating": 5,
-  "ratingCount": 2766,
+  "ratingCount": 2772,
   "features": [
    "цена бокала пива: 500–550 ₽",
    "цены: выше среднего",
@@ -7090,7 +7107,7 @@
    "https://avatars.mds.yandex.net/get-altay/10878699/2a00000193f92ba17def6b78ab4f96fb0394/%s"
   ],
   "rating": 4.7,
-  "ratingCount": 11820,
+  "ratingCount": 11884,
   "features": [
    "цена бокала пива: до 700 ₽",
    "еда навынос",
@@ -7211,7 +7228,7 @@
    "https://avatars.mds.yandex.net/get-altay/6514890/2a0000018b2c76a80d8a3e0c6a24e9c65b8c/%s"
   ],
   "rating": 4.8,
-  "ratingCount": 6830,
+  "ratingCount": 6831,
   "features": [
    "цена бокала пива: 500–500 ₽",
    "цены: выше среднего",
@@ -7287,7 +7304,7 @@
    "14:00-04:00",
    "14:00-04:00"
   ],
-  "hoursText": "пн-чт 14:00–00:00; пт,сб 14:00–04:00; вс 14:00–00:00",
+  "hoursText": "пн-чт 2:00 PM–12:00 AM; пт,сб 2:00 PM–4:00 AM; вс 2:00 PM–12:00 AM",
   "metro": [
    {
     "name": "Парк культуры",
@@ -7322,7 +7339,7 @@
    "https://avatars.mds.yandex.net/get-altay/13474366/2a00000191d31fcc83f7d7244e54d8925307/%s"
   ],
   "rating": 4.8,
-  "ratingCount": 3924,
+  "ratingCount": 3926,
   "features": [
    "средний счёт: 3000–3000 ₽",
    "кофе с собой",
@@ -7440,7 +7457,7 @@
    "https://avatars.mds.yandex.net/get-altay/927353/2a0000018810288705dcf7f1d063748b66ee/%s"
   ],
   "rating": 4.5,
-  "ratingCount": 2840,
+  "ratingCount": 2839,
   "features": [
    "Оплата картой",
    "фейс-контроль",
@@ -7506,7 +7523,7 @@
    "10:00-06:00",
    "10:00-06:00"
   ],
-  "hoursText": "пн-чт 10:00–03:00; пт,сб 10:00–06:00; вс 10:00–03:00",
+  "hoursText": "пн-чт 10:00 AM–3:00 AM; пт,сб 10:00 AM–6:00 AM; вс 10:00 AM–3:00 AM",
   "metro": [
    {
     "name": "Пушкинская",
@@ -7541,7 +7558,7 @@
    "https://avatars.mds.yandex.net/get-altay/4663168/2a00000177948a36884c10c480d9b294404f/%s"
   ],
   "rating": 4.9,
-  "ratingCount": 6454,
+  "ratingCount": 6458,
   "features": [
    "доставка еды",
    "цена бокала пива: 350–400 ₽",
@@ -7660,7 +7677,7 @@
    "https://avatars.mds.yandex.net/get-altay/14919466/2a000001973f54cb8d45a06dbb113f56175f/%s"
   ],
   "rating": 4.4,
-  "ratingCount": 787,
+  "ratingCount": 789,
   "features": [
    "Оплата картой",
    "дресс-код",
@@ -7723,10 +7740,10 @@
    "12:00-00:00",
    "12:00-00:00",
    "12:00-00:00",
-   "12:00-00:00",
-   "12:00-00:00"
+   "12:00-06:00",
+   "12:00-06:00"
   ],
-  "hoursText": "ежедневно, 12:00 PM–12:00 AM",
+  "hoursText": "пн-чт 12:00 PM–12:00 AM; пт,сб 12:00 PM–6:00 AM; вс 12:00 PM–12:00 AM",
   "metro": [
    {
     "name": "Речной вокзал",
@@ -7761,7 +7778,7 @@
    "https://avatars.mds.yandex.net/get-altay/18769949/2a0000019c8b74b2d777005d1338abad43eb/%s"
   ],
   "rating": 5,
-  "ratingCount": 179,
+  "ratingCount": 180,
   "features": [
    "доставка еды",
    "кофе с собой",
@@ -7842,7 +7859,7 @@
    "12:00-02:00",
    "10:00-02:00"
   ],
-  "hoursText": "пн-чт 12:00–00:00; пт 12:00–02:00; сб 10:00–02:00; вс 10:00–00:00",
+  "hoursText": "пн-чт 12:00 PM–12:00 AM; пт 12:00 PM–2:00 AM; сб 10:00 AM–2:00 AM; вс 10:00 AM–12:00 AM",
   "metro": [
    {
     "name": "Китай-город",
@@ -7877,7 +7894,7 @@
    "https://avatars.mds.yandex.net/get-altay/21012689/2a0000019ef5ad31bfeae5393b37fe01c349/%s"
   ],
   "rating": 4.9,
-  "ratingCount": 4945,
+  "ratingCount": 4951,
   "features": [
    "средний счёт: от 3500 ₽",
    "доставка еды",
@@ -8000,7 +8017,7 @@
    "https://avatars.mds.yandex.net/get-altay/14392184/2a000001971913008c9c7b57886f362c77d0/%s"
   ],
   "rating": 4.8,
-  "ratingCount": 2364,
+  "ratingCount": 2368,
   "features": [
    "Оплата картой",
    "фейс-контроль",
@@ -8122,7 +8139,7 @@
    "https://avatars.mds.yandex.net/get-altay/7691421/2a00000188aa3db5680e7a21753875b13a28/%s"
   ],
   "rating": 4.7,
-  "ratingCount": 2820,
+  "ratingCount": 2821,
   "features": [
    "средний счёт: 2500–3000 ₽",
    "доставка еды",
@@ -8182,7 +8199,7 @@
     "i": null
    }
   ],
-  "booking": "https://yandex.ru/web-maps/webview?booking[permalink]=121008180091&booking[standalone]=true&mode=booking&source=partner-cta",
+  "booking": null,
   "site": "http://deepfriedfriends.ru/"
  },
  "lucky": {
@@ -8207,7 +8224,7 @@
    "12:00-02:00",
    "12:00-02:00"
   ],
-  "hoursText": "пн-чт 12:00 PM–12:00 AM; пт,сб 12:00 PM–2:00 AM; вс 12:00 PM–12:00 AM",
+  "hoursText": "пн-чт 12:00–00:00; пт,сб 12:00–02:00; вс 12:00–00:00",
   "metro": [
    {
     "name": "Арбатская",
@@ -8242,7 +8259,7 @@
    "https://avatars.mds.yandex.net/get-altay/14209766/2a00000193ba73c5a28acde6899d5d7fed38/%s"
   ],
   "rating": 4.9,
-  "ratingCount": 4084,
+  "ratingCount": 4087,
   "features": [
    "средний счёт: 5500–5500 ₽",
    "доставка еды",
@@ -8333,7 +8350,7 @@
    "https://avatars.mds.yandex.net/get-altay/492546/2a0000015ed0519478f89eb4266318763068/%s"
   ],
   "rating": 4.8,
-  "ratingCount": 8698,
+  "ratingCount": 8697,
   "features": [
    "средний счёт: 3000–10000 ₽",
    "доставка еды",
@@ -8485,7 +8502,7 @@
    "https://avatars.mds.yandex.net/get-altay/15285331/2a0000019605f9b42a0c0da7e8c26d407ebd/%s"
   ],
   "rating": 4.7,
-  "ratingCount": 674,
+  "ratingCount": 678,
   "features": [
    "доставка еды",
    "кофе с собой",
@@ -8668,7 +8685,7 @@
    "10:00-22:00",
    "10:00-22:00"
   ],
-  "hoursText": "ежедневно, 10:00–22:00",
+  "hoursText": "ежедневно, 10:00 AM–10:00 PM",
   "metro": [
    {
     "name": "Пушкинская",
@@ -8780,7 +8797,7 @@
    "https://avatars.mds.yandex.net/get-altay/17743308/2a0000019ec54fe64357196b10cddfcf22c3/%s"
   ],
   "rating": 4.9,
-  "ratingCount": 2281,
+  "ratingCount": 2280,
   "features": [
    "средний счёт: 1500–5000 ₽",
    "доставка еды",
@@ -8871,7 +8888,7 @@
    "https://avatars.mds.yandex.net/get-altay/15416268/2a00000198d1846f7bbf061405590af70f33/%s"
   ],
   "rating": 4.9,
-  "ratingCount": 2247,
+  "ratingCount": 2248,
   "features": [
    "цена бокала пива: 200–400 ₽",
    "цены: средние",
@@ -8945,7 +8962,7 @@
    "https://avatars.mds.yandex.net/get-altay/18108291/2a0000019c2a67dbeb8ad22a47f124b22e6d/%s"
   ],
   "rating": 5,
-  "ratingCount": 336,
+  "ratingCount": 349,
   "features": [
    "доставка еды",
    "кофе с собой",
@@ -9040,7 +9057,7 @@
    "https://avatars.mds.yandex.net/get-altay/14185024/2a00000195f52d10c0d7764d1d1b3fe34361/%s"
   ],
   "rating": 5,
-  "ratingCount": 395,
+  "ratingCount": 396,
   "features": [
    "доставка еды",
    "кофе с собой",
