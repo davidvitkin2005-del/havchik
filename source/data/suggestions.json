@@ -231,6 +231,17 @@
    "status": "skip",
    "places": [],
    "reason": "слишком короткий запрос"
+  },
+  {
+   "update": 795335911,
+   "date": "2026-10-28",
+   "text": "https://www.instagram.com/reel/DfA2V_cK0ji",
+   "urls": [
+    "https://www.instagram.com/reel/DfA2V_cK0ji"
+   ],
+   "status": "skip",
+   "places": [],
+   "reason": "в подписи рилса нет названия места"
   }
  ]
 }
