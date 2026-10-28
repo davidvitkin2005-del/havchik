@@ -198,6 +198,39 @@
     "vkusnoitochka"
    ],
    "reason": ""
+  },
+  {
+   "update": 795335908,
+   "date": "2026-10-28",
+   "text": "The State Duma of the Federal Assembly of the Russian Federation\nMoscow, Okhotny Ryad Street, 1\nhttps://yandex.com/maps/org/gosudarstvennaya_duma_federalnogo_sobraniya_rossiyskoy_federatsii/1031468693?si=cma4muuftw1qrf4dfu71bd40y8",
+   "urls": [
+    "https://yandex.com/maps/org/gosudarstvennaya_duma_federalnogo_sobraniya_rossiyskoy_federatsii/1031468693?si=cma4muuftw1qrf4dfu71bd40y8"
+   ],
+   "status": "skip",
+   "places": [],
+   "reason": "по ссылке не открылась карточка или это не кафе, ресторан или бар в Москве"
+  },
+  {
+   "update": 795335909,
+   "date": "2026-10-28",
+   "text": "https://yandex.com/maps/org/gosudarstvennaya_duma_federalnogo_sobraniya_rossiyskoy_federatsii/1031468693?si=cma4muuftw1qrf4dfu71bd40y8",
+   "urls": [
+    "https://yandex.com/maps/org/gosudarstvennaya_duma_federalnogo_sobraniya_rossiyskoy_federatsii/1031468693?si=cma4muuftw1qrf4dfu71bd40y8"
+   ],
+   "status": "skip",
+   "places": [],
+   "reason": "по ссылке не открылась карточка или это не кафе, ресторан или бар в Москве"
+  },
+  {
+   "update": 795335910,
+   "date": "2026-10-28",
+   "text": "https://yandex.com/maps/org/gosudarstvennaya_duma_federalnogo_sobraniya_rossiyskoy_federatsii",
+   "urls": [
+    "https://yandex.com/maps/org/gosudarstvennaya_duma_federalnogo_sobraniya_rossiyskoy_federatsii"
+   ],
+   "status": "skip",
+   "places": [],
+   "reason": "слишком короткий запрос"
   }
  ]
 }
