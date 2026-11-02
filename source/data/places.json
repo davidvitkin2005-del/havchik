@@ -58,7 +58,7 @@
    "view"
   ],
   "rating": 4.9,
-  "ratingCount": 12948,
+  "ratingCount": 12961,
   "photos": [
    "4441482/2a00000179611eacc3d59dfad488e39694cc",
    "1003740/2a00000161475822bf1b7218abc7306bb02f",
@@ -141,7 +141,7 @@
    "dogs"
   ],
   "rating": 4.4,
-  "ratingCount": 2514,
+  "ratingCount": 2522,
   "photos": [
    "16866637/2a00000197f5e0d91a5564e3ca2b19d8e5b7",
    "16318204/2a0000019895961456f1f0b3207c07fd500c",
@@ -230,7 +230,7 @@
    "laptop"
   ],
   "rating": 4.9,
-  "ratingCount": 782,
+  "ratingCount": 785,
   "photos": [
    "12820607/2a000001938c0e1fa853b77e615d73ba4c83",
    "1860543/2a0000016eae65a2e6b4ac6c44b5246e6b3c",
@@ -252,7 +252,7 @@
     "i": null
    }
   ],
-  "booking": null,
+  "booking": "https://yandex.ru/web-maps/webview?booking[permalink]=155636975560&booking[standalone]=true&mode=booking&source=partner-cta",
   "site": "https://apartmentbar.ru/",
   "reels": [
    "DcEjhvmMqYS",
@@ -313,7 +313,7 @@
    "laptop"
   ],
   "rating": 4.9,
-  "ratingCount": 459,
+  "ratingCount": 462,
   "photos": [
    "18141736/2a0000019cb971b4acc8580b53b72f51c9fd",
    "16403814/2a000001994d384487a611df34e2274b737a",
@@ -396,7 +396,7 @@
    "halal"
   ],
   "rating": 4.9,
-  "ratingCount": 357,
+  "ratingCount": 364,
   "photos": [
    "16457969/2a0000019c2493a32446aa95e299e4b8b54b",
    "16415892/2a0000019e658e665fb1d7bf1ac9a75d76b0",
@@ -569,7 +569,7 @@
    "laptop"
   ],
   "rating": 5,
-  "ratingCount": 5998,
+  "ratingCount": 6026,
   "photos": [
    "15416336/2a00000199957b2b1785325bf3cf1bca9fd8",
    "16792294/2a00000199910b1ec481496c082cfa4fdf9e",
@@ -645,24 +645,23 @@
    }
   ],
   "hours": [
-   "11:00-00:00",
-   "11:00-00:00",
-   "11:00-00:00",
-   "11:00-00:00",
-   "11:00-01:00",
-   "11:00-01:00",
-   "11:00-00:00"
+   "12:00-00:00",
+   "12:00-00:00",
+   "12:00-00:00",
+   "12:00-00:00",
+   "12:00-01:00",
+   "12:00-01:00",
+   "12:00-00:00"
   ],
   "price": "Средний чек до 2500 ₽",
   "priceB": "mid",
   "feat": [
-   "breakfast",
    "dogs",
    "dance",
    "laptop"
   ],
-  "rating": 4.9,
-  "ratingCount": 764,
+  "rating": 5,
+  "ratingCount": 778,
   "photos": [
    "15434007/2a0000019b73e29f42b9365ab7acc5cdafbe",
    "16443419/2a0000019b73f0e13ac9e4c70914dee92b5b",
@@ -749,7 +748,7 @@
    "kids"
   ],
   "rating": 5,
-  "ratingCount": 793,
+  "ratingCount": 795,
   "photos": [
    "14920258/2a00000197e5b338bd7608909c50f1346395",
    "15267123/2a000001970ce16c7848696d45af944d87a4",
@@ -923,7 +922,7 @@
    "veranda"
   ],
   "rating": 4.9,
-  "ratingCount": 2963,
+  "ratingCount": 2973,
   "photos": [
    "3717246/2a0000017b5cbbc595f5d88dcdba3b19a80f",
    "5236391/2a0000017b5cbaf8b78cd5bcf21789271d96",
@@ -1014,7 +1013,7 @@
    "laptop"
   ],
   "rating": 4.9,
-  "ratingCount": 6254,
+  "ratingCount": 6266,
   "photos": [
    "12838938/2a0000019289eb53e2356940259fab768432",
    "14271118/2a0000019289ebcd8771947178d366dd5d51",
@@ -1094,7 +1093,7 @@
    "dogs"
   ],
   "rating": 4.9,
-  "ratingCount": 1097,
+  "ratingCount": 1102,
   "photos": [
    "16270073/2a00000198092c0a7bacfe04ce31dfdb661a",
    "7695774/2a000001884fe98ff6af8fb9b652e6341a98",
@@ -1182,7 +1181,7 @@
    "laptop"
   ],
   "rating": 4.9,
-  "ratingCount": 8899,
+  "ratingCount": 8911,
   "photos": [
    "11940760/2a0000018ec907e720187999676a4669919c",
    "14271118/2a00000193c772b1d9e22d85927b7332d3a6",
@@ -1277,7 +1276,7 @@
    "laptop"
   ],
   "rating": 5,
-  "ratingCount": 1218,
+  "ratingCount": 1231,
   "photos": [
    "14235465/2a00000194a1d27dc3578f8719d016c989f5",
    "18114977/2a0000019e75321f9a8937243c90bc8bce51",
@@ -1360,7 +1359,7 @@
    "laptop"
   ],
   "rating": 5,
-  "ratingCount": 145,
+  "ratingCount": 147,
   "photos": [
    "17700564/2a0000019faca8ab873893f37d71605e4cd6",
    "20105000/2a0000019e93cfd048d1316f1153294f36f5",
@@ -1448,7 +1447,7 @@
    "hookah"
   ],
   "rating": 5,
-  "ratingCount": 932,
+  "ratingCount": 937,
   "photos": [
    "17783115/2a0000019e6eef6833177caca5cddb0b6915",
    "19902702/2a0000019e6eeb08bcccb3c5875b050c6edb",
@@ -1546,7 +1545,7 @@
    "h24"
   ],
   "rating": 5,
-  "ratingCount": 4213,
+  "ratingCount": 4230,
   "photos": [
    "10488540/2a0000018c073a7f5282334c3e36d220219e",
    "10488540/2a0000018c0739f4ca8d2e674df1c34e75a3",
@@ -1630,7 +1629,7 @@
    "h24"
   ],
   "rating": 4.7,
-  "ratingCount": 581,
+  "ratingCount": 589,
   "photos": [
    "16478002/2a0000019b2d2c7cf70b2340ec816c307b08",
    "14460764/2a00000193ace3aaee0a7f06e88aa8a64fec",
@@ -1717,7 +1716,7 @@
    "halal"
   ],
   "rating": 4.7,
-  "ratingCount": 3226,
+  "ratingCount": 3227,
   "photos": [
    "19519244/2a0000019bb7ed21a5bb45942794ed255e5f",
    "18152412/2a0000019b666f1ba51999c231d85d0a4bb3",
@@ -1800,7 +1799,7 @@
    "view"
   ],
   "rating": 4.8,
-  "ratingCount": 3796,
+  "ratingCount": 3794,
   "photos": [
    "7179902/2a000001843589c119649f171701a74ab22f",
    "4336412/2a00000178a0ef00b7e382cac3afd0023d55",
@@ -1890,7 +1889,7 @@
    "laptop"
   ],
   "rating": 4.9,
-  "ratingCount": 9661,
+  "ratingCount": 9917,
   "photos": [
    "15231053/2a000001976e4a3f1e78dea970c87a7d3fa0",
    "16330083/2a000001976e4a4b43e243cc35d364083573",
@@ -1984,7 +1983,7 @@
    "h24"
   ],
   "rating": 4.9,
-  "ratingCount": 8120,
+  "ratingCount": 8131,
   "photos": [
    "7668046/2a000001836a4c693cd8311c73d9a984de24",
    "16136409/2a000001997c4cfb5da504d0b24d33bbec27",
@@ -2001,13 +2000,8 @@
   "logo": "16368192/2a0000019ae9bc9cb8a457517c72629e6f00",
   "phones": [
    {
-    "n": "+7 (495) 734-70-25",
-    "v": "+74957347025",
-    "i": null
-   },
-   {
-    "n": "+7 (916) 495-25-69",
-    "v": "+79164952569",
+    "n": "+7 (969) 012-64-30",
+    "v": "+79690126430",
     "i": null
    }
   ],
@@ -2081,7 +2075,7 @@
    "h24"
   ],
   "rating": 4.8,
-  "ratingCount": 464,
+  "ratingCount": 465,
   "photos": [
    "7383884/2a000001839f9a1a47a55d1bb389f95ae9bf",
    "6236655/2a00000183b8ea5a24908e01437f967b2458",
@@ -2166,7 +2160,7 @@
   "priceB": "mid",
   "feat": [],
   "rating": 5,
-  "ratingCount": 3096,
+  "ratingCount": 3100,
   "photos": [
    "13477341/2a0000018f5e304c73b75e0c1431555b2ee1",
    "18148618/2a0000019b6c8472dcca29a6fabae02b1ab5",
@@ -2241,7 +2235,7 @@
    "lunch"
   ],
   "rating": 5,
-  "ratingCount": 532,
+  "ratingCount": 533,
   "photos": [
    "16299341/2a0000019aa7920fa480c1155accc6d5d3aa",
    "15388054/2a0000019995eddf11df79f147f686ebc5ab",
@@ -2322,7 +2316,7 @@
    "laptop"
   ],
   "rating": 5,
-  "ratingCount": 407,
+  "ratingCount": 410,
   "photos": [
    "19547455/2a0000019e1d84e023edf36ea10bc93bb1e1",
    "19580059/2a0000019e1d852e702f1b7d00cabac2a9e1",
@@ -2395,11 +2389,11 @@
    }
   ],
   "hours": [
-   "00:00-00:00",
-   "00:00-00:00",
-   "00:00-00:00",
-   "00:00-00:00",
-   "00:00-00:00",
+   "10:00-00:00",
+   "10:00-00:00",
+   "10:00-00:00",
+   "10:00-00:00",
+   "10:00-00:00",
    "00:00-00:00",
    "00:00-00:00"
   ],
@@ -2407,11 +2401,10 @@
   "priceB": null,
   "feat": [
    "lunch",
-   "dogs",
-   "h24"
+   "dogs"
   ],
   "rating": 5,
-  "ratingCount": 215,
+  "ratingCount": 221,
   "photos": [
    "19619196/2a0000019d53d3c7413333dabe6c9ed948a2",
    "15043309/2a0000019b16f99b31ddf7830608647b1155",
@@ -2494,7 +2487,7 @@
    "laptop"
   ],
   "rating": 4.8,
-  "ratingCount": 1674,
+  "ratingCount": 1678,
   "photos": [
    "771751/2a0000018847fa83469a8713bfe665fbfc1c",
    "5234013/2a00000187e8376a63b2c139529839a15d08",
@@ -2569,7 +2562,7 @@
    "sport"
   ],
   "rating": 4.9,
-  "ratingCount": 75,
+  "ratingCount": 78,
   "photos": [
    "15696528/2a0000019ed0b3e01ac2af9dbc8ff974c527",
    "20427853/2a0000019ed0b3f6b3ffefba6f96f108b59f",
@@ -2645,8 +2638,8 @@
    "13:00-00:00",
    "13:00-00:00",
    "13:00-00:00",
-   "10:00-00:00",
-   "10:00-00:00"
+   "12:00-00:00",
+   "12:00-00:00"
   ],
   "price": "Средний чек от 2000 ₽",
   "priceB": "mid",
@@ -2655,7 +2648,7 @@
    "dogs"
   ],
   "rating": 4.8,
-  "ratingCount": 804,
+  "ratingCount": 833,
   "photos": [
    "16386092/2a0000019c3db094ba9828218325df2c881c",
    "18384802/2a0000019b2e9d887b12de85dd1ac774fe5b",
@@ -2719,7 +2712,7 @@
   ],
   "hours": [
    "11:00-23:00",
-   "11:00-03:00",
+   "12:00-03:00",
    "11:00-06:00",
    "11:00-06:00",
    "11:00-06:00",
@@ -2738,7 +2731,7 @@
    "laptop"
   ],
   "rating": 5,
-  "ratingCount": 5942,
+  "ratingCount": 5949,
   "photos": [
    "14246212/2a00000199cd953a21b45ae787f4997a75d2",
    "15416336/2a00000199cd954ffbc69d41be260d74a055",
@@ -2819,7 +2812,7 @@
    "dance"
   ],
   "rating": 4.9,
-  "ratingCount": 6449,
+  "ratingCount": 6456,
   "photos": [
    "15294573/2a0000019764895d3574d083256e96a604b5",
    "1886165/2a0000016cb4f7bde3922d5bd32b0f6c8821",
@@ -2901,7 +2894,7 @@
    "dogs"
   ],
   "rating": 5,
-  "ratingCount": 246,
+  "ratingCount": 249,
   "photos": [
    "17637863/2a0000019bf67d3004b8808bbbc6941086cc",
    "18005133/2a0000019bc95f67fa091901f9a781df6794",
@@ -2987,7 +2980,7 @@
    "dogs"
   ],
   "rating": 4.7,
-  "ratingCount": 311,
+  "ratingCount": 319,
   "photos": [
    "17843434/2a0000019d49f5f8acc2fb49263263488145",
    "17679358/2a0000019b65e3a3a1c4f18e004ec9f3d3fe",
@@ -3045,22 +3038,23 @@
    }
   ],
   "hours": [
-   "11:00-00:00",
-   "11:00-00:00",
-   "11:00-00:00",
-   "11:00-00:00",
-   "11:00-00:00",
-   "11:00-00:00",
-   "11:00-00:00"
+   "00:00-00:00",
+   "00:00-00:00",
+   "00:00-00:00",
+   "00:00-00:00",
+   "00:00-00:00",
+   "00:00-00:00",
+   "00:00-00:00"
   ],
   "price": "Средний чек 400–600 ₽",
   "priceB": "lo",
   "feat": [
    "dogs",
-   "kids"
+   "kids",
+   "h24"
   ],
   "rating": 4.2,
-  "ratingCount": 59,
+  "ratingCount": 58,
   "photos": [
    "20879831/2a000001a0dda08f738e9c30e5877560c7db",
    "21535825/2a000001a0e739db51b27b8805ceb01c647a",
@@ -3146,7 +3140,7 @@
    "music"
   ],
   "rating": 4.8,
-  "ratingCount": 1240,
+  "ratingCount": 1246,
   "photos": [
    "19593321/2a0000019cd6c4b7cd51ad1672a2cae5fd7e",
    "17651669/2a0000019cd6c4df21fa713f47d585107953",
@@ -3235,7 +3229,7 @@
    "laptop"
   ],
   "rating": 4.8,
-  "ratingCount": 2090,
+  "ratingCount": 2102,
   "photos": [
    "17773264/2a0000019d0a57eb2f02a1c06d21497170c5",
    "11356085/2a000001912130c2bfc373a3140418632b93",
@@ -3324,7 +3318,7 @@
    "laptop"
   ],
   "rating": 4.7,
-  "ratingCount": 5210,
+  "ratingCount": 5215,
   "photos": [
    "16823151/2a000001987ef5597a7f307be23e56760d44",
    "14763372/2a0000019407fd9acc4fec9487f99e4c5d5d",
@@ -3493,7 +3487,7 @@
    "h24"
   ],
   "rating": 5,
-  "ratingCount": 1464,
+  "ratingCount": 1465,
   "photos": [
    "15157522/2a00000195d7281e25f9b45634f68b36d509",
    "14460769/2a00000195d7281e08dbb3191a18c6a9fc84",
@@ -3668,7 +3662,7 @@
    "dogs"
   ],
   "rating": 4.9,
-  "ratingCount": 1663,
+  "ratingCount": 1669,
   "photos": [
    "18132699/2a0000019c35bb0c83d6e112adb847f61019",
    "14907397/2a0000019ad5c7590dca64880f8ac746e6ce",
@@ -3756,7 +3750,7 @@
    "halal"
   ],
   "rating": 5,
-  "ratingCount": 1546,
+  "ratingCount": 1584,
   "photos": [
    "17712904/2a0000019db98f87e65b1077ceae65865542",
    "19708557/2a0000019ef5484ac591a8419086809cd8b5",
@@ -3920,7 +3914,7 @@
    "laptop"
   ],
   "rating": 4.7,
-  "ratingCount": 3604,
+  "ratingCount": 3607,
   "photos": [
    "10878699/2a00000193493c11e6350ce1c175718283f8",
    "19519244/2a0000019dd38c6e0c4541777a2666d3bb65",
@@ -3999,7 +3993,7 @@
    "laptop"
   ],
   "rating": 4.9,
-  "ratingCount": 2957,
+  "ratingCount": 2958,
   "photos": [
    "15131175/2a0000019532cc9acc31ae83ca596650f334",
    "13754922/2a00000191a3fce57eede6118ff97c32a83a",
@@ -4072,13 +4066,13 @@
    }
   ],
   "hours": [
-   "11:00-23:00",
-   "11:00-23:00",
-   "11:00-23:00",
-   "11:00-23:00",
-   "11:00-23:00",
-   "11:00-23:00",
-   "11:00-23:00"
+   "12:00-22:00",
+   "12:00-22:00",
+   "12:00-22:00",
+   "12:00-22:00",
+   "12:00-23:00",
+   "12:00-23:00",
+   "12:00-23:00"
   ],
   "price": null,
   "priceB": null,
@@ -4087,7 +4081,7 @@
    "laptop"
   ],
   "rating": 4.8,
-  "ratingCount": 34,
+  "ratingCount": 39,
   "photos": [
    "20307657/2a000001a0717e20cdd9b3103a6694a5480d",
    "21104762/2a000001a0730afcf73d4ee114b5d8eeeb31",
@@ -4178,7 +4172,7 @@
    "dance"
   ],
   "rating": 4.8,
-  "ratingCount": 6747,
+  "ratingCount": 6754,
   "photos": [
    "15539509/2a000001978f63fa3edb3691d955b9ac4e5b",
    "5445147/2a0000017e8cb7145146c80658b030d4a069",
@@ -4261,7 +4255,7 @@
   "priceB": null,
   "feat": [],
   "rating": 4.4,
-  "ratingCount": 116,
+  "ratingCount": 118,
   "photos": [
    "16420800/2a0000019dc9ef865cef150f65588a0ca9cc",
    "17737331/2a0000019db90725db50439e93311ba56d3d",
@@ -4342,7 +4336,7 @@
    "laptop"
   ],
   "rating": 5,
-  "ratingCount": 798,
+  "ratingCount": 800,
   "photos": [
    "16329243/2a0000019c48dfc2c832551fb1c041e2deb2",
    "17750410/2a0000019c48dfc2f04fb6e8d3e37a7c0224",
@@ -4359,8 +4353,8 @@
   "logo": "19648454/2a0000019c49223cac1cff93374d3b60e2ac",
   "phones": [
    {
-    "n": "+7 (495) 363-04-11",
-    "v": "+74953630411",
+    "n": "+7 (934) 008-61-90",
+    "v": "+79340086190",
     "i": null
    }
   ],
@@ -4418,8 +4412,8 @@
    "hookah",
    "laptop"
   ],
-  "rating": 5,
-  "ratingCount": 66,
+  "rating": 4.9,
+  "ratingCount": 69,
   "photos": [
    "19807214/2a0000019ed6bd03a4fcb38a02ff5e2619f0",
    "20112234/2a0000019ed6bcec44e122f40a89167a6b51",
@@ -4501,7 +4495,7 @@
    "laptop"
   ],
   "rating": 4.9,
-  "ratingCount": 339,
+  "ratingCount": 364,
   "photos": [
    "16398472/2a0000019bfa3a5e7f88a409d62ff3952df1",
    "18151954/2a0000019bcb53701459cf341a98c37dfc8a",
@@ -4588,7 +4582,7 @@
    "h24"
   ],
   "rating": 4.3,
-  "ratingCount": 2623,
+  "ratingCount": 2622,
   "photos": [
    "1633071/2a00000167d2ffc1e3063cab3e6f8ca75ad2",
    "1439437/2a00000167d30033b21208f2f3f1f96277cb",
@@ -4671,7 +4665,7 @@
    "laptop"
   ],
   "rating": 4.6,
-  "ratingCount": 62,
+  "ratingCount": 64,
   "photos": [
    "19829109/2a0000019e77fd607a356cdb0f3261f52160",
    "19580059/2a0000019e4ad680ae39ea84de8e3e6e3f64",
@@ -4756,7 +4750,7 @@
    "h24"
   ],
   "rating": 4.4,
-  "ratingCount": 7622,
+  "ratingCount": 7624,
   "photos": [
    "9704097/2a0000018b23f08bbf1525098a063930ace5",
    "13671440/2a000001932ed5d042d404461a4aab999fcd",
@@ -4839,7 +4833,7 @@
   "priceB": "lo",
   "feat": [],
   "rating": 4.8,
-  "ratingCount": 2614,
+  "ratingCount": 2619,
   "photos": [
    "20249436/2a0000019ef871558fc84ddf3b1524bfd0d1",
    "17863912/2a0000019c37f1f637d07c0019e88479f187",
@@ -4916,7 +4910,7 @@
   ],
   "hours": [
    null,
-   "16:00-00:00",
+   "16:00-04:00",
    "16:00-00:00",
    "16:00-00:00",
    "16:00-04:00",
@@ -4932,7 +4926,7 @@
    "laptop"
   ],
   "rating": 4.8,
-  "ratingCount": 4574,
+  "ratingCount": 4579,
   "photos": [
    "14209766/2a000001947495a49c42c18669fc1707032e",
    "14844975/2a000001947495de9252bdc38f7f52a8a762",
@@ -5105,7 +5099,7 @@
    "laptop"
   ],
   "rating": 5,
-  "ratingCount": 2772,
+  "ratingCount": 2777,
   "photos": [
    "2363990/2a0000017b2cda515c80447c7cf9cf5658a1",
    "2044663/2a0000017b2cda2f0096606474e3c0790aeb",
@@ -5177,7 +5171,7 @@
   ],
   "hours": [
    null,
-   null,
+   "19:00-02:00",
    null,
    "19:00-02:00",
    "19:00-06:00",
@@ -5194,7 +5188,7 @@
    "laptop"
   ],
   "rating": 4.7,
-  "ratingCount": 11884,
+  "ratingCount": 11922,
   "photos": [
    "14105192/2a00000193f952c83492ec74bad34802b6b3",
    "14021521/2a00000193f92ba1a18613a1d5baaee3c0c1",
@@ -5284,7 +5278,7 @@
    "laptop"
   ],
   "rating": 4.8,
-  "ratingCount": 2368,
+  "ratingCount": 2369,
   "photos": [
    "14264437/2a00000192f23a8cffe9c743f0c86c0aa650",
    "13925334/2a00000192f2408ce87294d9505a8b471033",
@@ -5375,7 +5369,7 @@
    "dance"
   ],
   "rating": 4.8,
-  "ratingCount": 3926,
+  "ratingCount": 3931,
   "photos": [
    "14451083/2a000001934f74555368667521f466b8f5d4",
    "14460764/2a000001934f6c1467d289f1b4207a99638f",
@@ -5451,7 +5445,7 @@
    "dance"
   ],
   "rating": 4.5,
-  "ratingCount": 2839,
+  "ratingCount": 2842,
   "photos": [
    "1773749/2a0000016a44f36de9cf282b476c72e05ecc",
    "6514890/2a0000018b39f0959e9e50ffa186ab8f38bf",
@@ -5541,7 +5535,7 @@
    "laptop"
   ],
   "rating": 4.7,
-  "ratingCount": 2821,
+  "ratingCount": 2822,
   "photos": [
    "9709178/2a00000188df71d052549e29b27dd3e52afd",
    "1028115/2a00000188df71cfed19dd99fbaba3e1e907",
@@ -5568,7 +5562,7 @@
     "i": null
    }
   ],
-  "booking": null,
+  "booking": "https://yandex.ru/web-maps/webview?booking[permalink]=121008180091&booking[standalone]=true&mode=booking&source=partner-cta",
   "site": "http://deepfriedfriends.ru/",
   "reels": [
    "DY-SlgTR5Zm"
@@ -5636,7 +5630,7 @@
    "laptop"
   ],
   "rating": 4.9,
-  "ratingCount": 6458,
+  "ratingCount": 6460,
   "photos": [
    "467304/2a0000015ed06604c1f9930ec6a8ee25fb13",
    "9709783/2a0000018a40c39316eff679ceb333106976",
@@ -5713,7 +5707,7 @@
    "dance"
   ],
   "rating": 4.4,
-  "ratingCount": 789,
+  "ratingCount": 795,
   "photos": [
    "15074774/2a000001975e469b189b92c5ee3e5ddc134d",
    "15283873/2a000001973f54c8e4d64e04653869bea2c0",
@@ -5797,7 +5791,7 @@
    "laptop"
   ],
   "rating": 5,
-  "ratingCount": 180,
+  "ratingCount": 188,
   "photos": [
    "19883212/2a0000019cb4ba4c286fd583d3b6f71767b0",
    "16166099/2a0000019c8b31e89a2dbd6bea6e2bc53f6a",
@@ -5887,7 +5881,7 @@
    "dance"
   ],
   "rating": 4.9,
-  "ratingCount": 4951,
+  "ratingCount": 4957,
   "photos": [
    "16451941/2a000001979ee332c22aedb9f81792b5cfe6",
    "11368589/2a0000018bd4132b6cb09895518017345a03",
@@ -5971,7 +5965,7 @@
    "dogs"
   ],
   "rating": 4.9,
-  "ratingCount": 4087,
+  "ratingCount": 4089,
   "photos": [
    "1880508/2a0000016e5d2a4840ce2acd7126bce6ecb6",
    "14702189/2a00000194eb6cee2c685f6a61b797113d99",
@@ -6052,7 +6046,7 @@
    "h24"
   ],
   "rating": 4.8,
-  "ratingCount": 8697,
+  "ratingCount": 8700,
   "photos": [
    "18107333/2a0000019f4b69473f93768ba8e3233e5b0c",
    "20412588/2a0000019eff860c3a2d562713c64bf3e22d",
@@ -6138,7 +6132,7 @@
    "dogs"
   ],
   "rating": 4.7,
-  "ratingCount": 678,
+  "ratingCount": 679,
   "photos": [
    "13940652/2a00000195a9897bbb3f88ef7fc72dc6ce8c",
    "13941727/2a000001957015cc9ed727035841a9104ea2",
@@ -6196,7 +6190,7 @@
   ],
   "hours": [
    "10:00-00:00",
-   "10:00-00:00",
+   "10:00-01:00",
    "10:00-00:00",
    "10:00-00:00",
    "10:00-01:00",
@@ -6282,7 +6276,7 @@
   "priceB": null,
   "feat": [],
   "rating": 4.7,
-  "ratingCount": 45,
+  "ratingCount": 47,
   "photos": [
    "21119124/2a000001a14f4717b383d9a753dfb6426ea8",
    "17771550/2a000001a126376e1dd1954ff45319ff5003",
@@ -6352,7 +6346,7 @@
    "veranda"
   ],
   "rating": 4.9,
-  "ratingCount": 2280,
+  "ratingCount": 2281,
   "photos": [
    "1003687/2a0000016239673364aeca1b75ee5231fe10",
    "9916116/2a00000188f47f3b7d33ccda298dfad0b8ab",
@@ -6423,7 +6417,7 @@
    "veranda"
   ],
   "rating": 4.9,
-  "ratingCount": 2248,
+  "ratingCount": 2249,
   "photos": [
    "228191/2a000001619f15c972f3440eadbc4783f264",
    "788991/2a000001619f15cae67d3a96e206e21aa2f9",
@@ -6483,7 +6477,7 @@
    "h24"
   ],
   "rating": 5,
-  "ratingCount": 349,
+  "ratingCount": 393,
   "photos": [
    "16437561/2a00000197cb975f84622457b208bbdb0c4c",
    "13594632/2a00000194e60b49da0f7d6b1c9b6501b55b",
@@ -6498,13 +6492,7 @@
    55.939235
   ],
   "logo": "18107333/2a0000019e07c48359f93762787fd29b4353",
-  "phones": [
-   {
-    "n": "+7 (927) 988-88-31",
-    "v": "+79279888831",
-    "i": null
-   }
-  ],
+  "phones": [],
   "booking": null,
   "site": null,
   "reels": [],
@@ -6555,7 +6543,7 @@
    "kids"
   ],
   "rating": 5,
-  "ratingCount": 396,
+  "ratingCount": 399,
   "photos": [
    "14811824/2a0000019695e57dfa0b215d0ffc5aaea06c",
    "15289836/2a000001969b7564ec3e56da2f4a370b89ab",
@@ -6633,7 +6621,7 @@
    "sport"
   ],
   "rating": 4.8,
-  "ratingCount": 2598,
+  "ratingCount": 2600,
   "photos": [
    "7979597/2a0000019155325d94a009a23dd8261e9194",
    "14007310/2a000001964a8e7c15963eb02ac7fbb14f2f",
@@ -6692,7 +6680,7 @@
    "laptop"
   ],
   "rating": 4.5,
-  "ratingCount": 6278,
+  "ratingCount": 6281,
   "photos": [
    "20387359/2a0000019f0f3f52a22cb8f31eebc6f9238a",
    "20410725/2a0000019f0f3f548587fd0156b2a1b6086b",
